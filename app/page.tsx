@@ -178,6 +178,7 @@ export default function Home() {
                   alt={`Portrait of ${person.name}`}
                   fill
                   priority
+                  unoptimized
                   sizes="(max-width: 760px) 82vw, 38vw"
                 />
               ) : (
@@ -337,6 +338,7 @@ export default function Home() {
                 alt="The University of Western Australia crest"
                 width={400}
                 height={410}
+                unoptimized
                 sizes="(max-width: 760px) 7rem, 8rem"
               />
             </div>

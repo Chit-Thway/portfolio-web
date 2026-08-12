@@ -37,6 +37,9 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Jira Service Management Simulation/);
   assert.match(html, /Job Application Tracker/);
   assert.match(html, /Bachelor of Science \(Computer Science\)/);
+  assert.match(html, /src="\/chit-thway-portrait\.jpg"/);
+  assert.match(html, /src="\/uwa-logo\.png"/);
+  assert.doesNotMatch(html, /\/_next\/image\?url=/);
   assert.match(html, /Skip to content/);
   assert.match(html, /application\/ld\+json/);
   assert.doesNotMatch(html, /href=["']#["']/i);
