@@ -126,4 +126,10 @@ Version 1 intentionally does not include individual project routes. Version 2 ca
 
 ## Deployment
 
-The project is prepared for static hosting, but Version 1 has deliberately not been deployed. Review the local build and add a public resume PDF before publishing.
+The portfolio is publicly deployed with Cloudflare Pages:
+
+```text
+https://chitthway-portfolio.pages.dev
+```
+
+Create the static Pages output with `npm run build:pages`, then deploy the generated `dist/client` directory to the `chitthway-portfolio` Cloudflare Pages project.

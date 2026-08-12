@@ -17,10 +17,13 @@
 /.next/
 /.vinext/
 /out/
+*.tsbuildinfo
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+.eslintcache
 
 # debug
 npm-debug.log*
@@ -38,5 +41,6 @@ yarn-error.log*
 
 /dist/
 /.wrangler/
+/.openai/
 /outputs/
 /work/
