@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chitthway-portfolio.pages.dev/sitemap.xml
