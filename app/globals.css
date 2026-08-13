@@ -2129,8 +2129,11 @@ section {
 }
 
 .pdf-dialog {
+  position: fixed;
+  inset: 0;
   width: min(94vw, 1100px);
   height: min(92vh, 900px);
+  margin: auto;
   padding: 0;
   border: 1px solid var(--line-strong);
   background: var(--ink-soft);
