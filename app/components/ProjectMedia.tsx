@@ -119,11 +119,11 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
         >
           <span aria-hidden="true">→</span>
         </button>
-        <p className="slide-counter" aria-live="polite">
-          <span>Slide</span>
-          <strong>{activeIndex + 1} / {slides.length}</strong>
-        </p>
       </div>
+      <p className="slide-counter" aria-live="polite">
+        <span>Slide</span>
+        <strong>{activeIndex + 1} / {slides.length}</strong>
+      </p>
       <div className="slide-viewer-meta">
         <span>Use the controls, arrow keys or swipe to move through the case study.</span>
         <a href={downloadHref} download>
