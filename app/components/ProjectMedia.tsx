@@ -20,6 +20,7 @@ export function ProjectVideo({ src, label, duration }: ProjectVideoProps) {
           src={src.replace(/\.mp4$/i, ".vtt")}
           srcLang="en"
           label="English"
+          default
         />
         Your browser does not support embedded video. You can download it from the video controls instead.
       </video>

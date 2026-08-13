@@ -92,7 +92,7 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /A simple first run/);
   assert.match(html, /python -m dashboard/);
   assert.match(html, /class="repository-button case-title-repository"/);
-  assert.doesNotMatch(html, /<track[^>]*\sdefault(?:=|\s|>)/i);
+  assert.match(html, /<track[^>]*\sdefault(?:=|\s|>)/i);
   assert.ok(html.indexOf("Other projects") < html.indexOf("demonstration.mp4"));
 });
 

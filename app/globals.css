@@ -1741,6 +1741,7 @@ section {
 
 .case-hero-aside {
   display: grid;
+  align-self: end;
   align-content: start;
   gap: 1.5rem;
 }

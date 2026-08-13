@@ -1,13 +1,22 @@
 WEBVTT
 
-00:00.000 --> 00:10.000
-The private dashboard brings applications, follow-ups and appointments into one view.
+00:00.000 --> 00:04.000
+Sign in securely to access your private job tracker.
 
-00:10.000 --> 00:22.000
-Applications retain their role details, status history and employer context.
+00:04.000 --> 00:10.000
+The dashboard provides a clear overview of your applications and recent activity.
 
-00:22.000 --> 00:35.000
-The Action Centre surfaces overdue work, follow-up suggestions and upcoming appointments.
+00:10.000 --> 00:25.000
+Capture job listings directly from the browser extension.
 
-00:35.000 --> 00:49.500
-Imported job information is reviewed before it becomes a saved application.
+00:25.000 --> 00:32.500
+Relevant job details are extracted quickly and prepared for review.
+
+00:32.000 --> 00:37.000
+After confirmation, the information is saved in its respective section.
+
+00:37.000 --> 00:44.000
+The Applications page keeps every opportunity organised and easy to manage.
+
+00:44.000 --> 00:49.000
+The dashboard updates automatically as the application count increases from five to seven.
