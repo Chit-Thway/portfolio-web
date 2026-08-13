@@ -7,6 +7,7 @@ import {
   ProjectVideo,
   SlideViewer,
 } from "@/app/components/ProjectMedia";
+import { RepositoryLink } from "@/app/components/RepositoryLink";
 import {
   getProjectCaseStudy,
   projectCaseStudies,
@@ -88,7 +89,12 @@ function StandardHero({
           <h1>{project.title}</h1>
           <p className="case-introduction">{caseStudy.introduction}</p>
         </div>
-        <ProjectFacts caseStudy={caseStudy} />
+        <div className="case-hero-aside">
+          {project.links[0] ? (
+            <RepositoryLink href={project.links[0].href} className="case-title-repository" />
+          ) : null}
+          <ProjectFacts caseStudy={caseStudy} />
+        </div>
       </div>
     </section>
   );
@@ -186,15 +192,6 @@ function CaseStudyDetails({
             <li key={technology}>{technology}</li>
           ))}
         </ul>
-        {project.links.length ? (
-          <div className="case-repository-links">
-            {project.links.map((link) => (
-              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                {link.label} <span aria-hidden="true">↗</span>
-              </a>
-            ))}
-          </div>
-        ) : null}
       </section>
 
       {caseStudy.note ? <p className="case-note">{caseStudy.note}</p> : null}
@@ -236,6 +233,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     <>
       <ProjectHeader />
       <main className="project-page section-shell">
+        <ProjectPagination slug={slug} />
         {pdfMedia ? (
           <section className="pdf-case-hero">
             <div className="pdf-case-copy">
@@ -268,7 +266,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
 
         <CaseStudyDetails caseStudy={caseStudy} project={project} />
-        <ProjectPagination slug={slug} />
       </main>
       <footer className="project-page-footer section-shell">
         <span>CHIT THWAY</span>

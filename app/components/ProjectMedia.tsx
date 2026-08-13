@@ -20,7 +20,6 @@ export function ProjectVideo({ src, label, duration }: ProjectVideoProps) {
           src={src.replace(/\.mp4$/i, ".vtt")}
           srcLang="en"
           label="English"
-          default
         />
         Your browser does not support embedded video. You can download it from the video controls instead.
       </video>
@@ -83,38 +82,47 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
 
   return (
     <section className="case-media slide-viewer" aria-label={`${label} slide viewer`}>
-      <button
-        className="slide-stage"
-        type="button"
-        onClick={showNext}
-        onKeyDown={handleKeyDown}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        aria-label={`Slide ${activeIndex + 1} of ${slides.length}. Show next slide.`}
-      >
-        <Image
-          key={slides[activeIndex]}
-          src={slides[activeIndex]}
-          alt={`${label}, slide ${activeIndex + 1} of ${slides.length}`}
-          width={1600}
-          height={900}
-          sizes="(max-width: 900px) 100vw, 1200px"
-          priority={activeIndex === 0}
-          unoptimized
-        />
-      </button>
-      <div className="slide-controls">
-        <button type="button" onClick={showPrevious} aria-label="Show previous slide">
-          <span aria-hidden="true">←</span>
-          Previous
+      <div className="slide-frame">
+        <button
+          className="slide-stage"
+          type="button"
+          onClick={showNext}
+          onKeyDown={handleKeyDown}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          aria-label={`Slide ${activeIndex + 1} of ${slides.length}. Show next slide.`}
+        >
+          <Image
+            key={slides[activeIndex]}
+            src={slides[activeIndex]}
+            alt={`${label}, slide ${activeIndex + 1} of ${slides.length}`}
+            width={1600}
+            height={900}
+            sizes="(max-width: 900px) 100vw, 1200px"
+            priority={activeIndex === 0}
+            unoptimized
+          />
         </button>
-        <p aria-live="polite">
-          <span>Slide</span> {activeIndex + 1} / {slides.length}
-        </p>
-        <button type="button" onClick={showNext} aria-label="Show next slide">
-          Next
+        <button
+          className="slide-arrow slide-arrow-previous"
+          type="button"
+          onClick={showPrevious}
+          aria-label="Show previous slide"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <button
+          className="slide-arrow slide-arrow-next"
+          type="button"
+          onClick={showNext}
+          aria-label="Show next slide"
+        >
           <span aria-hidden="true">→</span>
         </button>
+        <p className="slide-counter" aria-live="polite">
+          <span>Slide</span>
+          <strong>{activeIndex + 1} / {slides.length}</strong>
+        </p>
       </div>
       <div className="slide-viewer-meta">
         <span>Use the controls, arrow keys or swipe to move through the case study.</span>

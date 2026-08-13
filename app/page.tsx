@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { MobileNavigation } from "./components/MobileNavigation";
+import { RepositoryLink } from "./components/RepositoryLink";
 import { portfolio } from "./data/portfolio";
 
 function SectionHeading({
@@ -28,6 +29,11 @@ function SectionHeading({
 function ProjectCard({ project }: { project: (typeof portfolio.projects)[number] }) {
   return (
     <article className={`project-card ${project.featured ? "project-featured" : ""}`}>
+      <a
+        className="project-card-link"
+        href={`/projects/${project.id}/`}
+        aria-label={`View ${project.title} case study`}
+      />
       <div className="project-topline">
         <span className="project-number">PROJECT / {project.number}</span>
         <span className="status-pill">
@@ -38,9 +44,7 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
       <div className="project-main">
         <div className="project-intro">
           <p className="project-category">{project.category}</p>
-          <h3>
-            <a href={`/projects/${project.id}/`}>{project.title}</a>
-          </h3>
+          <h3>{project.title}</h3>
           <p className="project-summary">{project.summary}</p>
         </div>
         <div className="project-details">
@@ -65,16 +69,9 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
             <li key={technology}>{technology}</li>
           ))}
         </ul>
-        <div className="project-actions">
-          <a className="case-study-action" href={`/projects/${project.id}/`}>
-            Explore case study <span aria-hidden="true">→</span>
-          </a>
-          {project.links.map((link) => (
-            <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-              {link.label} <span aria-hidden="true">↗</span>
-            </a>
-          ))}
-        </div>
+        {project.links[0] ? (
+          <RepositoryLink href={project.links[0].href} className="project-card-repository" />
+        ) : null}
       </div>
     </article>
   );

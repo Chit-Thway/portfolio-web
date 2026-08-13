@@ -77,7 +77,10 @@ test("links every homepage project to its own case study", async () => {
     "concise-digital-work",
   ]) {
     assert.match(html, new RegExp(`href=["']/projects/${slug}/["']`));
+    assert.match(html, new RegExp(`aria-label=["']View [^"']+ case study["']`));
   }
+  assert.doesNotMatch(html, /Explore case study/i);
+  assert.match(html, /View repository/);
 });
 
 test("renders the Windows toolkit video and simple setup", async () => {
@@ -88,6 +91,9 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /\/projects\/windows-support-toolkit\/demonstration\.mp4/);
   assert.match(html, /A simple first run/);
   assert.match(html, /python -m dashboard/);
+  assert.match(html, /class="repository-button case-title-repository"/);
+  assert.doesNotMatch(html, /<track[^>]*\sdefault(?:=|\s|>)/i);
+  assert.ok(html.indexOf("Other projects") < html.indexOf("demonstration.mp4"));
 });
 
 test("renders the Jira slide viewer and presentation download", async () => {
@@ -97,6 +103,10 @@ test("renders the Jira slide viewer and presentation download", async () => {
   assert.match(html, /Kestrel Ridge IT Service Desk case study, slide 1 of 12/);
   assert.match(html, /Download presentation/);
   assert.match(html, /Kestrel-Ridge-JSM-Case-Study\.pptx/);
+  assert.match(html, /aria-label="Show previous slide"/);
+  assert.match(html, /aria-label="Show next slide"/);
+  assert.match(html, /class="slide-counter"/);
+  assert.ok(html.indexOf("Other projects") < html.indexOf("slide-1.png"));
 });
 
 test("renders an honest in-progress page for Quick-Fire Questions", async () => {
