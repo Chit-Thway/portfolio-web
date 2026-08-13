@@ -104,25 +104,28 @@ certificates: [
 
 ```text
 app/
-  components/MobileNavigation.tsx  Accessible mobile navigation
+  components/                       Shared navigation and media viewers
   data/portfolio.ts                Central portfolio content and links
+  data/projectCaseStudies.ts       Project-page narratives and media mapping
   globals.css                      Complete responsive visual system
   layout.tsx                       Metadata, social sharing and viewport settings
-  page.tsx                         Single-page semantic portfolio
+  page.tsx                         Portfolio homepage
+  projects/[slug]/page.tsx         Dedicated project case studies
 public/
   chit-thway-portrait.jpg          Current profile photograph
   og.png                           Bespoke social sharing card
+  projects/                        Project videos, slides, deck and QA report
 tests/
   rendered-html.test.mjs           Production HTML checks
 ```
 
 ## Accessibility and responsive behaviour
 
-The site includes semantic landmarks, keyboard-visible focus states, a skip link, accessible mobile navigation, high-contrast text, responsive layouts and reduced-motion handling through `prefers-reduced-motion`.
+The site includes semantic landmarks, keyboard-visible focus states, a skip link, accessible mobile navigation, high-contrast text, responsive layouts and reduced-motion handling through `prefers-reduced-motion`. The presentation viewer supports buttons, arrow keys and touch swipes, while the QA document opens in an in-page dialog with a direct PDF fallback.
 
-## Version 2 boundary
+## Project case studies
 
-Version 1 intentionally does not include individual project routes. Version 2 can extend the existing project data into dedicated case-study pages with demonstration videos, specifications, technical decisions, screenshots, diagrams, reports and downloadable PDFs.
+Every homepage project links to its own case-study route. The Windows toolkit and Job Tracker use embedded demonstrations, the service-management project includes a 12-slide presentation viewer, the QA sample includes an in-page PDF reader, and Quick-Fire Questions is clearly marked as in progress until verified public material is ready.
 
 ## Deployment
 

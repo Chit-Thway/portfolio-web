@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(new URL(path, "http://localhost"), {
       headers: { accept: "text/html" },
     }),
     {
@@ -63,4 +63,67 @@ test("renders every required navigation destination", async () => {
     assert.match(html, new RegExp(`id=["']${id}["']`));
     assert.match(html, new RegExp(`href=["']#${id}["']`));
   }
+});
+
+test("links every homepage project to its own case study", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  for (const slug of [
+    "windows-support-toolkit",
+    "jira-service-management",
+    "quick-fire-questions",
+    "job-application-tracker",
+    "concise-digital-work",
+  ]) {
+    assert.match(html, new RegExp(`href=["']/projects/${slug}["']`));
+  }
+});
+
+test("renders the Windows toolkit video and simple setup", async () => {
+  const response = await render("/projects/windows-support-toolkit");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Windows Support Diagnostic Toolkit/);
+  assert.match(html, /\/projects\/windows-support-toolkit\/demonstration\.mp4/);
+  assert.match(html, /A simple first run/);
+  assert.match(html, /python -m dashboard/);
+});
+
+test("renders the Jira slide viewer and presentation download", async () => {
+  const response = await render("/projects/jira-service-management");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Kestrel Ridge IT Service Desk case study, slide 1 of 12/);
+  assert.match(html, /Download presentation/);
+  assert.match(html, /Kestrel-Ridge-JSM-Case-Study\.pptx/);
+});
+
+test("renders an honest in-progress page for Quick-Fire Questions", async () => {
+  const response = await render("/projects/quick-fire-questions");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Case study in progress/);
+  assert.match(html, /No unfinished footage/);
+});
+
+test("renders the private Job Tracker demonstration without setup steps", async () => {
+  const response = await render("/projects/job-application-tracker");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /\/projects\/job-application-tracker\/demonstration\.mp4/);
+  assert.match(html, /Private until launch/);
+  assert.doesNotMatch(html, /A simple first run/);
+  assert.doesNotMatch(html, /Try it \/ 02/);
+});
+
+test("renders the QA report beside an in-page PDF viewer", async () => {
+  const response = await render("/projects/concise-digital-work");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Sanitised QA and bug reporting portfolio sample/);
+  assert.match(html, /Read the full report/);
+  assert.match(html, /\/projects\/concise-digital-work\/QA_Bug_Report\.pdf/);
+  assert.match(html, /<dialog/);
+  assert.match(html, /report-page-6\.png/);
 });

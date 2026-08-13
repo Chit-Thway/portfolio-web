@@ -38,7 +38,9 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
       <div className="project-main">
         <div className="project-intro">
           <p className="project-category">{project.category}</p>
-          <h3>{project.title}</h3>
+          <h3>
+            <a href={`/projects/${project.id}`}>{project.title}</a>
+          </h3>
           <p className="project-summary">{project.summary}</p>
         </div>
         <div className="project-details">
@@ -63,15 +65,16 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
             <li key={technology}>{technology}</li>
           ))}
         </ul>
-        {project.links.length > 0 ? (
-          <div className="project-actions">
-            {project.links.map((link) => (
-              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                {link.label} <span aria-hidden="true">↗</span>
-              </a>
-            ))}
-          </div>
-        ) : null}
+        <div className="project-actions">
+          <a className="case-study-action" href={`/projects/${project.id}`}>
+            Explore case study <span aria-hidden="true">→</span>
+          </a>
+          {project.links.map((link) => (
+            <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
       </div>
     </article>
   );
@@ -248,7 +251,7 @@ export default function Home() {
             ))}
           </div>
           <p className="project-footnote">
-            Detailed case studies, demonstrations and verified project links are planned for Version 2.
+            Open any project for its full case study, demonstration or supporting report.
           </p>
         </section>
 

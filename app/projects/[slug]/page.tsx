@@ -1,0 +1,279 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- standard navigation avoids a vinext prefetch runtime error in static hosting */
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import {
+  PdfViewer,
+  PendingProjectMedia,
+  ProjectVideo,
+  SlideViewer,
+} from "@/app/components/ProjectMedia";
+import {
+  getProjectCaseStudy,
+  projectCaseStudies,
+  type ProjectCaseStudy,
+} from "@/app/data/projectCaseStudies";
+import { portfolio } from "@/app/data/portfolio";
+
+type ProjectPageProps = {
+  params: Promise<{ slug: string }> | { slug: string };
+};
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return projectCaseStudies.map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await Promise.resolve(params);
+  const project = portfolio.projects.find((item) => item.id === slug);
+
+  if (!project) return {};
+
+  return {
+    title: `${project.title} | CHIT THWAY`,
+    description: project.summary,
+    alternates: { canonical: `/projects/${slug}` },
+    openGraph: {
+      title: `${project.title} | CHIT THWAY`,
+      description: project.summary,
+      type: "article",
+    },
+  };
+}
+
+function ProjectHeader() {
+  return (
+    <header className="project-page-header section-shell">
+      <a href="/" className="project-page-wordmark" aria-label="CHIT THWAY portfolio home">
+        <span>CT</span>
+        <strong>CHIT THWAY</strong>
+      </a>
+      <nav aria-label="Project page navigation">
+        <a href="/#projects">All projects</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+    </header>
+  );
+}
+
+function ProjectFacts({ caseStudy }: { caseStudy: ProjectCaseStudy }) {
+  return (
+    <dl className="case-facts">
+      {caseStudy.facts.map((fact) => (
+        <div key={fact.label}>
+          <dt>{fact.label}</dt>
+          <dd>{fact.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function StandardHero({
+  caseStudy,
+  project,
+}: {
+  caseStudy: ProjectCaseStudy;
+  project: (typeof portfolio.projects)[number];
+}) {
+  return (
+    <section className="case-hero">
+      <a href="/#projects" className="back-link">
+        <span aria-hidden="true">←</span> Projects
+      </a>
+      <div className="case-hero-grid">
+        <div className="case-hero-copy">
+          <p className="eyebrow">{caseStudy.eyebrow}</p>
+          <h1>{project.title}</h1>
+          <p className="case-introduction">{caseStudy.introduction}</p>
+        </div>
+        <ProjectFacts caseStudy={caseStudy} />
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyDetails({
+  caseStudy,
+  project,
+}: {
+  caseStudy: ProjectCaseStudy;
+  project: (typeof portfolio.projects)[number];
+}) {
+  return (
+    <div className="case-content">
+      <section className="case-overview" aria-labelledby="overview-title">
+        <div>
+          <p className="case-section-label">Overview / 01</p>
+          <h2 id="overview-title">What the project demonstrates</h2>
+        </div>
+        <div className="case-overview-copy">
+          {caseStudy.overview.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+        <aside aria-label="Project role and employer relevance">
+          <div>
+            <span>My contribution</span>
+            <p>{project.contribution}</p>
+          </div>
+          <div>
+            <span>Why it matters</span>
+            <p>{project.employerSignal}</p>
+          </div>
+        </aside>
+      </section>
+
+      {caseStudy.setup ? (
+        <section className="case-setup" aria-labelledby="setup-title">
+          <div className="case-section-heading">
+            <p className="case-section-label">Try it / 02</p>
+            <h2 id="setup-title">A simple first run</h2>
+            <p>{caseStudy.setup.introduction}</p>
+          </div>
+          <div className="case-requirements">
+            <span>You will need</span>
+            <ul>
+              {caseStudy.setup.requirements.map((requirement) => (
+                <li key={requirement}>{requirement}</li>
+              ))}
+            </ul>
+          </div>
+          <ol className="setup-steps">
+            {caseStudy.setup.steps.map((step, index) => (
+              <li key={step.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.detail}</p>
+                  {step.command ? <pre><code>{step.command}</code></pre> : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      <section className="case-decisions" aria-labelledby="decisions-title">
+        <div className="case-section-heading">
+          <p className="case-section-label">Thinking / {caseStudy.setup ? "03" : "02"}</p>
+          <h2 id="decisions-title">Decisions behind the work</h2>
+        </div>
+        <div className="decision-grid">
+          {caseStudy.decisions.map((decision, index) => (
+            <article key={decision.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{decision.title}</h3>
+              <p>{decision.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="case-capabilities" aria-labelledby="capabilities-title">
+        <div>
+          <p className="case-section-label">Evidence / {caseStudy.setup ? "04" : "03"}</p>
+          <h2 id="capabilities-title">Skills and capabilities</h2>
+        </div>
+        <ul className="case-highlight-list">
+          {project.highlights.map((highlight) => (
+            <li key={highlight}>{highlight}</li>
+          ))}
+        </ul>
+        <ul className="technology-list" aria-label="Technologies and methods">
+          {project.technologies.map((technology) => (
+            <li key={technology}>{technology}</li>
+          ))}
+        </ul>
+        {project.links.length ? (
+          <div className="case-repository-links">
+            {project.links.map((link) => (
+              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                {link.label} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        ) : null}
+      </section>
+
+      {caseStudy.note ? <p className="case-note">{caseStudy.note}</p> : null}
+    </div>
+  );
+}
+
+function ProjectPagination({ slug }: { slug: string }) {
+  const index = projectCaseStudies.findIndex((item) => item.slug === slug);
+  const previous = projectCaseStudies[(index - 1 + projectCaseStudies.length) % projectCaseStudies.length];
+  const next = projectCaseStudies[(index + 1) % projectCaseStudies.length];
+  const previousProject = portfolio.projects.find((item) => item.id === previous.slug);
+  const nextProject = portfolio.projects.find((item) => item.id === next.slug);
+
+  return (
+    <nav className="project-pagination" aria-label="Other projects">
+      <a href={`/projects/${previous.slug}`}>
+        <span>← Previous project</span>
+        <strong>{previousProject?.title}</strong>
+      </a>
+      <a href={`/projects/${next.slug}`}>
+        <span>Next project →</span>
+        <strong>{nextProject?.title}</strong>
+      </a>
+    </nav>
+  );
+}
+
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await Promise.resolve(params);
+  const caseStudy = getProjectCaseStudy(slug);
+  const project = portfolio.projects.find((item) => item.id === slug);
+
+  if (!caseStudy || !project) notFound();
+
+  const pdfMedia = caseStudy.media.kind === "pdf" ? caseStudy.media : null;
+
+  return (
+    <>
+      <ProjectHeader />
+      <main className="project-page section-shell">
+        {pdfMedia ? (
+          <section className="pdf-case-hero">
+            <div className="pdf-case-copy">
+              <a href="/#projects" className="back-link">
+                <span aria-hidden="true">←</span> Projects
+              </a>
+              <p className="eyebrow">{caseStudy.eyebrow}</p>
+              <h1>{project.title}</h1>
+              <p className="case-introduction">{caseStudy.introduction}</p>
+              <ProjectFacts caseStudy={caseStudy} />
+            </div>
+            <PdfViewer
+              src={pdfMedia.src}
+              coverSrc={pdfMedia.coverSrc}
+              pages={pdfMedia.pages}
+              label={pdfMedia.label}
+            />
+          </section>
+        ) : (
+          <>
+            {caseStudy.media.kind === "video" ? (
+              <ProjectVideo {...caseStudy.media} />
+            ) : caseStudy.media.kind === "slides" ? (
+              <SlideViewer {...caseStudy.media} />
+            ) : caseStudy.media.kind === "pending" ? (
+              <PendingProjectMedia label={caseStudy.media.label} message={caseStudy.media.message} />
+            ) : null}
+            <StandardHero caseStudy={caseStudy} project={project} />
+          </>
+        )}
+
+        <CaseStudyDetails caseStudy={caseStudy} project={project} />
+        <ProjectPagination slug={slug} />
+      </main>
+      <footer className="project-page-footer section-shell">
+        <span>CHIT THWAY</span>
+        <a href="/">Return to portfolio ↑</a>
+      </footer>
+    </>
+  );
+}
