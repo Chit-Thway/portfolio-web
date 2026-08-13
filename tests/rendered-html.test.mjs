@@ -76,7 +76,7 @@ test("links every homepage project to its own case study", async () => {
     "job-application-tracker",
     "concise-digital-work",
   ]) {
-    assert.match(html, new RegExp(`href=["']/projects/${slug}["']`));
+    assert.match(html, new RegExp(`href=["']/projects/${slug}/["']`));
   }
 });
 

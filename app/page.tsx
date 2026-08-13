@@ -39,7 +39,7 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
         <div className="project-intro">
           <p className="project-category">{project.category}</p>
           <h3>
-            <a href={`/projects/${project.id}`}>{project.title}</a>
+            <a href={`/projects/${project.id}/`}>{project.title}</a>
           </h3>
           <p className="project-summary">{project.summary}</p>
         </div>
@@ -66,7 +66,7 @@ function ProjectCard({ project }: { project: (typeof portfolio.projects)[number]
           ))}
         </ul>
         <div className="project-actions">
-          <a className="case-study-action" href={`/projects/${project.id}`}>
+          <a className="case-study-action" href={`/projects/${project.id}/`}>
             Explore case study <span aria-hidden="true">→</span>
           </a>
           {project.links.map((link) => (

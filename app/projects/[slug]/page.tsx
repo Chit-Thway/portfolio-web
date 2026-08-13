@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: `${project.title} | CHIT THWAY`,
     description: project.summary,
-    alternates: { canonical: `/projects/${slug}` },
+    alternates: { canonical: `/projects/${slug}/` },
     openGraph: {
       title: `${project.title} | CHIT THWAY`,
       description: project.summary,
@@ -211,11 +211,11 @@ function ProjectPagination({ slug }: { slug: string }) {
 
   return (
     <nav className="project-pagination" aria-label="Other projects">
-      <a href={`/projects/${previous.slug}`}>
+      <a href={`/projects/${previous.slug}/`}>
         <span>← Previous project</span>
         <strong>{previousProject?.title}</strong>
       </a>
-      <a href={`/projects/${next.slug}`}>
+      <a href={`/projects/${next.slug}/`}>
         <span>Next project →</span>
         <strong>{nextProject?.title}</strong>
       </a>
