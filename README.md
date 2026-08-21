@@ -73,7 +73,7 @@ The employment date ranges are populated from the supplied resume. Each range is
 
 ### Project links and visibility
 
-The Windows Support Diagnostic Toolkit and Jira Service Management Simulation link to their verified public repositories. Quick-Fire Questions and the Job Application Tracker are labelled as private repositories and intentionally have no repository action.
+The Windows Support Diagnostic Toolkit and Jira Service Management Simulation link to their verified public repositories. Quick-Fire Questions and the Job Application Tracker keep their private repositories unlinked; the Job Application Tracker case study instead links to its deployed application and public synthetic demo.
 
 Each project supports a `status` and a `links` array:
 

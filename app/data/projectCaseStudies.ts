@@ -9,6 +9,10 @@ export type ProjectCaseStudy = {
   eyebrow: string;
   introduction: string;
   media: ProjectMedia;
+  actions?: Array<{
+    label: string;
+    href?: string;
+  }>;
   facts: Array<{ label: string; value: string }>;
   overview: string[];
   setup?: {
@@ -175,44 +179,66 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
   },
   {
     slug: "job-application-tracker",
-    eyebrow: "Full-stack product case study",
+    eyebrow: "Production full-stack product",
     introduction:
-      "An in-development, private job-search organiser that brings applications, follow-ups, appointments, employer interactions and time-based decisions into one focused workflow.",
+      "A secure, production-deployed job application tracker with structured job capture, workflow management, retention automation and private user dashboards.",
     media: {
       kind: "video",
       src: "/projects/job-application-tracker/demonstration.mp4",
       label: "Job Application Tracker demonstration",
       duration: "49 second demonstration",
     },
+    actions: [
+      {
+        label: "View live project",
+        href: "https://chit-thway-job-tracker-b9bpfvb5csccb5hb.australiaeast-01.azurewebsites.net",
+      },
+      {
+        label: "Explore public demo",
+        href: "https://chit-thway-job-tracker-b9bpfvb5csccb5hb.australiaeast-01.azurewebsites.net/demo",
+      },
+      { label: "Chrome extension — Pending review" },
+    ],
     facts: [
-      { label: "Status", value: "In development" },
-      { label: "Access", value: "Private until launch" },
-      { label: "Stack", value: ".NET 10 / PostgreSQL" },
+      { label: "Status", value: "Deployed MVP — Private QA" },
+      { label: "Role", value: "Solo Product Architect and Full-Stack Engineer" },
+      { label: "Hosting", value: "Azure App Service" },
+      { label: "Extension", value: "Chrome Web Store review pending" },
     ],
     overview: [
-      "The tracker is designed as an operational home for each opportunity rather than a simple spreadsheet replacement. Applications keep an append-only status history alongside contacts, interactions, tasks, appointments, posting context and a readable stored job description.",
-      "The dashboard summarises three calendar months while an Action Centre surfaces overdue work, follow-up suggestions, upcoming appointments and explicit ghosting decisions. Manual entry, pasted text, safe public-URL import and a user-clicked browser extension all feed a review step before an application is saved.",
-      "The final product is planned for a proper public domain where people can sign up and use it directly. At this stage the application remains private while product, security and deployment work continue.",
+      "Job Application Tracker brings the entire job-search workflow into one focused workspace. Users can capture job advertisements, review structured information, track applications through a visual pipeline, record contacts and interactions, schedule tasks and appointments, and monitor recent activity through a three-month dashboard.",
+      "Applications can be marked as Saved for permanent retention. Older unsaved records enter a configurable deletion schedule, giving users time to review or preserve them before automated cleanup. The platform also includes ghosting warnings, status history, bulk actions, light and dark themes, a public synthetic demo and a role-protected administration portal with audit history.",
+      "The production MVP runs on Azure App Service with a separate Supabase PostgreSQL database, real email-verification and password-reset workflows, scheduled retention processing, health monitoring, tested backup and restoration procedures, and protected GitHub Actions deployment. Its Manifest V3 Chrome extension has been submitted to the Chrome Web Store and is awaiting review.",
     ],
     decisions: [
       {
-        title: "Owner-scoped private data",
+        title: "Secure, owner-scoped data",
         detail:
-          "Authentication and owner-aware relationships keep one user’s applications, companies, contacts and review drafts separate from another user’s records.",
+          "ASP.NET Core Identity, email verification, password reset and one-time invitations protect private application data and keep every user’s records isolated.",
       },
       {
-        title: "Review before save",
+        title: "Deterministic job capture",
         detail:
-          "Imported job information is treated as a draft. The user reviews and corrects extracted fields before the tracker creates an application or company.",
+          "Manual entry, pasted descriptions, URL imports and browser capture feed a review workflow that extracts structured metadata without relying on an external AI API.",
       },
       {
-        title: "Decisions stay with the user",
+        title: "Retention with user control",
         detail:
-          "The tracker can suggest follow-up or ghosting checks, but it does not silently change an application outcome without confirmation.",
+          "Saved records are preserved permanently, while configurable cleanup schedules warn users before old unsaved applications are removed.",
+      },
+      {
+        title: "Production delivery",
+        detail:
+          "GitHub Actions, Azure OIDC, PostgreSQL migrations, health checks, scheduled jobs and tested backup and restore procedures support reliable releases.",
+      },
+      {
+        title: "Evidence-led quality",
+        detail:
+          "More than 200 automated tests cover the product while private user QA identifies real-world issues before a custom domain and broader release.",
       },
     ],
     note:
-      "The demonstration reflects the current development build. Public registration, production hosting and the final application domain are not available yet.",
+      "Live — QA in progress. The Azure address is the current production location while private user testing continues. The Chrome extension is awaiting Google review and is not publicly available yet; a custom domain has not been connected.",
   },
   {
     slug: "concise-digital-work",

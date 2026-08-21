@@ -36,6 +36,8 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Windows Support Diagnostic Toolkit/);
   assert.match(html, /Jira Service Management Simulation/);
   assert.match(html, /Job Application Tracker/);
+  assert.match(html, /Live · QA in progress/);
+  assert.match(html, /production-deployed job-search management platform/);
   assert.match(html, /Bachelor of Science \(Computer Science\)/);
   assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=49cf7aef"/);
   assert.match(html, /src="\/uwa-logo\.png"/);
@@ -117,12 +119,19 @@ test("renders an honest in-progress page for Quick-Fire Questions", async () => 
   assert.match(html, /No unfinished footage/);
 });
 
-test("renders the private Job Tracker demonstration without setup steps", async () => {
+test("renders the deployed Job Tracker with live actions and no setup steps", async () => {
   const response = await render("/projects/job-application-tracker");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /\/projects\/job-application-tracker\/demonstration\.mp4/);
-  assert.match(html, /Private until launch/);
+  assert.match(html, /Deployed MVP — Private QA/);
+  assert.match(html, /Solo Product Architect and Full-Stack Engineer/);
+  assert.match(html, /View live project/);
+  assert.match(html, /Explore public demo/);
+  assert.match(html, /Chrome extension — Pending review/);
+  assert.match(html, /azurewebsites\.net\/demo/);
+  assert.match(html, /More than 200 automated tests/);
+  assert.doesNotMatch(html, /Private until launch|production hosting[^<]*not available|final application domain[^<]*not available/i);
   assert.doesNotMatch(html, /A simple first run/);
   assert.doesNotMatch(html, /Try it \/ 02/);
 });

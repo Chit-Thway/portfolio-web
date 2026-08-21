@@ -1752,6 +1752,49 @@ section {
   justify-content: center;
 }
 
+.case-actions {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.case-actions > a,
+.case-action-status {
+  display: flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.case-actions > a {
+  background: var(--accent);
+  color: var(--ink);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.case-actions > a:hover {
+  transform: translateY(-2px);
+  background: var(--accent-bright);
+}
+
+.case-action-status {
+  border-color: var(--line-strong);
+  color: var(--paper-dim);
+  cursor: not-allowed;
+}
+
+.case-action-status > span:last-child {
+  color: var(--accent);
+  font-size: 0.5rem;
+}
+
 .case-hero h1,
 .pdf-case-hero h1 {
   max-width: 13ch;

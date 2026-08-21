@@ -71,6 +71,28 @@ function ProjectFacts({ caseStudy }: { caseStudy: ProjectCaseStudy }) {
   );
 }
 
+function ProjectActions({ caseStudy }: { caseStudy: ProjectCaseStudy }) {
+  if (!caseStudy.actions?.length) return null;
+
+  return (
+    <div className="case-actions" aria-label="Project links and release status">
+      {caseStudy.actions.map((action) =>
+        action.href ? (
+          <a key={action.label} href={action.href} target="_blank" rel="noreferrer">
+            <span>{action.label}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span key={action.label} className="case-action-status" aria-disabled="true">
+            <span>{action.label}</span>
+            <span aria-hidden="true">●</span>
+          </span>
+        ),
+      )}
+    </div>
+  );
+}
+
 function StandardHero({
   caseStudy,
   project,
@@ -93,6 +115,7 @@ function StandardHero({
           {project.links[0] ? (
             <RepositoryLink href={project.links[0].href} className="case-title-repository" />
           ) : null}
+          <ProjectActions caseStudy={caseStudy} />
           <ProjectFacts caseStudy={caseStudy} />
         </div>
       </div>
