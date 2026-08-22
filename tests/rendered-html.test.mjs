@@ -137,7 +137,9 @@ test("renders the deployed Job Tracker with live actions and no setup steps", as
   assert.match(html, /Solo Product Architect and Full-Stack Engineer/);
   assert.match(html, /View live project/);
   assert.match(html, /Explore public demo/);
-  assert.match(html, /Chrome extension — Pending review/);
+  assert.match(html, /Get Chrome extension/);
+  assert.match(html, /chromewebstore\.google\.com\/detail\/job-application-tracker-c\/ofeagkadonbdgjhdiobfdnmafhoknkig/);
+  assert.match(html, /Available on Chrome Web Store/);
   assert.match(html, /azurewebsites\.net\/demo/);
   assert.match(html, /More than 200 automated tests/);
   assert.match(html, /Secure production job-search platform/);
@@ -145,6 +147,7 @@ test("renders the deployed Job Tracker with live actions and no setup steps", as
   assert.match(html, /PostgreSQL/);
   assert.match(html, /Azure App Service/);
   assert.match(html, /Chrome Manifest V3/);
+  assert.doesNotMatch(html, /pending review|awaiting (Google )?review|not publicly available yet/i);
   assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.doesNotMatch(html, /Private until launch|production hosting[^<]*not available|final application domain[^<]*not available/i);
   assert.doesNotMatch(html, /A simple first run/);

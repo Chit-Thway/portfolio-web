@@ -345,18 +345,21 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
         label: "Explore public demo",
         href: "https://chit-thway-job-tracker-b9bpfvb5csccb5hb.australiaeast-01.azurewebsites.net/demo",
       },
-      { label: "Chrome extension — Pending review" },
+      {
+        label: "Get Chrome extension",
+        href: "https://chromewebstore.google.com/detail/job-application-tracker-c/ofeagkadonbdgjhdiobfdnmafhoknkig",
+      },
     ],
     facts: [
       { label: "Status", value: "Deployed MVP — Private QA" },
       { label: "Role", value: "Solo Product Architect and Full-Stack Engineer" },
       { label: "Hosting", value: "Azure App Service" },
-      { label: "Extension", value: "Chrome Web Store review pending" },
+      { label: "Extension", value: "Available on Chrome Web Store" },
     ],
     overview: [
       "Job Application Tracker brings the entire job-search workflow into one focused workspace. Users can capture job advertisements, review structured information, track applications through a visual pipeline, record contacts and interactions, schedule tasks and appointments, and monitor recent activity through a three-month dashboard.",
       "Applications can be marked as Saved for permanent retention. Older unsaved records enter a configurable deletion schedule, giving users time to review or preserve them before automated cleanup. The platform also includes ghosting warnings, status history, bulk actions, light and dark themes, a public synthetic demo and a role-protected administration portal with audit history.",
-      "The production MVP runs on Azure App Service with a separate Supabase PostgreSQL database, real email-verification and password-reset workflows, scheduled retention processing, health monitoring, tested backup and restoration procedures, and protected GitHub Actions deployment. Its Manifest V3 Chrome extension has been submitted to the Chrome Web Store and is awaiting review.",
+      "The production MVP runs on Azure App Service with a separate Supabase PostgreSQL database, real email-verification and password-reset workflows, scheduled retention processing, health monitoring, tested backup and restoration procedures, and protected GitHub Actions deployment. Its approved Manifest V3 companion extension is publicly available from the Chrome Web Store.",
     ],
     decisions: [
       {
@@ -386,7 +389,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       },
     ],
     note:
-      "Live — QA in progress. The Azure address is the current production location while private user testing continues. The Chrome extension is awaiting Google review and is not publicly available yet; a custom domain has not been connected.",
+      "Live — QA in progress. The Azure address is the current production location while private user testing continues. The companion extension is available from the Chrome Web Store; a custom domain has not been connected.",
   },
   {
     slug: "concise-digital-work",
