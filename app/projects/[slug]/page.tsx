@@ -7,6 +7,7 @@ import {
   ProjectVideo,
   SlideViewer,
 } from "@/app/components/ProjectMedia";
+import { ProjectStack } from "@/app/components/ProjectStack";
 import { RepositoryLink } from "@/app/components/RepositoryLink";
 import {
   getProjectCaseStudy,
@@ -287,6 +288,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <StandardHero caseStudy={caseStudy} project={project} />
           </>
         )}
+
+        {caseStudy.stack ? (
+          <ProjectStack projectTitle={project.title} stack={caseStudy.stack} />
+        ) : null}
 
         <CaseStudyDetails caseStudy={caseStudy} project={project} />
       </main>

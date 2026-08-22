@@ -95,6 +95,11 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /python -m dashboard/);
   assert.match(html, /class="repository-button case-title-repository"/);
   assert.match(html, /<track[^>]*\sdefault(?:=|\s|>)/i);
+  assert.match(html, /Technology architecture/);
+  assert.match(html, /Read-only Windows evidence pipeline/);
+  assert.match(html, /PowerShell/);
+  assert.match(html, /Pytest/);
+  assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.ok(html.indexOf("Other projects") < html.indexOf("demonstration.mp4"));
 });
 
@@ -117,6 +122,9 @@ test("renders an honest in-progress page for Quick-Fire Questions", async () => 
   const html = await response.text();
   assert.match(html, /Case study in progress/);
   assert.match(html, /No unfinished footage/);
+  assert.match(html, /Timed multiplayer Roblox experience/);
+  assert.match(html, /Roblox Studio/);
+  assert.match(html, /Two-client testing/);
 });
 
 test("renders the deployed Job Tracker with live actions and no setup steps", async () => {
@@ -131,6 +139,12 @@ test("renders the deployed Job Tracker with live actions and no setup steps", as
   assert.match(html, /Chrome extension — Pending review/);
   assert.match(html, /azurewebsites\.net\/demo/);
   assert.match(html, /More than 200 automated tests/);
+  assert.match(html, /Secure production job-search platform/);
+  assert.match(html, /ASP\.NET Core MVC/);
+  assert.match(html, /PostgreSQL/);
+  assert.match(html, /Azure App Service/);
+  assert.match(html, /Chrome Manifest V3/);
+  assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.doesNotMatch(html, /Private until launch|production hosting[^<]*not available|final application domain[^<]*not available/i);
   assert.doesNotMatch(html, /A simple first run/);
   assert.doesNotMatch(html, /Try it \/ 02/);

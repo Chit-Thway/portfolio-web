@@ -4,11 +4,49 @@ export type ProjectMedia =
   | { kind: "pdf"; src: string; coverSrc: string; pages: string[]; label: string }
   | { kind: "pending"; label: string; message: string };
 
+export type ProjectStackIcon =
+  | "powershell"
+  | "windows"
+  | "python"
+  | "json"
+  | "pytest"
+  | "roblox"
+  | "lua"
+  | "github"
+  | "branch"
+  | "csharp"
+  | "dotnet"
+  | "database"
+  | "shield"
+  | "postgresql"
+  | "supabase"
+  | "azure"
+  | "email"
+  | "github-actions"
+  | "chrome"
+  | "html"
+  | "css"
+  | "javascript"
+  | "testing"
+  | "health"
+  | "backup";
+
+export type ProjectStack = {
+  subtitle: string;
+  mark: ProjectStackIcon;
+  groups: Array<{
+    label: string;
+    items: Array<{ name: string; icon: ProjectStackIcon }>;
+  }>;
+  description: string;
+};
+
 export type ProjectCaseStudy = {
   slug: string;
   eyebrow: string;
   introduction: string;
   media: ProjectMedia;
+  stack?: ProjectStack;
   actions?: Array<{
     label: string;
     href?: string;
@@ -45,6 +83,39 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       src: "/projects/windows-support-toolkit/demonstration.mp4",
       label: "Windows Support Diagnostic Toolkit demonstration",
       duration: "32 second demonstration",
+    },
+    stack: {
+      subtitle: "Read-only Windows evidence pipeline",
+      mark: "windows",
+      groups: [
+        {
+          label: "Collection",
+          items: [
+            { name: "PowerShell", icon: "powershell" },
+            { name: "Windows", icon: "windows" },
+          ],
+        },
+        {
+          label: "Evaluation",
+          items: [
+            { name: "Python", icon: "python" },
+            { name: "JSON", icon: "json" },
+          ],
+        },
+        {
+          label: "Quality",
+          items: [
+            { name: "Pytest", icon: "pytest" },
+            { name: "Safety validation", icon: "shield" },
+          ],
+        },
+        {
+          label: "Delivery",
+          items: [{ name: "GitHub", icon: "github" }],
+        },
+      ],
+      description:
+        "A bounded PowerShell collector feeds a validated JSON contract into deterministic Python checks, keeping system evidence safe, testable and easy to explain.",
     },
     facts: [
       { label: "Environment", value: "Windows / local only" },
@@ -150,6 +221,33 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       message:
         "The project is still being prepared for a public portfolio release. A verified demonstration and fuller technical breakdown will be added when the work is ready to present.",
     },
+    stack: {
+      subtitle: "Timed multiplayer Roblox experience",
+      mark: "roblox",
+      groups: [
+        {
+          label: "Platform",
+          items: [{ name: "Roblox Studio", icon: "roblox" }],
+        },
+        {
+          label: "Scripting",
+          items: [{ name: "Lua", icon: "lua" }],
+        },
+        {
+          label: "Workflow",
+          items: [
+            { name: "Rojo", icon: "branch" },
+            { name: "GitHub", icon: "github" },
+          ],
+        },
+        {
+          label: "Testing",
+          items: [{ name: "Two-client testing", icon: "testing" }],
+        },
+      ],
+      description:
+        "Timer, interface and answer-validation logic cross the client/server boundary, supported by branch-based collaboration and two-client multiplayer testing.",
+    },
     facts: [
       { label: "Status", value: "In progress" },
       { label: "Repository", value: "Private" },
@@ -187,6 +285,56 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       src: "/projects/job-application-tracker/demonstration.mp4",
       label: "Job Application Tracker demonstration",
       duration: "49 second demonstration",
+    },
+    stack: {
+      subtitle: "Secure production job-search platform",
+      mark: "csharp",
+      groups: [
+        {
+          label: "Backend",
+          items: [
+            { name: "C#", icon: "csharp" },
+            { name: ".NET 10", icon: "dotnet" },
+            { name: "ASP.NET Core MVC", icon: "dotnet" },
+            { name: "Entity Framework Core", icon: "database" },
+            { name: "ASP.NET Core Identity", icon: "shield" },
+          ],
+        },
+        {
+          label: "Data",
+          items: [
+            { name: "PostgreSQL", icon: "postgresql" },
+            { name: "Supabase", icon: "supabase" },
+          ],
+        },
+        {
+          label: "Cloud",
+          items: [
+            { name: "Azure App Service", icon: "azure" },
+            { name: "Azure Email", icon: "email" },
+            { name: "GitHub Actions", icon: "github-actions" },
+          ],
+        },
+        {
+          label: "Browser",
+          items: [
+            { name: "Chrome Manifest V3", icon: "chrome" },
+            { name: "HTML", icon: "html" },
+            { name: "CSS", icon: "css" },
+            { name: "JavaScript", icon: "javascript" },
+          ],
+        },
+        {
+          label: "Quality",
+          items: [
+            { name: "200+ automated tests", icon: "testing" },
+            { name: "Health monitoring", icon: "health" },
+            { name: "Backup / restore", icon: "backup" },
+          ],
+        },
+      ],
+      description:
+        "A layered ASP.NET Core product joins private user workflows, PostgreSQL persistence, automated retention and browser capture with monitored Azure delivery.",
     },
     actions: [
       {
