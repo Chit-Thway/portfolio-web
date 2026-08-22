@@ -9,3 +9,8 @@ database_name = "chitthway-portfolio-visitors"
 database_id = "f3c3d520-d40a-4f77-94ea-c2ba875b1c14"
 
 [env.production]
+
+[[env.production.d1_databases]]
+binding = "VISITOR_DB"
+database_name = "chitthway-portfolio-visitors"
+database_id = "f3c3d520-d40a-4f77-94ea-c2ba875b1c14"
