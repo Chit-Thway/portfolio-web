@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
+import { VisitorBeacon } from "./components/VisitorBeacon";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -81,7 +82,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <VisitorBeacon />
+        {children}
+      </body>
     </html>
   );
 }

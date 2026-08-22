@@ -45,6 +45,7 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Skip to content/);
   assert.match(html, /application\/ld\+json/);
   assert.doesNotMatch(html, /href=["']#["']/i);
+  assert.doesNotMatch(html, /href=["']\/visitor\/?["']/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
   assert.doesNotMatch(html, new RegExp(["Ch", "ris"].join(""), "i"));
   assert.doesNotMatch(html, /dark-comedy game prototype/i);
@@ -159,4 +160,15 @@ test("renders the QA report beside an in-page PDF viewer", async () => {
   assert.match(html, /\/projects\/concise-digital-work\/QA_Bug_Report\.pdf/);
   assert.match(html, /<dialog/);
   assert.match(html, /report-page-6\.png/);
+});
+
+test("renders the unlisted visitor department with no-index metadata", async () => {
+  const response = await render("/visitor");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /You found the visitor department/);
+  assert.match(html, /One anonymous browser profile counts once per Perth week/);
+  assert.match(html, /No names, accounts or raw IP addresses are stored/);
+  assert.match(html, /name="robots"[^>]*noindex/i);
+  assert.doesNotMatch(html, /Sign in|Log in|Password/i);
 });

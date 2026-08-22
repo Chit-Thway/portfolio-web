@@ -8,7 +8,7 @@ const projectSlugs = [
   "job-application-tracker",
   "concise-digital-work",
 ];
-const routes = ["/", ...projectSlugs.map((slug) => `/projects/${slug}`)];
+const routes = ["/", "/visitor", ...projectSlugs.map((slug) => `/projects/${slug}`)];
 const workerUrl = new URL("../dist/server/index.js", import.meta.url);
 workerUrl.searchParams.set("pages-export", `${process.pid}-${Date.now()}`);
 const { default: worker } = await import(workerUrl.href);
