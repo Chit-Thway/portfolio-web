@@ -76,7 +76,7 @@ Status: complete with temporary media on `version-2-milestone-5-outside-ide`
 
 ### Milestone 6 — GitHub activity and contact
 
-Status: planned
+Status: in progress on `version-2-milestone-6-contact` · public résumé approval pending
 
 - Add an accurate GitHub activity view.
 - Finish with direct résumé, email, LinkedIn and contact actions.
@@ -112,3 +112,9 @@ The technology marquee groups verified tools by professional activity instead of
 The Outside the IDE section uses one keyboard-accessible stack that cycles through Gym, Gaming, Going out and Eating out. Its data structure can accept additional interests later without changing the interaction.
 
 CHIT THWAY explicitly approved the existing profile portrait as temporary media for all four cards. Each card is visibly labelled `Temporary image`; no personal photos or activities were invented. The placeholders will be replaced after approved interest-specific media is supplied.
+
+## Milestone 6 implementation notes
+
+The GitHub panel makes one client-side request to GitHub's official public-events endpoint and presents a 30-day snapshot of development-related public activity. It is not labelled as a contribution graph: private work, older contributions and commit totals are not estimated. The panel has loading, empty and unavailable states, and the GitHub profile remains the source of truth.
+
+The contact section exposes the verified email, LinkedIn and GitHub destinations already stored in `app/data/portfolio.ts`. Résumé rendering remains conditional because no privacy-safe public PDF has been approved; the private source document is not copied into the public site automatically.

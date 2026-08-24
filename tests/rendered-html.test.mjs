@@ -110,7 +110,6 @@ test("renders the Milestone 4 experience and technology evidence", async () => {
   assert.match(html, /data-direction=["']right["']/);
 });
 
-
 test("renders the Milestone 5 Outside the IDE stack with honest temporary media", async () => {
   const response = await render();
   const html = await response.text();
@@ -128,6 +127,24 @@ test("renders the Milestone 5 Outside the IDE stack with honest temporary media"
   assert.match(html, /aria-live=["']polite["']/);
   assert.match(html, /src=["']\/chit-thway-portrait\.jpg\?v=49cf7aef["']/);
 });
+
+test("renders the Milestone 6 public GitHub activity and contact actions", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /Recent work, shown honestly\./);
+  assert.match(html, /data-github-source=["']public-events["']/);
+  assert.match(html, /Loading recent public activity/);
+  assert.match(html, /Public events only · recent 30-day window/);
+  assert.match(html, /href=["']https:\/\/github\.com\/Chit-Thway["']/);
+  assert.match(html, /Let’s solve something useful\./);
+  assert.match(html, /id=["']contact["']/);
+  assert.match(html, /href=["']mailto:chitthway67@gmail\.com["']/);
+  assert.match(html, /linkedin\.com\/in\/chit-thway-197241332/);
+  assert.match(html, /Review public repositories/);
+  assert.doesNotMatch(html, /Download PDF/);
+});
+
 test("links the four selected projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();

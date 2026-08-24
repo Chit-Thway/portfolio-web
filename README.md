@@ -116,6 +116,7 @@ app/
   components/                       Shared navigation and media viewers
   components/AboutDirectory.tsx    Version 2 keyboard-accessible profile directory
   components/OutsideIdeStack.tsx   Version 2 click-to-cycle personal-interest stack
+  components/GitHubActivity.tsx    Live, failure-safe recent public GitHub activity
   components/TechnologyMarquee.tsx Version 2 accessible three-row technology marquee
   data/portfolio.ts                Central portfolio content and links
   data/projectCaseStudies.ts       Project-page narratives and media mapping
