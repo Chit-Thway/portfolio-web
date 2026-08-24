@@ -1,8 +1,17 @@
-# CHIT THWAY - Portfolio V1
+# CHIT THWAY — Portfolio
 
 A single-page professional portfolio for graduate and entry-level roles in application support, product support, technical support, QA, IT service delivery and web support.
 
 The site uses React 19, TypeScript, vinext and Vite. It is designed as a static, responsive portfolio with no backend and no fake contact form.
+
+## Version branches
+
+- `main` is the deployed Version 1 site.
+- `version-1` preserves the Version 1 source as an explicit archive branch.
+- `version-2` is the stable base for the redesign while it is reviewed locally.
+- Milestones are developed on branches named `version-2-milestone-*` before they are reviewed and merged into `version-2`.
+
+The Version 2 redesign is not deployed automatically. See [the Version 2 roadmap](docs/version-2-roadmap.md) for the design principles, milestone boundaries and current status.
 
 ## Prerequisites
 
@@ -105,11 +114,13 @@ certificates: [
 ```text
 app/
   components/                       Shared navigation and media viewers
+  components/AboutDirectory.tsx    Version 2 keyboard-accessible profile directory
   data/portfolio.ts                Central portfolio content and links
   data/projectCaseStudies.ts       Project-page narratives and media mapping
   globals.css                      Complete responsive visual system
   layout.tsx                       Metadata, social sharing and viewport settings
   page.tsx                         Portfolio homepage
+  version-two.module.css           Scoped Version 2 visual system
   projects/[slug]/page.tsx         Dedicated project case studies
 public/
   chit-thway-portrait.jpg          Current profile photograph

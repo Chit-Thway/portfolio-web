@@ -10,6 +10,7 @@ import {
   SiWordpress,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
+import { AboutDirectory } from "./components/AboutDirectory";
 import { portfolio } from "./data/portfolio";
 import styles from "./version-two.module.css";
 
@@ -270,6 +271,15 @@ export default function Home() {
             <span aria-hidden="true" />
             {person.availability}
           </div>
+        </section>
+
+        <section className={styles.about} id="about" aria-labelledby="about-title">
+          <div className={styles.aboutIntroduction}>
+            <p>Profile directory</p>
+            <h2 id="about-title">Three files. The useful context.</h2>
+            <p>A concise view of how I work, where I studied and where I am based.</p>
+          </div>
+          <AboutDirectory />
         </section>
 
         <section className={styles.projects} id="projects" aria-labelledby="projects-title">
