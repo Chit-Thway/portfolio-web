@@ -20,6 +20,7 @@ import {
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
+import { OutsideIdeStack } from "./components/OutsideIdeStack";
 import { portfolio } from "./data/portfolio";
 import styles from "./version-two.module.css";
 
@@ -388,6 +389,21 @@ export default function Home() {
           </div>
           <TechnologyMarquee />
         </section>
+
+        {person.profileImage ? (
+          <section className={styles.outsideIde} aria-labelledby="outside-ide-title">
+            <div className={styles.sectionIntroduction}>
+              <div>
+                <p>Outside the IDE</p>
+                <h2 id="outside-ide-title">A life beyond the screen.</h2>
+              </div>
+              <p>
+                The four things I return to when I step away from projects and recharge.
+              </p>
+            </div>
+            <OutsideIdeStack imageSrc={person.profileImage} />
+          </section>
+        ) : null}
       </main>
 
       <footer className={styles.footer}>

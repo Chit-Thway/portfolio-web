@@ -110,6 +110,24 @@ test("renders the Milestone 4 experience and technology evidence", async () => {
   assert.match(html, /data-direction=["']right["']/);
 });
 
+
+test("renders the Milestone 5 Outside the IDE stack with honest temporary media", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /Outside the IDE/);
+  assert.match(html, /A life beyond the screen\./);
+  assert.match(html, /Gym/);
+  assert.match(html, /Gaming/);
+  assert.match(html, /Going out/);
+  assert.match(html, /Eating out/);
+  assert.match(html, /Temporary image/);
+  assert.match(html, /Click to cycle/);
+  assert.match(html, /aria-label=["']Show next interest: Gaming["']/);
+  assert.match(html, /aria-label=["']Choose an interest["']/);
+  assert.match(html, /aria-live=["']polite["']/);
+  assert.match(html, /src=["']\/chit-thway-portrait\.jpg\?v=49cf7aef["']/);
+});
 test("links the four selected projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();
