@@ -69,7 +69,7 @@ Status: complete on `version-2-milestone-4-experience`
 
 ### Milestone 5 — Outside the IDE
 
-Status: waiting for approved media
+Status: complete with temporary media on `version-2-milestone-5-outside-ide`
 
 - Present four personal interests through a click-to-cycle image stack.
 - Use only images supplied and approved by CHIT THWAY.
@@ -106,3 +106,9 @@ Detailed case studies use a scoped Version 2 stylesheet so the redesign does not
 The experience timeline uses only the résumé-sourced roles and dates already stored in `app/data/portfolio.ts`. It starts with the current customer-facing role, then presents the two internships without inventing locations, outcomes or metrics.
 
 The technology marquee groups verified tools by professional activity instead of presenting an undifferentiated logo wall. Its rows move right, left and right at a restrained pace, include an explicit pause control and become static when a visitor prefers reduced motion. The duplicated visual items used for the loop are hidden from assistive technology.
+
+## Milestone 5 implementation notes
+
+The Outside the IDE section uses one keyboard-accessible stack that cycles through Gym, Gaming, Going out and Eating out. Its data structure can accept additional interests later without changing the interaction.
+
+CHIT THWAY explicitly approved the existing profile portrait as temporary media for all four cards. Each card is visibly labelled `Temporary image`; no personal photos or activities were invented. The placeholders will be replaced after approved interest-specific media is supplied.
