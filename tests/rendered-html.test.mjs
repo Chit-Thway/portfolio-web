@@ -32,15 +32,16 @@ test("server-renders the completed portfolio", async () => {
     html,
     /<title>CHIT THWAY \| Application Support, QA &amp; Web Support<\/title>/,
   );
-  assert.match(html, /Support-minded\./);
-  assert.match(html, /Windows Support Diagnostic Toolkit/);
-  assert.match(html, /Jira Service Management Simulation/);
+  assert.match(html, /Application support,/);
+  assert.match(html, /troubleshooting/);
+  assert.match(html, /software quality/);
   assert.match(html, /Job Application Tracker/);
-  assert.match(html, /Live · QA in progress/);
-  assert.match(html, /production-deployed job-search management platform/);
-  assert.match(html, /Bachelor of Science \(Computer Science\)/);
+  assert.match(html, /Windows Support Diagnostic Toolkit/);
+  assert.match(html, /Web Development &amp; QA Work/);
+  assert.match(html, /Flagship product · Live/);
+  assert.match(html, /Live product · Public demo available/);
   assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=49cf7aef"/);
-  assert.match(html, /src="\/uwa-logo\.png"/);
+  assert.doesNotMatch(html, /Jira Service Management Simulation/);
   assert.doesNotMatch(html, /\/_next\/image\?url=/);
   assert.match(html, /Skip to content/);
   assert.match(html, /application\/ld\+json/);
@@ -51,39 +52,34 @@ test("server-renders the completed portfolio", async () => {
   assert.doesNotMatch(html, /dark-comedy game prototype/i);
 });
 
-test("renders every required navigation destination", async () => {
+test("renders the bounded Version 2 navigation", async () => {
   const response = await render();
   const html = await response.text();
-  for (const id of [
-    "home",
-    "about",
-    "projects",
-    "experience",
-    "skills",
-    "education",
-    "contact",
-  ]) {
-    assert.match(html, new RegExp(`id=["']${id}["']`));
-    assert.match(html, new RegExp(`href=["']#${id}["']`));
-  }
+
+  assert.match(html, /href=["']#home["']/);
+  assert.match(html, /href=["']#projects["']/);
+  assert.match(html, />Projects</);
+  assert.match(html, />Experience</);
+  assert.match(html, />Diary</);
+  assert.match(html, /aria-disabled=["']true["']/);
+  assert.doesNotMatch(html, /href=["']#(?:experience|skills|education|contact)["']/);
 });
 
-test("links every homepage project to its own case study", async () => {
+test("links the three featured projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();
 
   for (const slug of [
-    "windows-support-toolkit",
-    "jira-service-management",
-    "quick-fire-questions",
     "job-application-tracker",
+    "windows-support-toolkit",
     "concise-digital-work",
   ]) {
     assert.match(html, new RegExp(`href=["']/projects/${slug}/["']`));
     assert.match(html, new RegExp(`aria-label=["']View [^"']+ case study["']`));
   }
-  assert.doesNotMatch(html, /Explore case study/i);
-  assert.match(html, /View repository/);
+
+  assert.doesNotMatch(html, /href=["']\/projects\/(?:jira-service-management|quick-fire-questions)\/["']/);
+  assert.doesNotMatch(html, /Explore case study|View repository/i);
 });
 
 test("renders the Windows toolkit video and simple setup", async () => {
