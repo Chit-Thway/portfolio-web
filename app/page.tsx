@@ -1,12 +1,20 @@
 import Image from "next/image";
 import type { IconType } from "react-icons";
-import { FaBug, FaEnvelope, FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import {
+  FaBug,
+  FaClock,
+  FaDiagramProject,
+  FaEnvelope,
+  FaGithub,
+  FaLinkedinIn,
+} from "react-icons/fa6";
 import {
   SiDotnet,
   SiGit,
   SiGooglechrome,
   SiPostgresql,
   SiPython,
+  SiJira,
   SiWordpress,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
@@ -21,7 +29,7 @@ type FeaturedProject = {
   description: string;
   contribution: string;
   outcome: string;
-  size: "large" | "standard";
+  size: "large" | "standard" | "wide";
   media:
     | { kind: "video"; src: string; label: string }
     | { kind: "image"; src: string; alt: string };
@@ -94,6 +102,27 @@ const featuredProjects: FeaturedProject[] = [
       { name: "QA", icon: FaBug },
     ],
   },
+  {
+    slug: "jira-service-management",
+    label: "Service-management simulation · Public",
+    title: "Jira Service Management Simulation",
+    description:
+      "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",
+    contribution:
+      "Designed the request pathways, workflow states, approval logic and evidence-led support journey.",
+    outcome: "12-slide workflow case study",
+    size: "wide",
+    media: {
+      kind: "image",
+      src: "/projects/jira-service-management/slides/slide-1.png",
+      alt: "Opening slide of the Jira Service Management simulation case study",
+    },
+    tools: [
+      { name: "Jira", icon: SiJira },
+      { name: "Workflows", icon: FaDiagramProject },
+      { name: "SLAs", icon: FaClock },
+    ],
+  },
 ];
 
 function ProjectMedia({ project }: { project: FeaturedProject }) {
@@ -124,11 +153,15 @@ function ProjectMedia({ project }: { project: FeaturedProject }) {
 }
 
 function ProjectCard({ project }: { project: FeaturedProject }) {
+  const sizeClass =
+    project.size === "large"
+      ? styles.projectCardLarge
+      : project.size === "wide"
+        ? styles.projectCardWide
+        : "";
+
   return (
-    <a
-      className={`${styles.projectCard} ${
-        project.size === "large" ? styles.projectCardLarge : ""
-      }`}
+    <a className={`${styles.projectCard} ${sizeClass}`}
       href={`/projects/${project.slug}/`}
       aria-label={`View ${project.title} case study`}
     >
@@ -289,7 +322,7 @@ export default function Home() {
               <h2 id="projects-title">Evidence, not just claims.</h2>
             </div>
             <p>
-              Three projects that best show how I build, investigate, test and support software.
+              Four selected projects showing how I build, investigate, test and support software.
             </p>
           </div>
 

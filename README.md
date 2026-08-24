@@ -122,6 +122,7 @@ app/
   page.tsx                         Portfolio homepage
   version-two.module.css           Scoped Version 2 visual system
   projects/[slug]/page.tsx         Dedicated project case studies
+  projects/[slug]/project-version-two.module.css  Scoped Version 2 case-study styles
 public/
   chit-thway-portrait.jpg          Current profile photograph
   og.png                           Bespoke social sharing card

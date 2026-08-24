@@ -53,10 +53,12 @@ Status: complete on `version-2-milestone-2-about`
 
 ### Milestone 3 — Project presentation
 
-Status: planned
+Status: complete on `version-2-milestone-3-projects`
 
 - Refine the project grid and expand the transition into detailed case studies.
 - Keep technology labels selective and connect them to evidence.
+- Present Jira as clearly labelled secondary simulation evidence.
+- Keep unfinished work available by direct route without promoting it through normal browsing.
 
 ### Milestone 4 — Experience and technologies
 
@@ -92,3 +94,9 @@ Status: deferred
 The About directory is a client-side tab interface within the server-rendered homepage. Its initial `bio.md` content remains visible in rendered HTML, while the other entries are available without navigating away from the page. The tab controls follow the ARIA tab pattern and support arrow, Home and End keys.
 
 No new personal facts or images were introduced. Profile content is sourced from `app/data/portfolio.ts`; the visual assets are the existing portrait and UWA logo in `public/`.
+
+## Milestone 3 implementation notes
+
+The homepage now presents four selected case studies. The first three remain the strongest evidence; the Jira Service Management work appears as a full-width secondary card and is explicitly described as a simulation. Quick-Fire Questions retains its honest direct case-study route but is excluded from the homepage and previous/next project navigation until verified media is ready.
+
+Detailed case studies use a scoped Version 2 stylesheet so the redesign does not alter the preserved Version 1 branch. Existing video, slide, PDF and caption behaviour remains intact. Project pages also provide a working email action and use project-specific social images when an existing slide or document cover is available.
