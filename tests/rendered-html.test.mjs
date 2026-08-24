@@ -65,6 +65,22 @@ test("renders the bounded Version 2 navigation", async () => {
   assert.doesNotMatch(html, /href=["']#(?:experience|skills|education|contact)["']/);
 });
 
+test("renders the Milestone 2 profile directory", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /Three files\. The useful context\./);
+  assert.match(html, /role="tablist"/);
+  assert.match(html, /aria-orientation="vertical"/);
+  assert.match(html, /bio\.md/);
+  assert.match(html, /education\.md/);
+  assert.match(html, /location\.md/);
+  assert.match(html, /Support-minded by design\./);
+  assert.match(html, /Investigate, validate, communicate/);
+  assert.match(html, /role="tabpanel"/);
+  assert.doesNotMatch(html, /C:\\portfolio|Hello, World/i);
+});
+
 test("links the three featured projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();

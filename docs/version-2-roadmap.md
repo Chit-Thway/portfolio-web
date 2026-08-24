@@ -1,0 +1,94 @@
+# Portfolio Version 2 roadmap
+
+Version 2 is a staged redesign of CHIT THWAY's public portfolio. Its purpose is to make the strongest evidence easier for employers to scan while replacing the darker developer-themed presentation with a clean, restrained interface.
+
+The live site remains on `main` until the redesign has been reviewed locally and approved for release.
+
+## Design principles
+
+- Lead with application support, troubleshooting and software-quality work.
+- Keep copy concise and connect claims to evidence.
+- Use a light, laptop-friendly visual system with strong typography and generous spacing.
+- Preserve semantic HTML, keyboard support, visible focus states and reduced-motion behaviour.
+- Use only verified personal information and user-supplied media. Do not source or invent personal imagery.
+- Keep incomplete features out of primary navigation until they are ready.
+
+## Branch model
+
+| Branch | Purpose |
+| --- | --- |
+| `main` | Current deployed Version 1 portfolio |
+| `version-1` | Preserved Version 1 source |
+| `version-2` | Reviewed Version 2 baseline |
+| `version-2-milestone-*` | Isolated work for one Version 2 milestone |
+
+Milestone branches are reviewed locally before they are merged into `version-2`. Version 2 is not merged into `main` or deployed until the redesign is approved as a whole.
+
+## Milestones
+
+### Milestone 0 — Branch safety and visual foundation
+
+Status: complete
+
+- Preserve Version 1.
+- Establish the Version 2 branch and scoped light-theme design tokens.
+- Keep live deployment unchanged.
+
+### Milestone 1 — First-screen positioning and featured evidence
+
+Status: complete
+
+- Introduce CHIT THWAY's professional direction, location and availability.
+- Keep Projects, Experience and Diary as the restrained primary navigation.
+- Present the Job Application Tracker, Windows Support Diagnostic Toolkit and internship work as the first three pieces of evidence.
+
+### Milestone 2 — Interactive About directory
+
+Status: complete on `version-2-milestone-2-about`
+
+- Add a clean macOS-inspired content window after the introduction.
+- Provide concise `bio.md`, `education.md` and `location.md` views.
+- Reuse the supplied portrait and UWA logo; do not add unapproved personal imagery.
+- Support mouse, touch and keyboard tab navigation.
+
+### Milestone 3 — Project presentation
+
+Status: planned
+
+- Refine the project grid and expand the transition into detailed case studies.
+- Keep technology labels selective and connect them to evidence.
+
+### Milestone 4 — Experience and technologies
+
+Status: planned
+
+- Add a present-first experience timeline.
+- Add a restrained three-row technology marquee with reduced-motion support.
+
+### Milestone 5 — Outside the IDE
+
+Status: waiting for approved media
+
+- Present four personal interests through a click-to-cycle image stack.
+- Use only images supplied and approved by CHIT THWAY.
+
+### Milestone 6 — GitHub activity and contact
+
+Status: planned
+
+- Add an accurate GitHub activity view.
+- Finish with direct résumé, email, LinkedIn and contact actions.
+
+### Milestone 7 — Diary
+
+Status: deferred
+
+- Build a public, Instagram-like media diary.
+- Keep the publishing interface behind an unlisted authenticated login route.
+- Add database and media-storage support only when this milestone begins.
+
+## Milestone 2 implementation notes
+
+The About directory is a client-side tab interface within the server-rendered homepage. Its initial `bio.md` content remains visible in rendered HTML, while the other entries are available without navigating away from the page. The tab controls follow the ARIA tab pattern and support arrow, Home and End keys.
+
+No new personal facts or images were introduced. Profile content is sourced from `app/data/portfolio.ts`; the visual assets are the existing portrait and UWA logo in `public/`.
