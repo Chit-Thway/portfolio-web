@@ -142,7 +142,10 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /href=["']mailto:chitthway67@gmail\.com["']/);
   assert.match(html, /linkedin\.com\/in\/chit-thway-197241332/);
   assert.match(html, /Review public repositories/);
-  assert.doesNotMatch(html, /Download PDF/);
+  assert.match(html, /href=["']\/chit-thway-resume\.pdf["']/);
+  assert.match(html, /download(?:=["']["'])?/);
+  assert.match(html, /Download résumé/);
+  assert.match(html, /Download PDF/);
 });
 
 test("links the four selected projects to their case studies", async () => {

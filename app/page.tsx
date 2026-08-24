@@ -295,6 +295,11 @@ export default function Home() {
             <a className={styles.primaryAction} href="#projects">
               View featured work <span aria-hidden="true">↓</span>
             </a>
+            {contact.resume ? (
+              <a className={styles.secondaryAction} href={contact.resume} download>
+                Download résumé <span aria-hidden="true">↓</span>
+              </a>
+            ) : null}
             {contact.email ? (
               <a className={styles.secondaryAction} href={`mailto:${contact.email}`}>
                 Contact me <span aria-hidden="true">↗</span>

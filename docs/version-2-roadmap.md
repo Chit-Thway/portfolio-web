@@ -76,7 +76,7 @@ Status: complete with temporary media on `version-2-milestone-5-outside-ide`
 
 ### Milestone 6 — GitHub activity and contact
 
-Status: in progress on `version-2-milestone-6-contact` · public résumé approval pending
+Status: complete on `version-2-milestone-6-contact`
 
 - Add an accurate GitHub activity view.
 - Finish with direct résumé, email, LinkedIn and contact actions.
@@ -117,4 +117,6 @@ CHIT THWAY explicitly approved the existing profile portrait as temporary media 
 
 The GitHub panel makes one client-side request to GitHub's official public-events endpoint and presents a 30-day snapshot of development-related public activity. It is not labelled as a contribution graph: private work, older contributions and commit totals are not estimated. The panel has loading, empty and unavailable states, and the GitHub profile remains the source of truth.
 
-The contact section exposes the verified email, LinkedIn and GitHub destinations already stored in `app/data/portfolio.ts`. Résumé rendering remains conditional because no privacy-safe public PDF has been approved; the private source document is not copied into the public site automatically.
+The contact section exposes the verified email, LinkedIn, GitHub and résumé destinations stored in `app/data/portfolio.ts`. The approved public résumé is available from both the first-screen actions and final contact section. Its editable source is retained as `docs/chit-thway-resume-public.docx`, while the browser-download copy is `public/chit-thway-resume.pdf`.
+
+The public résumé removes the mobile number, accepts any tracked revisions, strips reviewer comments and scrubs author/revision metadata. The remaining general Perth location, email and professional links are intentional public contact information. The Word source and exported PDF were rendered as a single page and checked for clipping, overlap and privacy regressions before being added.
