@@ -62,7 +62,7 @@ Status: complete on `version-2-milestone-3-projects`
 
 ### Milestone 4 — Experience and technologies
 
-Status: planned
+Status: complete on `version-2-milestone-4-experience`
 
 - Add a present-first experience timeline.
 - Add a restrained three-row technology marquee with reduced-motion support.
@@ -100,3 +100,9 @@ No new personal facts or images were introduced. Profile content is sourced from
 The homepage now presents four selected case studies. The first three remain the strongest evidence; the Jira Service Management work appears as a full-width secondary card and is explicitly described as a simulation. Quick-Fire Questions retains its honest direct case-study route but is excluded from the homepage and previous/next project navigation until verified media is ready.
 
 Detailed case studies use a scoped Version 2 stylesheet so the redesign does not alter the preserved Version 1 branch. Existing video, slide, PDF and caption behaviour remains intact. Project pages also provide a working email action and use project-specific social images when an existing slide or document cover is available.
+
+## Milestone 4 implementation notes
+
+The experience timeline uses only the résumé-sourced roles and dates already stored in `app/data/portfolio.ts`. It starts with the current customer-facing role, then presents the two internships without inventing locations, outcomes or metrics.
+
+The technology marquee groups verified tools by professional activity instead of presenting an undifferentiated logo wall. Its rows move right, left and right at a restrained pace, include an explicit pause control and become static when a visitor prefers reduced motion. The duplicated visual items used for the loop are hidden from assistive technology.
