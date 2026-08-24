@@ -41,7 +41,8 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Flagship product · Live/);
   assert.match(html, /Live product · Public demo available/);
   assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=49cf7aef"/);
-  assert.doesNotMatch(html, /Jira Service Management Simulation/);
+  assert.match(html, /Jira Service Management Simulation/);
+  assert.match(html, /Service-management simulation · Public/);
   assert.doesNotMatch(html, /\/_next\/image\?url=/);
   assert.match(html, /Skip to content/);
   assert.match(html, /application\/ld\+json/);
@@ -81,7 +82,7 @@ test("renders the Milestone 2 profile directory", async () => {
   assert.doesNotMatch(html, /C:\\portfolio|Hello, World/i);
 });
 
-test("links the three featured projects to their case studies", async () => {
+test("links the four selected projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -89,12 +90,13 @@ test("links the three featured projects to their case studies", async () => {
     "job-application-tracker",
     "windows-support-toolkit",
     "concise-digital-work",
+    "jira-service-management",
   ]) {
     assert.match(html, new RegExp(`href=["']/projects/${slug}/["']`));
     assert.match(html, new RegExp(`aria-label=["']View [^"']+ case study["']`));
   }
 
-  assert.doesNotMatch(html, /href=["']\/projects\/(?:jira-service-management|quick-fire-questions)\/["']/);
+  assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
 });
 
@@ -102,6 +104,9 @@ test("renders the Windows toolkit video and simple setup", async () => {
   const response = await render("/projects/windows-support-toolkit");
   assert.equal(response.status, 200);
   const html = await response.text();
+  assert.match(html, /data-portfolio-version="2"/);
+  assert.match(html, /href="mailto:chitthway67@gmail\.com"/);
+  assert.doesNotMatch(html, /href="\/projects\/quick-fire-questions\/"/);
   assert.match(html, /Windows Support Diagnostic Toolkit/);
   assert.match(html, /\/projects\/windows-support-toolkit\/demonstration\.mp4/);
   assert.match(html, /A simple first run/);

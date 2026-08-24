@@ -15,6 +15,7 @@ import {
   type ProjectCaseStudy,
 } from "@/app/data/projectCaseStudies";
 import { portfolio } from "@/app/data/portfolio";
+import styles from "./project-version-two.module.css";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }> | { slug: string };
@@ -29,8 +30,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
   const project = portfolio.projects.find((item) => item.id === slug);
+  const caseStudy = getProjectCaseStudy(slug);
 
-  if (!project) return {};
+  if (!project || !caseStudy) return {};
+
+  const socialImage =
+    caseStudy.media.kind === "slides"
+      ? caseStudy.media.slides[0]
+      : caseStudy.media.kind === "pdf"
+        ? caseStudy.media.coverSrc
+        : null;
 
   return {
     title: `${project.title} | CHIT THWAY`,
@@ -40,6 +49,13 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       title: `${project.title} | CHIT THWAY`,
       description: project.summary,
       type: "article",
+      images: socialImage ? [{ url: socialImage, alt: project.title }] : [],
+    },
+    twitter: {
+      card: socialImage ? "summary_large_image" : "summary",
+      title: `${project.title} | CHIT THWAY`,
+      description: project.summary,
+      images: socialImage ? [socialImage] : [],
     },
   };
 }
@@ -48,12 +64,11 @@ function ProjectHeader() {
   return (
     <header className="project-page-header section-shell">
       <a href="/" className="project-page-wordmark" aria-label="CHIT THWAY portfolio home">
-        <span>CT</span>
-        <strong>CHIT THWAY</strong>
+        CHIT THWAY
       </a>
       <nav aria-label="Project page navigation">
-        <a href="/#projects">All projects</a>
-        <a href="/#contact">Contact</a>
+        <a href="/#projects">Projects</a>
+        {portfolio.contact.email ? <a href={`mailto:${portfolio.contact.email}`}>Contact</a> : null}
       </nav>
     </header>
   );
@@ -224,9 +239,11 @@ function CaseStudyDetails({
 }
 
 function ProjectPagination({ slug }: { slug: string }) {
-  const index = projectCaseStudies.findIndex((item) => item.slug === slug);
-  const previous = projectCaseStudies[(index - 1 + projectCaseStudies.length) % projectCaseStudies.length];
-  const next = projectCaseStudies[(index + 1) % projectCaseStudies.length];
+  const availableProjects = projectCaseStudies.filter((item) => item.media.kind !== "pending");
+  const currentIndex = availableProjects.findIndex((item) => item.slug === slug);
+  const index = currentIndex >= 0 ? currentIndex : 0;
+  const previous = availableProjects[(index - 1 + availableProjects.length) % availableProjects.length];
+  const next = availableProjects[(index + 1) % availableProjects.length];
   const previousProject = portfolio.projects.find((item) => item.id === previous.slug);
   const nextProject = portfolio.projects.find((item) => item.id === next.slug);
 
@@ -254,7 +271,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const pdfMedia = caseStudy.media.kind === "pdf" ? caseStudy.media : null;
 
   return (
-    <>
+    <div className={styles.caseSite} data-portfolio-version="2">
       <ProjectHeader />
       <main className="project-page section-shell">
         <ProjectPagination slug={slug} />
@@ -299,6 +316,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <span>CHIT THWAY</span>
         <a href="/">Return to portfolio ↑</a>
       </footer>
-    </>
+    </div>
   );
 }
