@@ -60,10 +60,11 @@ test("renders the bounded Version 2 navigation", async () => {
   assert.match(html, /href=["']#home["']/);
   assert.match(html, /href=["']#projects["']/);
   assert.match(html, />Projects</);
+  assert.match(html, /href=["']#experience["']/);
   assert.match(html, />Experience</);
   assert.match(html, />Diary</);
   assert.match(html, /aria-disabled=["']true["']/);
-  assert.doesNotMatch(html, /href=["']#(?:experience|skills|education|contact)["']/);
+  assert.doesNotMatch(html, /href=["']#(?:skills|education|contact)["']/);
 });
 
 test("renders the Milestone 2 profile directory", async () => {
@@ -80,6 +81,33 @@ test("renders the Milestone 2 profile directory", async () => {
   assert.match(html, /Investigate, validate, communicate/);
   assert.match(html, /role="tabpanel"/);
   assert.doesNotMatch(html, /C:\\portfolio|Hello, World/i);
+});
+
+test("renders the Milestone 4 experience and technology evidence", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  assert.match(html, /Work shaped by real users\./);
+  assert.match(html, /Tools I use in context\./);
+  assert.match(html, /Crown Events and Conferences/);
+  assert.match(html, /Concise Digital/);
+  assert.match(html, /4LifeSkills/);
+
+  const currentRole = html.indexOf("January 2023 – Present");
+  const webInternship = html.indexOf("April 2026 – June 2026");
+  const learningInternship = html.indexOf("November 2025 – December 2025");
+  assert.ok(currentRole >= 0 && currentRole < webInternship);
+  assert.ok(webInternship < learningInternship);
+
+  assert.match(html, /Application development/);
+  assert.match(html, /Support and quality/);
+  assert.match(html, /Platforms and delivery/);
+  assert.match(html, /PowerShell/);
+  assert.match(html, /PostgreSQL/);
+  assert.match(html, /Pause motion/);
+  assert.match(html, /aria-pressed=["']false["']/);
+  assert.match(html, /data-direction=["']left["']/);
+  assert.match(html, /data-direction=["']right["']/);
 });
 
 test("links the four selected projects to their case studies", async () => {

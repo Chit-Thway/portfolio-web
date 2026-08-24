@@ -115,6 +115,7 @@ certificates: [
 app/
   components/                       Shared navigation and media viewers
   components/AboutDirectory.tsx    Version 2 keyboard-accessible profile directory
+  components/TechnologyMarquee.tsx Version 2 accessible three-row technology marquee
   data/portfolio.ts                Central portfolio content and links
   data/projectCaseStudies.ts       Project-page narratives and media mapping
   globals.css                      Complete responsive visual system

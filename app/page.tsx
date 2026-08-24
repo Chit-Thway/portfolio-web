@@ -19,6 +19,7 @@ import {
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
+import { TechnologyMarquee } from "./components/TechnologyMarquee";
 import { portfolio } from "./data/portfolio";
 import styles from "./version-two.module.css";
 
@@ -226,9 +227,7 @@ export default function Home() {
           </a>
           <nav className={styles.navigation} aria-label="Primary navigation">
             <a href="#projects">Projects</a>
-            <span aria-disabled="true" title="Experience will be added in a later milestone">
-              Experience
-            </span>
+            <a href="#experience">Experience</a>
             <span aria-disabled="true" title="Diary will be added in Milestone 7">
               Diary
             </span>
@@ -331,6 +330,63 @@ export default function Home() {
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
+        </section>
+
+        <section className={styles.experience} id="experience" aria-labelledby="experience-title">
+          <div className={styles.sectionIntroduction}>
+            <div>
+              <p>Experience</p>
+              <h2 id="experience-title">Work shaped by real users.</h2>
+            </div>
+            <p>
+              Customer-facing work and internships that strengthened how I communicate, test and
+              deliver within existing systems.
+            </p>
+          </div>
+
+          <ol className={styles.experienceList}>
+            {portfolio.experience.map((item) => {
+              const isCurrent = item.period?.includes("Present");
+
+              return (
+                <li className={styles.experienceItem} key={`${item.organisation}-${item.role}`}>
+                  <time className={styles.experiencePeriod}>{item.period}</time>
+                  <div className={styles.experienceRail} aria-hidden="true">
+                    <span />
+                  </div>
+                  <article className={styles.experienceCard}>
+                    <div className={styles.experienceHeading}>
+                      <div>
+                        <p>{item.organisation}</p>
+                        <h3>{item.role}</h3>
+                      </div>
+                      {isCurrent ? <span className={styles.currentRole}>Current</span> : null}
+                    </div>
+                    <p className={styles.experienceSummary}>{item.summary}</p>
+                    <ul className={styles.experienceStrengths} aria-label={`${item.role} strengths`}>
+                      {item.strengths.map((strength) => (
+                        <li key={strength}>{strength}</li>
+                      ))}
+                    </ul>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
+        <section className={styles.technologies} aria-labelledby="technologies-title">
+          <div className={styles.sectionIntroduction}>
+            <div>
+              <p>Technologies</p>
+              <h2 id="technologies-title">Tools I use in context.</h2>
+            </div>
+            <p>
+              Grouped by the work they support—from building applications to investigating issues
+              and shipping reliable changes.
+            </p>
+          </div>
+          <TechnologyMarquee />
         </section>
       </main>
 
