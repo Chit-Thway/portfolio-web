@@ -830,3 +830,51 @@
     transition: none;
   }
 }
+
+
+/* DIARY DARK THEME */
+:global(html[data-theme="dark"]) .diarySite {
+  --diary-background: #111210;
+  --diary-surface: #1a1b18;
+  --diary-text: #f1f1ed;
+  --diary-muted: #aaa9a2;
+  --diary-line: #30312d;
+  --diary-accent: #7da5ff;
+  color-scheme: dark;
+}
+
+:global(html[data-theme="dark"]) .skipLink,
+:global(html[data-theme="dark"]) .loginForm button,
+:global(html[data-theme="dark"]) .publishButton {
+  color: #151613 !important;
+}
+
+:global(html[data-theme="dark"]) .emptyState,
+:global(html[data-theme="dark"]) .loginPanel,
+:global(html[data-theme="dark"]) .composer,
+:global(html[data-theme="dark"]) .managePosts,
+:global(html[data-theme="dark"]) .managerState {
+  box-shadow: 0 22px 62px rgba(0, 0, 0, 0.25);
+}
+
+:global(html[data-theme="dark"]) .postTile,
+:global(html[data-theme="dark"]) .managePosts li img,
+:global(html[data-theme="dark"]) .managePosts li video {
+  background: #292a26;
+}
+
+:global(html[data-theme="dark"]) .postDialog {
+  border-color: var(--diary-line);
+}
+
+:global(html[data-theme="dark"]) .loginForm input,
+:global(html[data-theme="dark"]) .composer input,
+:global(html[data-theme="dark"]) .composer textarea,
+:global(html[data-theme="dark"]) .audioFields {
+  background: #20211e;
+  color: var(--diary-text);
+}
+
+:global(html[data-theme="dark"]) .adminShortcut:hover {
+  border-color: color-mix(in srgb, var(--diary-text) 42%, var(--diary-line));
+}
