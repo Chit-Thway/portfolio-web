@@ -1,5 +1,15 @@
 {
   "version": 1,
-  "include": ["/api/visit", "/api/visitor-stats"],
+  "include": [
+    "/api/visit",
+    "/api/visitor-stats",
+    "/api/diary/session",
+    "/api/diary/posts",
+    "/api/diary/logout",
+    "/api/diary/login",
+    "/api/diary/posts/*",
+    "/api/diary/media/*",
+    "/api/diary/audio/*"
+  ],
   "exclude": []
 }

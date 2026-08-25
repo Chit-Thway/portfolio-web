@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local Cloudflare Pages development.
+# Never commit the real values.
+DIARY_ADMIN_PASSWORD=replace-with-a-long-unique-passphrase
+DIARY_SESSION_SECRET=replace-with-at-least-32-random-characters
+VISITOR_TOKEN_SECRET=replace-with-at-least-32-random-characters

@@ -71,9 +71,24 @@ export async function generateMetadata(): Promise<Metadata> {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b1114",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f5f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#111210" },
+  ],
+  colorScheme: "light dark",
 };
+
+const themeBootScript = `
+  (() => {
+    try {
+      const storedTheme = window.localStorage.getItem("portfolio-theme");
+      document.documentElement.dataset.theme =
+        storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
+    } catch {
+      document.documentElement.dataset.theme = "light";
+    }
+  })();
+`;
 
 export default function RootLayout({
   children,
@@ -81,7 +96,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <VisitorBeacon />
         {children}

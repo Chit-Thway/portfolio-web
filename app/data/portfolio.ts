@@ -34,7 +34,7 @@ export const portfolio = {
     email: "chitthway67@gmail.com" as string | null,
     linkedin: "https://www.linkedin.com/in/chit-thway-197241332" as string | null,
     github: "https://github.com/Chit-Thway" as string | null,
-    resume: null as string | null,
+    resume: "/chit-thway-resume.pdf" as string | null,
   },
   navigation: [
     { label: "Home", href: "#home" },
@@ -195,6 +195,14 @@ export const portfolio = {
   ] satisfies Project[],
   experience: [
     {
+      role: "Banquets and Events Waitperson",
+      organisation: "Crown Events and Conferences",
+      period: "January 2023 – Present" as string | null,
+      summary:
+        "Developed a grounded understanding of customer impact by communicating with guests and colleagues, following service procedures and handling competing priorities in live event environments.",
+      strengths: ["Customer service", "Team communication", "Prioritisation"],
+    },
+    {
       role: "Web Development and Quality Assurance Intern",
       organisation: "Concise Digital",
       period: "April 2026 – June 2026" as string | null,
@@ -209,14 +217,6 @@ export const portfolio = {
       summary:
         "Worked with organisational policies and procedures, building experience in structured documentation, careful review and working within defined requirements.",
       strengths: ["Documentation", "Process awareness", "Attention to detail"],
-    },
-    {
-      role: "Banquets and Events Waitperson",
-      organisation: "Crown Events and Conferences",
-      period: "January 2023 – Present" as string | null,
-      summary:
-        "Developed a grounded understanding of customer impact by communicating with guests and colleagues, following service procedures and handling competing priorities in live event environments.",
-      strengths: ["Customer service", "Team communication", "Prioritisation"],
     },
   ],
   skillGroups: [

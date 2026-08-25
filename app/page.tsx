@@ -1,101 +1,211 @@
 import Image from "next/image";
-import { MobileNavigation } from "./components/MobileNavigation";
-import { RepositoryLink } from "./components/RepositoryLink";
+import type { IconType } from "react-icons";
+import {
+  FaBug,
+  FaClock,
+  FaCircleCheck,
+  FaDiagramProject,
+  FaEnvelope,
+  FaGithub,
+  FaFileArrowDown,
+  FaLinkedinIn,
+} from "react-icons/fa6";
+import {
+  SiDotnet,
+  SiGit,
+  SiGooglechrome,
+  SiPostgresql,
+  SiPython,
+  SiJira,
+  SiWordpress,
+} from "react-icons/si";
+import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
+import { AboutDirectory } from "./components/AboutDirectory";
+import { GitHubActivity } from "./components/GitHubActivity";
+import { TechnologyMarquee } from "./components/TechnologyMarquee";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { OutsideIdeStack } from "./components/OutsideIdeStack";
 import { portfolio } from "./data/portfolio";
+import styles from "./version-two.module.css";
 
-function SectionHeading({
-  number,
-  eyebrow,
-  title,
-  description,
-}: {
-  number: string;
-  eyebrow: string;
+type FeaturedProject = {
+  slug: string;
+  label: string;
   title: string;
-  description?: string;
-}) {
+  description: string;
+  contribution: string;
+  outcome: string;
+  size: "large" | "standard" | "wide";
+  media:
+    | { kind: "video"; src: string; label: string }
+    | { kind: "image"; src: string; alt: string };
+  tools: Array<{ name: string; icon: IconType }>;
+};
+
+const featuredProjects: FeaturedProject[] = [
+  {
+    slug: "job-application-tracker",
+    label: "Flagship product · Live",
+    title: "Job Application Tracker",
+    description:
+      "A private workspace for capturing job ads, tracking applications and keeping every follow-up and next action in one place.",
+    contribution:
+      "Designed, built, tested and deployed end to end, including its approved Chrome extension.",
+    outcome: "Live product · Public demo available",
+    size: "large",
+    media: {
+      kind: "image",
+      src: "/projects/job-application-tracker/thumbnail.png",
+      alt: "Job Application Tracker applications page with the approved browser extension open",
+    },
+    tools: [
+      { name: "C#", icon: TbBrandCSharp },
+      { name: ".NET 10", icon: SiDotnet },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Azure", icon: TbBrandAzure },
+      { name: "Chrome", icon: SiGooglechrome },
+    ],
+  },
+  {
+    slug: "windows-support-toolkit",
+    label: "Support engineering · Public",
+    title: "Windows Support Diagnostic Toolkit",
+    description:
+      "A read-only diagnostic workflow that collects Windows evidence and turns it into clear, testable support findings.",
+    contribution:
+      "Built the collector, validation contract, failure-safe evaluation and browser dashboard.",
+    outcome: "Safe diagnostic evidence verified",
+    size: "standard",
+    media: {
+      kind: "video",
+      src: "/projects/windows-support-toolkit/demonstration.mp4",
+      label: "Windows Support Diagnostic Toolkit interface preview",
+    },
+    tools: [
+      { name: "PowerShell", icon: TbBrandPowershell },
+      { name: "Python", icon: SiPython },
+      { name: "QA", icon: FaBug },
+    ],
+  },
+  {
+    slug: "concise-digital-work",
+    label: "Commercial experience · Internship",
+    title: "Web Development & QA Work",
+    description:
+      "Selected implementation, CMS and quality-assurance work completed across real client websites and existing systems.",
+    contribution:
+      "Delivered WordPress changes, reusable web components and reproducible bug reports within a team workflow.",
+    outcome: "Client work implemented and tested",
+    size: "standard",
+    media: {
+      kind: "image",
+      src: "/projects/concise-digital-work/report-cover.png",
+      alt: "Cover of the sanitised web quality-assurance report",
+    },
+    tools: [
+      { name: "WordPress", icon: SiWordpress },
+      { name: "Git", icon: SiGit },
+      { name: "QA", icon: FaBug },
+    ],
+  },
+  {
+    slug: "jira-service-management",
+    label: "Service-management simulation · Public",
+    title: "Jira Service Management Simulation",
+    description:
+      "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",
+    contribution:
+      "Designed the request pathways, workflow states, approval logic and evidence-led support journey.",
+    outcome: "12-slide workflow case study",
+    size: "wide",
+    media: {
+      kind: "image",
+      src: "/projects/jira-service-management/slides/slide-1.png",
+      alt: "Opening slide of the Jira Service Management simulation case study",
+    },
+    tools: [
+      { name: "Jira", icon: SiJira },
+      { name: "Workflows", icon: FaDiagramProject },
+      { name: "SLAs", icon: FaClock },
+    ],
+  },
+];
+
+function ProjectMedia({ project }: { project: FeaturedProject }) {
+  if (project.media.kind === "video") {
+    return (
+      <video
+        className={styles.projectVideo}
+        src={project.media.src}
+        aria-label={project.media.label}
+        muted
+        playsInline
+        preload="metadata"
+        tabIndex={-1}
+      />
+    );
+  }
+
   return (
-    <div className="section-heading">
-      <span className="section-number">/{number}</span>
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        {description ? <p className="section-description">{description}</p> : null}
-      </div>
-    </div>
+    <Image
+      className={styles.projectImage}
+      src={project.media.src}
+      alt={project.media.alt}
+      fill
+      unoptimized
+      sizes="(max-width: 760px) 92vw, 46vw"
+    />
   );
 }
 
-function ProjectCard({ project }: { project: (typeof portfolio.projects)[number] }) {
+function ProjectCard({ project }: { project: FeaturedProject }) {
+  const sizeClass =
+    project.size === "large"
+      ? styles.projectCardLarge
+      : project.size === "wide"
+        ? styles.projectCardWide
+        : "";
+
   return (
-    <article className={`project-card ${project.featured ? "project-featured" : ""}`}>
-      <a
-        className="project-card-link"
-        href={`/projects/${project.id}/`}
-        aria-label={`View ${project.title} case study`}
-      />
-      <div className="project-topline">
-        <span className="project-number">PROJECT / {project.number}</span>
-        <span className="status-pill">
-          <span className="status-dot" aria-hidden="true" />
-          {project.status}
+    <a className={`${styles.projectCard} ${sizeClass}`}
+      href={`/projects/${project.slug}/`}
+      aria-label={`View ${project.title} case study`}
+    >
+      <div className={`${styles.projectMedia} ${styles.projectMediaDivider}`}>
+        <ProjectMedia project={project} />
+        <span className={styles.projectOpen} aria-hidden="true">
+          ↗
         </span>
       </div>
-      <div className="project-main">
-        <div className="project-intro">
-          <p className="project-category">{project.category}</p>
-          <h3>{project.title}</h3>
-          <p className="project-summary">{project.summary}</p>
-        </div>
-        <div className="project-details">
-          <div>
-            <p className="detail-label">My contribution</p>
-            <p>{project.contribution}</p>
-          </div>
-          <div className="employer-signal">
-            <p className="detail-label">What this demonstrates</p>
-            <p>{project.employerSignal}</p>
-          </div>
+      <div className={styles.projectBody}>
+        <p className={styles.projectLabel}>{project.label}</p>
+        <h3>{project.title}</h3>
+        <p className={styles.projectDescription}>{project.description}</p>
+        <p className={styles.projectContribution}>{project.contribution}</p>
+        <div className={styles.projectFooter}>
+          <ul aria-label={`${project.title} primary technologies`}>
+            {project.tools.map(({ name, icon: ToolIcon }) => (
+              <li key={name} title={name}>
+                <ToolIcon aria-hidden="true" />
+                <span>{name}</span>
+              </li>
+            ))}
+          </ul>
+          <span>{project.outcome}</span>
         </div>
       </div>
-      <ul className="project-highlights" aria-label={`${project.title} highlights`}>
-        {project.highlights.map((highlight) => (
-          <li key={highlight}>{highlight}</li>
-        ))}
-      </ul>
-      <div className="project-footer">
-        <ul className="technology-list" aria-label={`${project.title} technologies`}>
-          {project.technologies.map((technology) => (
-            <li key={technology}>{technology}</li>
-          ))}
-        </ul>
-        {project.links[0] ? (
-          <RepositoryLink href={project.links[0].href} className="project-card-repository" />
-        ) : null}
-      </div>
-    </article>
+    </a>
   );
 }
 
 export default function Home() {
   const { person, contact } = portfolio;
-  const contactLinks = [
-    contact.email
-      ? { label: "Email", href: `mailto:${contact.email}`, value: contact.email }
-      : null,
-    contact.linkedin
-      ? { label: "LinkedIn", href: contact.linkedin, value: "Connect on LinkedIn" }
-      : null,
-    contact.github
-      ? { label: "GitHub", href: contact.github, value: "View GitHub profile" }
-      : null,
-  ].filter((link): link is { label: string; href: string; value: string } => Boolean(link));
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: person.name,
-    jobTitle: "Computer Science Graduate",
+    jobTitle: "Application Support and Software Quality",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Perth",
@@ -106,328 +216,302 @@ export default function Home() {
       "@type": "CollegeOrUniversity",
       name: portfolio.education.institution,
     },
-    ...(contact.linkedin || contact.github
-      ? { sameAs: [contact.linkedin, contact.github].filter(Boolean) }
-      : {}),
+    sameAs: [contact.linkedin, contact.github].filter(Boolean),
   };
 
   return (
-    <>
-      <a className="skip-link" href="#main-content">
+    <div className={styles.v2Site}>
+      <a className={styles.skipLink} href="#main-content">
         Skip to content
       </a>
-      <header className="site-header">
-        <div className="header-inner">
-          <a className="wordmark" href="#home" aria-label={`${person.name}, home`}>
-            <span className="wordmark-mark">CT</span>
-            <span className="wordmark-name">{person.name}</span>
+
+      <header className={styles.siteHeader}>
+        <div className={styles.headerInner}>
+          <a className={styles.wordmark} href="#home" aria-label="CHIT THWAY, home">
+            CHIT THWAY
           </a>
-          <nav className="desktop-navigation" aria-label="Primary navigation">
-            {portfolio.navigation.map((link) => (
-              <a key={link.href} href={link.href}>
-                {link.label}
-              </a>
-            ))}
+          <nav className={styles.navigation} aria-label="Primary navigation">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="/diary/">Diary</a>
+            <ThemeToggle />
           </nav>
-          <MobileNavigation links={portfolio.navigation} />
         </div>
       </header>
 
       <main id="main-content">
-        <section className="hero section-shell" id="home" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <div className="availability-line">
-              <span className="pulse-dot" aria-hidden="true" />
-              <span>{person.availability}</span>
-            </div>
-            <p className="hero-kicker">Computer Science Graduate · Perth / WA</p>
-            <h1 id="hero-title">
-              <span>{person.name}</span>
-              Support-minded.<br />
-              <em>Curious by default.</em>
-            </h1>
-            <p className="professional-heading">{person.heading}</p>
-            <p className="hero-intro">{person.intro}</p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#projects">
-                View my work <span aria-hidden="true">↓</span>
-              </a>
-              <a className="button button-secondary" href="#contact">
-                Contact me
-              </a>
-              {contact.resume ? (
-                <a className="text-link" href={contact.resume} download>
-                  Download résumé <span aria-hidden="true">↓</span>
-                </a>
-              ) : null}
-            </div>
-            <div className="hero-meta">
-              <span>Based in</span>
-              <strong>{person.location}</strong>
-            </div>
-          </div>
-
-          <div className="portrait-composition" aria-label="Profile photograph placeholder">
-            <div className="portrait-coordinate portrait-coordinate-top">31.9523° S</div>
-            <div className="portrait-frame">
-              <div className="portrait-grid" aria-hidden="true" />
-              {person.profileImage ? (
+        <section className={styles.hero} id="home" aria-labelledby="hero-title">
+          <div className={styles.heroIdentity}>
+            {person.profileImage ? (
+              <div className={styles.portrait}>
                 <Image
-                  className="profile-image"
                   src={person.profileImage}
                   alt={`Portrait of ${person.name}`}
                   fill
                   priority
                   unoptimized
-                  sizes="(max-width: 760px) 82vw, 38vw"
+                  sizes="112px"
                 />
-              ) : (
-                <div className="portrait-placeholder" aria-hidden="true">
-                  <span>{person.initials}</span>
-                  <div className="portrait-silhouette">
-                    <i />
-                    <b />
-                  </div>
-                  <small>Portrait / forthcoming</small>
-                </div>
-              )}
-            </div>
-            <div className="portrait-note">
-              <span className="note-line" aria-hidden="true" />
-              <p>
-                <strong>Focus / 01</strong>
-                Application & product support
-              </p>
-            </div>
-            <div className="portrait-coordinate portrait-coordinate-bottom">115.8613° E</div>
-          </div>
-        </section>
-
-        <section className="about section-shell" id="about" aria-labelledby="about-title">
-          <SectionHeading
-            number="01"
-            eyebrow="About me"
-            title="Where technical thinking meets the user’s reality."
-          />
-          <div className="about-grid">
-            <div className="about-copy" id="about-title">
-              {portfolio.about.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-            <aside className="approach-panel" aria-labelledby="approach-title">
-              <div className="panel-heading">
-                <span>SUPPORT LOOP</span>
-                <h3 id="approach-title">How I approach a problem</h3>
               </div>
-              <ol>
-                {portfolio.approach.map((step) => (
-                  <li key={step.number}>
-                    <span>{step.number}</span>
-                    <div>
-                      <strong>{step.title}</strong>
-                      <p>{step.text}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </aside>
-          </div>
-        </section>
-
-        <section className="projects section-shell" id="projects" aria-labelledby="projects-title">
-          <SectionHeading
-            number="02"
-            eyebrow="Selected work"
-            title="Built to understand, test and improve systems."
-            description="Support engineering leads the collection, followed by service management, collaborative software, creative prototyping and real client web work."
-          />
-          <div className="project-grid" id="projects-title">
-            {portfolio.projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-          <p className="project-footnote">
-            Open any project for its full case study, demonstration or supporting report.
-          </p>
-        </section>
-
-        <section
-          className="experience section-shell"
-          id="experience"
-          aria-labelledby="experience-title"
-        >
-          <SectionHeading
-            number="03"
-            eyebrow="Experience"
-            title="Technical care, process discipline and customer perspective."
-          />
-          <div className="experience-list" id="experience-title">
-            {portfolio.experience.map((item, index) => (
-              <article className="experience-item" key={item.organisation}>
-                <div className="experience-index">0{index + 1}</div>
-                <div className="experience-role">
-                  <p>{item.organisation}</p>
-                  <h3>{item.role}</h3>
-                  {item.period ? <span className="experience-period">{item.period}</span> : null}
-                </div>
-                <div className="experience-summary">
-                  <p>{item.summary}</p>
-                  <ul>
-                    {item.strengths.map((strength) => (
-                      <li key={strength}>{strength}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="skills section-shell" id="skills" aria-labelledby="skills-title">
-          <SectionHeading
-            number="04"
-            eyebrow="Capabilities"
-            title="A practical toolkit for support, quality and delivery."
-          />
-          <div className="skills-grid" id="skills-title">
-            {portfolio.skillGroups.map((group, index) => (
-              <article className="skill-group" key={group.title}>
-                <div className="skill-heading">
-                  <span>0{index + 1}</span>
-                  <div>
-                    <h3>{group.title}</h3>
-                    <p>{group.description}</p>
-                  </div>
-                </div>
-                <ul>
-                  {group.skills.map((skill) => (
-                    <li key={skill}>{skill}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section
-          className="education section-shell"
-          id="education"
-          aria-labelledby="education-title"
-        >
-          <SectionHeading
-            number="05"
-            eyebrow="Education"
-            title="Computer science, applied beyond the classroom."
-          />
-          <article className="education-card" id="education-title">
-            <div className="education-year">
-              <span>COMPLETION</span>
-              <strong>{portfolio.education.completion}</strong>
-            </div>
-            <div className="education-main">
-              <p>{portfolio.education.institution}</p>
-              <h3>{portfolio.education.qualification}</h3>
-              <span className="education-period">{portfolio.education.period}</span>
-              <p className="education-note">{portfolio.education.note}</p>
-            </div>
-            <div className="education-mark">
-              <Image
-                className="education-logo"
-                src="/uwa-logo.png"
-                alt="The University of Western Australia crest"
-                width={400}
-                height={410}
-                unoptimized
-                sizes="(max-width: 760px) 7rem, 8rem"
-              />
-            </div>
-          </article>
-          {portfolio.certificates.length > 0 ? (
-            <div className="certificate-grid" aria-label="Certificates and achievements">
-              {portfolio.certificates.map((certificate) => {
-                const content = (
-                  <>
-                    <span>{certificate.year ?? "Verified"}</span>
-                    <strong>{certificate.title}</strong>
-                    <p>{certificate.issuer}</p>
-                  </>
-                );
-
-                return certificate.href ? (
+            ) : null}
+            <div>
+              <p className={styles.heroName}>
+                <span>{person.name}</span>
+                <span
+                  className={styles.verifiedMark}
+                  aria-label="Verified portfolio identity and professional links"
+                  title="Verified portfolio identity and professional links"
+                >
+                  <FaCircleCheck aria-hidden="true" />
+                </span>
+              </p>
+              <div className={styles.socialLinks} aria-label="Professional profiles">
+                {contact.github ? (
+                  <a href={contact.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+                    <FaGithub aria-hidden="true" />
+                  </a>
+                ) : null}
+                {contact.linkedin ? (
                   <a
-                    key={certificate.title}
-                    className="certificate-card"
-                    href={certificate.href}
+                    href={contact.linkedin}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label="LinkedIn"
                   >
-                    {content}
+                    <FaLinkedinIn aria-hidden="true" />
                   </a>
-                ) : (
-                  <article key={certificate.title} className="certificate-card">
-                    {content}
-                  </article>
-                );
-              })}
+                ) : null}
+                {contact.email ? (
+                  <a href={`mailto:${contact.email}`} aria-label="Email">
+                    <FaEnvelope aria-hidden="true" />
+                  </a>
+                ) : null}
+              </div>
             </div>
-          ) : null}
+          </div>
+
+          <p className={styles.heroEyebrow}>Computer Science graduate · Perth, Western Australia</p>
+          <h1 id="hero-title">
+            Application support,
+            <br />
+            troubleshooting <span>& software quality.</span>
+          </h1>
+          <p className={styles.heroIntroduction}>
+            I build and support web applications, investigate technical problems and turn what I
+            find into clear, practical next steps.
+          </p>
+
+          <div className={styles.heroActions}>
+            <a className={styles.primaryAction} href="#projects">
+              View featured work <span aria-hidden="true">↓</span>
+            </a>
+            {contact.resume ? (
+              <a className={styles.secondaryAction} href={contact.resume} download>
+                Download résumé <span aria-hidden="true">↓</span>
+              </a>
+            ) : null}
+            {contact.email ? (
+              <a className={styles.secondaryAction} href={`mailto:${contact.email}`}>
+                Contact me <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+          </div>
+
+          <div className={styles.availability}>
+            <span aria-hidden="true" />
+            {person.availability}
+          </div>
         </section>
 
-        <section className="contact section-shell" id="contact" aria-labelledby="contact-title">
-          <div className="contact-panel">
-            <div className="contact-signal" aria-hidden="true">
-              <span />
-              <span />
-              <span />
+        <section className={styles.about} id="about" aria-labelledby="about-title">
+          <div className={styles.aboutIntroduction}>
+            <p>Profile directory</p>
+            <h2 id="about-title">Three files. The useful context.</h2>
+            <p>A concise view of how I work, where I studied and where I am based.</p>
+          </div>
+          <AboutDirectory />
+        </section>
+
+        <section className={styles.projects} id="projects" aria-labelledby="projects-title">
+          <div className={styles.sectionIntroduction}>
+            <div>
+              <p>Selected work</p>
+              <h2 id="projects-title">Evidence, not just claims.</h2>
             </div>
-            <p className="eyebrow">Start a conversation</p>
-            <h2 id="contact-title">
-              Looking for someone who enjoys getting to the bottom of things?
-            </h2>
             <p>
-              I’m interested in graduate and entry-level opportunities across application support,
-              product support, technical support, QA and web support in Perth.
+              Four selected projects showing how I build, investigate, test and support software.
             </p>
-            {contactLinks.length > 0 ? (
-              <div className="contact-links">
-                {contactLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={link.href.startsWith("http") ? "_blank" : undefined}
-                    rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                  >
-                    <span>{link.label}</span>
-                    <strong>{link.value}</strong>
-                    <i aria-hidden="true">↗</i>
-                  </a>
-                ))}
+          </div>
+
+          <div className={styles.projectGrid}>
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.experience} id="experience" aria-labelledby="experience-title">
+          <div className={styles.sectionIntroduction}>
+            <div>
+              <p>Experience</p>
+              <h2 id="experience-title">Work shaped by real users.</h2>
+            </div>
+            <p>
+              Customer-facing work and internships that strengthened how I communicate, test and
+              deliver within existing systems.
+            </p>
+          </div>
+
+          <ol className={styles.experienceList}>
+            {portfolio.experience.map((item) => {
+              const isCurrent = item.period?.includes("Present");
+
+              return (
+                <li className={styles.experienceItem} key={`${item.organisation}-${item.role}`}>
+                  <time className={styles.experiencePeriod}>{item.period}</time>
+                  <div className={styles.experienceRail} aria-hidden="true">
+                    <span />
+                  </div>
+                  <article className={styles.experienceCard}>
+                    <div className={styles.experienceHeading}>
+                      <div>
+                        <p>{item.organisation}</p>
+                        <h3>{item.role}</h3>
+                      </div>
+                      {isCurrent ? <span className={styles.currentRole}>Current</span> : null}
+                    </div>
+                    <p className={styles.experienceSummary}>{item.summary}</p>
+                    <ul className={styles.experienceStrengths} aria-label={`${item.role} strengths`}>
+                      {item.strengths.map((strength) => (
+                        <li key={strength}>{strength}</li>
+                      ))}
+                    </ul>
+                  </article>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
+        <section className={styles.technologies} aria-labelledby="technologies-title">
+          <div className={styles.sectionIntroduction}>
+            <div>
+              <p>Technologies</p>
+              <h2 id="technologies-title">Tools I use in context.</h2>
+            </div>
+            <p>
+              Grouped by the work they support—from building applications to investigating issues
+              and shipping reliable changes.
+            </p>
+          </div>
+          <TechnologyMarquee />
+        </section>
+
+        {person.profileImage ? (
+          <section className={styles.outsideIde} aria-labelledby="outside-ide-title">
+            <div className={styles.sectionIntroduction}>
+              <div>
+                <p>Outside the IDE</p>
+                <h2 id="outside-ide-title">A life beyond the screen.</h2>
               </div>
-            ) : (
-              <p className="contact-pending">
-                Verified email, LinkedIn and GitHub links will be added before publication.
+              <p>
+                The four things I return to when I step away from projects and recharge.
               </p>
-            )}
+            </div>
+            <OutsideIdeStack />
+          </section>
+        ) : null}
+
+        {contact.github ? (
+          <section className={styles.githubSection} aria-labelledby="github-activity-title">
+            <div className={styles.sectionIntroduction}>
+              <div>
+                <p>GitHub activity</p>
+                <h2 id="github-activity-title">Recent works</h2>
+              </div>
+              <p>
+                A live view of recent public development events—not a guess at private work or a
+                lifetime contribution total.
+              </p>
+            </div>
+            <GitHubActivity username="Chit-Thway" profileUrl={contact.github} />
+          </section>
+        ) : null}
+
+        <section className={styles.contactSection} id="contact" aria-labelledby="contact-title">
+          <div className={styles.contactIntroduction}>
+            <div>
+              <p>Contact</p>
+              <h2 id="contact-title">Let’s solve something useful.</h2>
+            </div>
+            <p>
+              I’m open to graduate and entry-level application support, technical support, QA and
+              web support opportunities in Perth.
+            </p>
+          </div>
+
+          <div className={styles.contactActions}>
+            {contact.email ? (
+              <a href={`mailto:${contact.email}`}>
+                <span className={`${styles.contactActionIcon} ${styles.contactEmailIcon}`}>
+                  <FaEnvelope aria-hidden="true" />
+                </span>
+                <span>
+                  <small>Email</small>
+                  <strong>{contact.email}</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {contact.linkedin ? (
+              <a href={contact.linkedin} target="_blank" rel="noreferrer">
+                <span className={`${styles.contactActionIcon} ${styles.contactLinkedinIcon}`}>
+                  <FaLinkedinIn aria-hidden="true" />
+                </span>
+                <span>
+                  <small>LinkedIn</small>
+                  <strong>Connect professionally</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {contact.github ? (
+              <a href={contact.github} target="_blank" rel="noreferrer">
+                <span className={`${styles.contactActionIcon} ${styles.contactGithubIcon}`}>
+                  <FaGithub aria-hidden="true" />
+                </span>
+                <span>
+                  <small>GitHub</small>
+                  <strong>Review public repositories</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
             {contact.resume ? (
-              <a className="button button-primary contact-resume" href={contact.resume} download>
-                Download résumé <span aria-hidden="true">↓</span>
+              <a href={contact.resume} download>
+                <span className={`${styles.contactActionIcon} ${styles.contactResumeIcon}`}>
+                  <FaFileArrowDown aria-hidden="true" />
+                </span>
+                <span>
+                  <small>Résumé</small>
+                  <strong>Download PDF</strong>
+                </span>
+                <span aria-hidden="true">↓</span>
               </a>
             ) : null}
           </div>
         </section>
       </main>
 
-      <footer className="site-footer section-shell">
-        <div className="footer-wordmark">CT / {new Date().getFullYear()}</div>
-        <p>Designed around curiosity, clarity and practical support.</p>
-        <a href="#home">Back to top ↑</a>
+      <footer className={styles.footer}>
+        <span>CHIT THWAY</span>
+        <span>Perth, Western Australia</span>
       </footer>
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-    </>
+    </div>
   );
 }
