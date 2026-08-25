@@ -777,8 +777,11 @@
   overflow: hidden;
   min-height: 0;
   aspect-ratio: 16 / 9;
-  border-bottom: 0.12rem solid #111;
   background: #e8e8e4;
+}
+
+.projectMediaDivider {
+  border-bottom: 0.35rem solid #111;
 }
 
 .projectVideo,
