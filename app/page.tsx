@@ -53,9 +53,9 @@ const featuredProjects: FeaturedProject[] = [
     outcome: "Live product · Public demo available",
     size: "large",
     media: {
-      kind: "video",
-      src: "/projects/job-application-tracker/demonstration.mp4",
-      label: "Job Application Tracker interface preview",
+      kind: "image",
+      src: "/projects/job-application-tracker/thumbnail.png",
+      alt: "Job Application Tracker applications page with the approved browser extension open",
     },
     tools: [
       { name: "C#", icon: TbBrandCSharp },
