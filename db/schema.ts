@@ -1,4 +1,11 @@
-import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 export const weeklyVisitors = sqliteTable(
   "weekly_visitors",
@@ -38,6 +45,24 @@ export const diaryPosts = sqliteTable(
       table.status,
       table.publishedAt,
     ),
+  ],
+);
+
+export const diaryPostMedia = sqliteTable(
+  "diary_post_media",
+  {
+    postId: text("post_id")
+      .notNull()
+      .references(() => diaryPosts.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    mediaKey: text("media_key").notNull(),
+    mediaType: text("media_type").notNull(),
+    mediaSize: integer("media_size").notNull(),
+    altText: text("alt_text").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.postId, table.position] }),
+    index("idx_diary_post_media_post").on(table.postId, table.position),
   ],
 );
 

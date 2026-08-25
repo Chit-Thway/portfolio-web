@@ -9,6 +9,12 @@ type DiaryPost = {
   caption: string;
   altText: string;
   location: string | null;
+  media: Array<{
+    position: number;
+    mediaType: string;
+    mediaUrl: string;
+    altText: string;
+  }>;
   mediaType: string;
   mediaUrl: string;
   audioTitle: string | null;
@@ -16,26 +22,32 @@ type DiaryPost = {
   publishedAt: string;
 };
 
+type MediaDraft = {
+  file: File;
+  altText: string;
+};
+
 export function DiaryManager() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [posts, setPosts] = useState<DiaryPost[]>([]);
-  const [media, setMedia] = useState<File | null>(null);
+  const [media, setMedia] = useState<MediaDraft[]>([]);
   const [audio, setAudio] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
-  const [altText, setAltText] = useState("");
   const [location, setLocation] = useState("");
-  const [audioTitle, setAudioTitle] = useState("");
   const [audioPermission, setAudioPermission] = useState(false);
   const [status, setStatus] = useState<"idle" | "publishing">("idle");
   const [message, setMessage] = useState("");
 
-  const previewUrl = useMemo(() => (media ? URL.createObjectURL(media) : null), [media]);
+  const previewUrls = useMemo(
+    () => media.map((item) => URL.createObjectURL(item.file)),
+    [media],
+  );
 
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      for (const previewUrl of previewUrls) URL.revokeObjectURL(previewUrl);
     };
-  }, [previewUrl]);
+  }, [previewUrls]);
 
   async function refreshPosts() {
     const response = await fetch("/api/diary/posts", {
@@ -74,8 +86,8 @@ export function DiaryManager() {
 
   async function publishPost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!media) {
-      setMessage("Choose a photo or short video.");
+    if (media.length === 0) {
+      setMessage("Choose at least one photo or short video.");
       return;
     }
 
@@ -83,14 +95,15 @@ export function DiaryManager() {
     setMessage("");
 
     const formData = new FormData();
-    formData.set("media", media);
+    for (const item of media) {
+      formData.append("media", item.file);
+      formData.append("altText", item.altText);
+    }
     formData.set("caption", caption);
-    formData.set("altText", altText);
     formData.set("location", location);
 
     if (audio) {
       formData.set("audio", audio);
-      formData.set("audioTitle", audioTitle);
       if (audioPermission) formData.set("audioPermission", "confirmed");
     }
 
@@ -109,12 +122,10 @@ export function DiaryManager() {
         return;
       }
 
-      setMedia(null);
+      setMedia([]);
       setAudio(null);
       setCaption("");
-      setAltText("");
       setLocation("");
-      setAudioTitle("");
       setAudioPermission(false);
       setMessage("Published. The new entry is now in the public Diary.");
       setStatus("idle");
@@ -188,38 +199,70 @@ export function DiaryManager() {
 
         <form onSubmit={publishPost}>
           <div className={styles.uploadField}>
-            <label htmlFor="diary-media">Photo or short video</label>
+            <label htmlFor="diary-media">Photos or short videos</label>
             <input
               id="diary-media"
               name="media"
               type="file"
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
-              onChange={(event) => setMedia(event.target.files?.[0] ?? null)}
+              multiple
+              onChange={(event) => {
+                const selected = Array.from(event.target.files ?? []);
+                if (selected.length > 10) {
+                  setMessage("Choose no more than 10 photos or videos.");
+                }
+                setMedia(
+                  selected.slice(0, 10).map((file) => ({ file, altText: "" })),
+                );
+              }}
               required
             />
-            <small>JPEG, PNG, WebP, GIF, MP4 or WebM · maximum 25 MB</small>
+            <small>
+              Up to 10 JPEG, PNG, WebP, GIF, MP4 or WebM files · 25 MB each · 50 MB combined
+            </small>
           </div>
 
-          {previewUrl && media ? (
-            <div className={styles.composerPreview}>
-              {media.type.startsWith("video/") ? (
-                <video src={previewUrl} controls muted playsInline aria-label="Selected video preview" />
-              ) : (
-                <img src={previewUrl} alt="Selected media preview" />
-              )}
+          {media.length > 0 ? (
+            <div className={styles.composerPreviewGrid}>
+              {media.map((item, index) => (
+                <div className={styles.composerMediaItem} key={`${item.file.name}-${index}`}>
+                  <div className={styles.composerPreview}>
+                    {item.file.type.startsWith("video/") ? (
+                      <video
+                        src={previewUrls[index]}
+                        controls
+                        muted
+                        playsInline
+                        aria-label={`Selected video ${index + 1} preview`}
+                      />
+                    ) : (
+                      <img src={previewUrls[index]} alt="" />
+                    )}
+                    <span>{index + 1}</span>
+                  </div>
+                  <label htmlFor={`diary-alt-text-${index}`}>
+                    Description for media {index + 1}
+                  </label>
+                  <textarea
+                    id={`diary-alt-text-${index}`}
+                    value={item.altText}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setMedia((current) =>
+                        current.map((entry, itemIndex) =>
+                          itemIndex === index ? { ...entry, altText: value } : entry,
+                        ),
+                      );
+                    }}
+                    maxLength={300}
+                    rows={3}
+                    required
+                    placeholder="Describe what is visible for someone who cannot see it."
+                  />
+                </div>
+              ))}
             </div>
           ) : null}
-
-          <label htmlFor="diary-alt-text">Media description</label>
-          <textarea
-            id="diary-alt-text"
-            value={altText}
-            onChange={(event) => setAltText(event.target.value)}
-            maxLength={300}
-            rows={3}
-            required
-            placeholder="Describe what is visible for someone who cannot see the media."
-          />
 
           <label htmlFor="diary-caption">Caption</label>
           <textarea
@@ -260,14 +303,7 @@ export function DiaryManager() {
 
           {audio ? (
             <div className={styles.audioFields}>
-              <label htmlFor="diary-audio-title">Audio title or credit</label>
-              <input
-                id="diary-audio-title"
-                value={audioTitle}
-                onChange={(event) => setAudioTitle(event.target.value)}
-                maxLength={120}
-                required
-              />
+              <p className={styles.selectedAudioName}>{audio.name}</p>
               <label className={styles.permissionCheck}>
                 <input
                   type="checkbox"
@@ -305,14 +341,28 @@ export function DiaryManager() {
           <ul>
             {posts.map((post) => (
               <li key={post.id}>
-                {post.mediaType.startsWith("video/") ? (
-                  <video src={post.mediaUrl} muted playsInline aria-label={post.altText} />
+                {(post.media?.[0]?.mediaType ?? post.mediaType).startsWith("video/") ? (
+                  <video
+                    src={post.media?.[0]?.mediaUrl ?? post.mediaUrl}
+                    muted
+                    playsInline
+                    aria-label={post.media?.[0]?.altText ?? post.altText}
+                  />
                 ) : (
-                  <img src={post.mediaUrl} alt={post.altText} loading="lazy" />
+                  <img
+                    src={post.media?.[0]?.mediaUrl ?? post.mediaUrl}
+                    alt={post.media?.[0]?.altText ?? post.altText}
+                    loading="lazy"
+                  />
                 )}
                 <div>
                   <strong>{post.caption || "Untitled moment"}</strong>
-                  <span>{new Date(post.publishedAt).toLocaleDateString("en-AU")}</span>
+                  <span>
+                    {new Date(post.publishedAt).toLocaleDateString("en-AU")}
+                    {(post.media?.length ?? 1) > 1
+                      ? ` · ${post.media?.length ?? 1} items`
+                      : ""}
+                  </span>
                 </div>
                 <button type="button" onClick={() => deletePost(post)}>
                   Delete

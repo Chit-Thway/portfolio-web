@@ -50,9 +50,11 @@ Keep the R2 bucket private; media is delivered only through the portfolio's chec
 
 ## Publishing limits
 
-- Photo/video: JPEG, PNG, WebP, GIF, MP4 or WebM; maximum 25 MB.
+- Each post accepts 1–10 photos or videos (JPEG, PNG, WebP, GIF, MP4 or WebM).
+- Each media item can be up to 25 MB, with a 50 MB combined limit per post.
 - Optional audio: MP3, M4A, WAV, OGG or WebM; maximum 12 MB.
+- The selected audio filename is shown publicly beside the animated record.
 - Every media item requires a written description.
 - Captions for video or audio should include important spoken content; timed VTT track uploads are not part of this milestone.
-- Audio requires a title or credit and confirmation of publishing rights.
+- Audio keeps its uploaded filename and requires confirmation of publishing rights.
 - Posts are public immediately after a successful upload and D1 insert.

@@ -1,4 +1,6 @@
 export const MAX_MEDIA_BYTES = 25 * 1024 * 1024;
+export const MAX_TOTAL_MEDIA_BYTES = 50 * 1024 * 1024;
+export const MAX_MEDIA_ITEMS = 10;
 export const MAX_AUDIO_BYTES = 12 * 1024 * 1024;
 
 const MEDIA_TYPES = new Map([
@@ -53,18 +55,49 @@ function normaliseText(value, maximumLength, fieldName, { required = false } = {
 }
 
 export function validateDiaryPostForm(formData) {
-  const media = formData.get("media");
-  if (!isFileLike(media) || media.size === 0) {
+  const mediaValues = formData
+    .getAll("media")
+    .filter((value) => isFileLike(value) && value.size > 0);
+
+  if (mediaValues.length === 0) {
     throw new DiaryValidationError("Choose a photo or short video.");
   }
 
-  const mediaExtension = MEDIA_TYPES.get(media.type);
-  if (!mediaExtension) {
-    throw new DiaryValidationError("Use a JPEG, PNG, WebP, GIF, MP4 or WebM file.");
+  if (mediaValues.length > MAX_MEDIA_ITEMS) {
+    throw new DiaryValidationError(
+      "Choose no more than " + MAX_MEDIA_ITEMS + " photos or videos.",
+    );
   }
 
-  if (media.size > MAX_MEDIA_BYTES) {
-    throw new DiaryValidationError("Photos and videos must be 25 MB or smaller.", 413);
+  const descriptions = formData.getAll("altText");
+  const media = mediaValues.map((file, index) => {
+    const extension = MEDIA_TYPES.get(file.type);
+    if (!extension) {
+      throw new DiaryValidationError("Use JPEG, PNG, WebP, GIF, MP4 or WebM files.");
+    }
+
+    if (file.size > MAX_MEDIA_BYTES) {
+      throw new DiaryValidationError("Each photo or video must be 25 MB or smaller.", 413);
+    }
+
+    return {
+      file,
+      extension,
+      altText: normaliseText(
+        descriptions[index],
+        300,
+        "Description for media " + (index + 1),
+        { required: true },
+      ),
+    };
+  });
+
+  const totalMediaBytes = media.reduce((total, item) => total + item.file.size, 0);
+  if (totalMediaBytes > MAX_TOTAL_MEDIA_BYTES) {
+    throw new DiaryValidationError(
+      "The combined photos and videos must be 50 MB or smaller.",
+      413,
+    );
   }
 
   const audioValue = formData.get("audio");
@@ -90,30 +123,46 @@ export function validateDiaryPostForm(formData) {
 
   return {
     caption: normaliseText(formData.get("caption"), 2200, "Caption"),
-    altText: normaliseText(formData.get("altText"), 300, "Media description", {
-      required: true,
-    }),
     location: normaliseText(formData.get("location"), 100, "Location"),
     audioTitle: audio
-      ? normaliseText(formData.get("audioTitle"), 120, "Audio credit", {
-          required: true,
-        })
+      ? normaliseText(audio.name, 120, "Audio file name", { required: true })
       : "",
     media,
-    mediaExtension,
     audio,
     audioExtension,
   };
 }
 
-export function toPublicDiaryPost(row) {
+export function toPublicDiaryPost(row, mediaRows = []) {
+  const media = mediaRows.length > 0
+    ? mediaRows.map((item) => ({
+        position: Number(item.position),
+        mediaType: item.media_type,
+        mediaUrl:
+          "/api/diary/media/" +
+          encodeURIComponent(row.id) +
+          "?index=" +
+          encodeURIComponent(String(item.position)),
+        altText: item.alt_text,
+      }))
+    : [
+        {
+          position: 0,
+          mediaType: row.media_type,
+          mediaUrl: "/api/diary/media/" + encodeURIComponent(row.id),
+          altText: row.alt_text,
+        },
+      ];
+  const firstMedia = media[0];
+
   return {
     id: row.id,
     caption: row.caption,
-    altText: row.alt_text,
+    altText: firstMedia.altText,
     location: row.location,
-    mediaType: row.media_type,
-    mediaUrl: "/api/diary/media/" + encodeURIComponent(row.id),
+    media,
+    mediaType: firstMedia.mediaType,
+    mediaUrl: firstMedia.mediaUrl,
     audioType: row.audio_type,
     audioTitle: row.audio_title,
     audioUrl: row.audio_key
@@ -123,8 +172,8 @@ export function toPublicDiaryPost(row) {
   };
 }
 
-export function mediaObjectKey(id, extension) {
-  return "posts/" + id + "/media." + extension;
+export function mediaObjectKey(id, position, extension) {
+  return "posts/" + id + "/media-" + position + "." + extension;
 }
 
 export function audioObjectKey(id, extension) {

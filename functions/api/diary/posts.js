@@ -20,14 +20,38 @@ export async function onRequestGet({ env }) {
     return jsonResponse({ error: "Diary is not configured.", posts: [] }, { status: 503 });
   }
 
-  const result = await env.VISITOR_DB.prepare(
+  const postResult = await env.VISITOR_DB.prepare(
     "SELECT id, caption, alt_text, location, media_type, audio_key, audio_type, audio_title, published_at FROM diary_posts WHERE status = ? ORDER BY published_at DESC, id DESC LIMIT 60",
   )
     .bind("published")
     .all();
 
+  const postIds = postResult.results.map((post) => post.id);
+  let mediaRows = [];
+
+  if (postIds.length > 0) {
+    const placeholders = postIds.map(() => "?").join(", ");
+    const mediaResult = await env.VISITOR_DB.prepare(
+      "SELECT post_id, position, media_type, alt_text FROM diary_post_media WHERE post_id IN (" +
+        placeholders +
+        ") ORDER BY post_id, position",
+    )
+      .bind(...postIds)
+      .all();
+    mediaRows = mediaResult.results;
+  }
+
+  const mediaByPost = new Map();
+  for (const item of mediaRows) {
+    const current = mediaByPost.get(item.post_id) ?? [];
+    current.push(item);
+    mediaByPost.set(item.post_id, current);
+  }
+
   return jsonResponse({
-    posts: result.results.map(toPublicDiaryPost),
+    posts: postResult.results.map((post) =>
+      toPublicDiaryPost(post, mediaByPost.get(post.id) ?? []),
+    ),
     updatedAt: new Date().toISOString(),
   });
 }
@@ -65,18 +89,27 @@ export async function onRequestPost({ request, env }) {
 
   const id = crypto.randomUUID();
   const createdAt = new Date().toISOString();
-  const mediaKey = mediaObjectKey(id, entry.mediaExtension);
+  const mediaObjects = entry.media.map((item, position) => ({
+    ...item,
+    position,
+    key: mediaObjectKey(id, position, item.extension),
+  }));
+  const firstMedia = mediaObjects[0];
   const audioKey = entry.audio
     ? audioObjectKey(id, entry.audioExtension)
     : null;
 
   try {
-    await env.DIARY_MEDIA.put(mediaKey, await entry.media.arrayBuffer(), {
-      httpMetadata: {
-        contentType: entry.media.type,
-        cacheControl: "public, max-age=31536000, immutable",
-      },
-    });
+    await Promise.all(
+      mediaObjects.map(async (item) => {
+        await env.DIARY_MEDIA.put(item.key, await item.file.arrayBuffer(), {
+          httpMetadata: {
+            contentType: item.file.type,
+            cacheControl: "public, max-age=31536000, immutable",
+          },
+        });
+      }),
+    );
 
     if (entry.audio && audioKey) {
       await env.DIARY_MEDIA.put(audioKey, await entry.audio.arrayBuffer(), {
@@ -87,17 +120,17 @@ export async function onRequestPost({ request, env }) {
       });
     }
 
-    await env.VISITOR_DB.prepare(
-      "INSERT INTO diary_posts (id, caption, alt_text, location, media_key, media_type, media_size, audio_key, audio_type, audio_title, status, published_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    )
-      .bind(
+    const statements = [
+      env.VISITOR_DB.prepare(
+        "INSERT INTO diary_posts (id, caption, alt_text, location, media_key, media_type, media_size, audio_key, audio_type, audio_title, status, published_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      ).bind(
         id,
         entry.caption,
-        entry.altText,
+        firstMedia.altText,
         entry.location || null,
-        mediaKey,
-        entry.media.type,
-        entry.media.size,
+        firstMedia.key,
+        firstMedia.file.type,
+        firstMedia.file.size,
         audioKey,
         entry.audio?.type ?? null,
         entry.audioTitle || null,
@@ -105,31 +138,51 @@ export async function onRequestPost({ request, env }) {
         createdAt,
         createdAt,
         createdAt,
-      )
-      .run();
+      ),
+      ...mediaObjects.map((item) =>
+        env.VISITOR_DB.prepare(
+          "INSERT INTO diary_post_media (post_id, position, media_key, media_type, media_size, alt_text) VALUES (?, ?, ?, ?, ?, ?)",
+        ).bind(
+          id,
+          item.position,
+          item.key,
+          item.file.type,
+          item.file.size,
+          item.altText,
+        ),
+      ),
+    ];
+
+    await env.VISITOR_DB.batch(statements);
   } catch (error) {
     await Promise.allSettled(
-      [mediaKey, audioKey].filter(Boolean).map((key) => env.DIARY_MEDIA.delete(key)),
+      [...mediaObjects.map((item) => item.key), audioKey]
+        .filter(Boolean)
+        .map((key) => env.DIARY_MEDIA.delete(key)),
     );
     throw error;
   }
 
   return jsonResponse(
     {
-      post: {
-        id,
-        caption: entry.caption,
-        altText: entry.altText,
-        location: entry.location || null,
-        mediaType: entry.media.type,
-        mediaUrl: "/api/diary/media/" + encodeURIComponent(id),
-        audioType: entry.audio?.type ?? null,
-        audioTitle: entry.audioTitle || null,
-        audioUrl: audioKey
-          ? "/api/diary/audio/" + encodeURIComponent(id)
-          : null,
-        publishedAt: createdAt,
-      },
+      post: toPublicDiaryPost(
+        {
+          id,
+          caption: entry.caption,
+          alt_text: firstMedia.altText,
+          location: entry.location || null,
+          media_type: firstMedia.file.type,
+          audio_key: audioKey,
+          audio_type: entry.audio?.type ?? null,
+          audio_title: entry.audioTitle || null,
+          published_at: createdAt,
+        },
+        mediaObjects.map((item) => ({
+          position: item.position,
+          media_type: item.file.type,
+          alt_text: item.altText,
+        })),
+      ),
     },
     { status: 201 },
   );

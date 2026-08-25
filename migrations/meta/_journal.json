@@ -15,6 +15,13 @@
       "when": 1787626639671,
       "tag": "0001_swift_dragon_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787669599590,
+      "tag": "0002_dusty_puppet_master",
+      "breakpoints": true
     }
   ]
 }

@@ -9,10 +9,19 @@ export async function onRequestGet({ request, env, params }) {
   const id = String(params.id ?? "");
   if (!isSupportedDiaryId(id)) return new Response("Not found", { status: 404 });
 
+  const requestedIndex = new URL(request.url).searchParams.get("index") ?? "0";
+  if (!/^\d+$/u.test(requestedIndex)) {
+    return new Response("Not found", { status: 404 });
+  }
+  const position = Number(requestedIndex);
+  if (!Number.isSafeInteger(position) || position < 0 || position > 9) {
+    return new Response("Not found", { status: 404 });
+  }
+
   const post = await env.VISITOR_DB.prepare(
-    "SELECT media_key, media_type FROM diary_posts WHERE id = ? AND status = ?",
+    "SELECT media.media_key, media.media_type FROM diary_post_media AS media INNER JOIN diary_posts AS post ON post.id = media.post_id WHERE media.post_id = ? AND media.position = ? AND post.status = ?",
   )
-    .bind(id, "published")
+    .bind(id, position, "published")
     .first();
 
   if (!post) return new Response("Not found", { status: 404 });

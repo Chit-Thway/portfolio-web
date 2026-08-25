@@ -266,8 +266,9 @@ test("renders the Milestone 7 Diary and keeps administration unlisted", async ()
 
   assert.match(diaryHtml, /<title>Diary \| CHIT THWAY<\/title>/);
   assert.match(diaryHtml, /Small moments, kept with intention\./);
-  assert.match(diaryHtml, /Checking the archive\./);
+  assert.match(diaryHtml, /Checking the Diary\./);
   assert.match(diaryHtml, /Latest entries/);
+  assert.doesNotMatch(diaryHtml, /A personal archive, newest first\./);
   assert.doesNotMatch(diaryHtml, /href=["']\/login\/?["']/);
 
   const loginResponse = await render("/login");

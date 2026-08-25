@@ -27,16 +27,17 @@ class FakeStatement {
       return this.database.attempts.get(this.args[0]) ?? null;
     }
 
-    if (this.query.startsWith("SELECT media_key, audio_key FROM diary_posts")) {
+    if (this.query.startsWith("SELECT audio_key FROM diary_posts")) {
       const post = this.database.posts.get(this.args[0]);
       if (!post || !this.args.slice(1).includes(post.status)) return null;
-      return { media_key: post.media_key, audio_key: post.audio_key };
+      return { audio_key: post.audio_key };
     }
 
-    if (this.query.startsWith("SELECT media_key, media_type FROM diary_posts")) {
+    if (this.query.startsWith("SELECT media.media_key, media.media_type")) {
       const post = this.database.posts.get(this.args[0]);
-      if (!post || post.status !== this.args[1]) return null;
-      return { media_key: post.media_key, media_type: post.media_type };
+      const media = this.database.media.get(`${this.args[0]}:${this.args[1]}`);
+      if (!post || !media || post.status !== this.args[2]) return null;
+      return { media_key: media.media_key, media_type: media.media_type };
     }
 
     if (this.query.startsWith("SELECT audio_key, audio_type FROM diary_posts")) {
@@ -55,6 +56,25 @@ class FakeStatement {
         .filter((post) => post.status === status)
         .sort((left, right) => right.published_at.localeCompare(left.published_at));
       return { results };
+    }
+
+    if (this.query.startsWith("SELECT post_id, position, media_type, alt_text")) {
+      const postIds = new Set(this.args);
+      const results = [...this.database.media.values()]
+        .filter((item) => postIds.has(item.post_id))
+        .sort((left, right) =>
+          left.post_id.localeCompare(right.post_id) || left.position - right.position,
+        );
+      return { results };
+    }
+
+    if (this.query.startsWith("SELECT media_key FROM diary_post_media")) {
+      return {
+        results: [...this.database.media.values()]
+          .filter((item) => item.post_id === this.args[0])
+          .sort((left, right) => left.position - right.position)
+          .map((item) => ({ media_key: item.media_key })),
+      };
     }
 
     throw new Error("Unsupported all query: " + this.query);
@@ -120,6 +140,19 @@ class FakeStatement {
       return { success: true };
     }
 
+    if (this.query.startsWith("INSERT INTO diary_post_media")) {
+      const [postId, position, mediaKey, mediaType, mediaSize, altText] = this.args;
+      this.database.media.set(`${postId}:${position}`, {
+        post_id: postId,
+        position,
+        media_key: mediaKey,
+        media_type: mediaType,
+        media_size: mediaSize,
+        alt_text: altText,
+      });
+      return { success: true };
+    }
+
     if (this.query.startsWith("UPDATE diary_posts SET status")) {
       const post = this.database.posts.get(this.args[2]);
       if (post) {
@@ -134,6 +167,13 @@ class FakeStatement {
       return { success: true };
     }
 
+    if (this.query.startsWith("DELETE FROM diary_post_media")) {
+      for (const [key, item] of this.database.media) {
+        if (item.post_id === this.args[0]) this.database.media.delete(key);
+      }
+      return { success: true };
+    }
+
     throw new Error("Unsupported run query: " + this.query);
   }
 }
@@ -142,10 +182,15 @@ class FakeD1 {
   constructor() {
     this.attempts = new Map();
     this.posts = new Map();
+    this.media = new Map();
   }
 
   prepare(query) {
     return new FakeStatement(this, query);
+  }
+
+  async batch(statements) {
+    return Promise.all(statements.map((statement) => statement.run()));
   }
 }
 
@@ -265,6 +310,13 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
     }),
   );
   form.set("altText", "A test photograph.");
+  form.append(
+    "media",
+    new File([new Uint8Array([50, 60, 70])], "clip.webm", {
+      type: "video/webm",
+    }),
+  );
+  form.append("altText", "A test video from the same post.");
   form.set("caption", "First real entry.");
 
   const publishResponse = await publishPost({
@@ -280,12 +332,14 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   const published = (await publishResponse.json()).post;
   assert.ok(published.id);
   assert.equal(env.VISITOR_DB.posts.size, 1);
-  assert.equal(env.DIARY_MEDIA.objects.size, 1);
+  assert.equal(env.VISITOR_DB.media.size, 2);
+  assert.equal(env.DIARY_MEDIA.objects.size, 2);
 
   const listResponse = await listPosts({ env });
   const listPayload = await listResponse.json();
   assert.equal(listPayload.posts.length, 1);
   assert.equal(listPayload.posts[0].caption, "First real entry.");
+  assert.equal(listPayload.posts[0].media.length, 2);
 
   const mediaResponse = await getMedia({
     request: new Request(
@@ -304,6 +358,22 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
     new Uint8Array([20, 30]),
   );
 
+  const secondMediaResponse = await getMedia({
+    request: new Request(
+      "http://localhost/api/diary/media/" +
+        encodeURIComponent(published.id) +
+        "?index=1",
+    ),
+    env,
+    params: { id: published.id },
+  });
+  assert.equal(secondMediaResponse.status, 200);
+  assert.equal(secondMediaResponse.headers.get("Content-Type"), "video/webm");
+  assert.deepEqual(
+    new Uint8Array(await secondMediaResponse.arrayBuffer()),
+    new Uint8Array([50, 60, 70]),
+  );
+
   const deleteResponse = await deletePost({
     request: sameOriginRequest(
       "/api/diary/posts/" + encodeURIComponent(published.id),
@@ -318,6 +388,7 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
 
   assert.equal(deleteResponse.status, 200);
   assert.equal(env.VISITOR_DB.posts.size, 0);
+  assert.equal(env.VISITOR_DB.media.size, 0);
   assert.equal(env.DIARY_MEDIA.objects.size, 0);
 
   const emptyResponse = await listPosts({ env });
