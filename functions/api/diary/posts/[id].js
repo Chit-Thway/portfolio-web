@@ -25,7 +25,7 @@ export async function onRequestDelete({ request, env, params }) {
   }
 
   const post = await env.VISITOR_DB.prepare(
-    "SELECT media_key, audio_key FROM diary_posts WHERE id = ? AND status IN (?, ?)",
+    "SELECT audio_key FROM diary_posts WHERE id = ? AND status IN (?, ?)",
   )
     .bind(id, "published", "deleted")
     .first();
@@ -33,6 +33,12 @@ export async function onRequestDelete({ request, env, params }) {
   if (!post) {
     return jsonResponse({ error: "Post not found." }, { status: 404 });
   }
+
+  const mediaResult = await env.VISITOR_DB.prepare(
+    "SELECT media_key FROM diary_post_media WHERE post_id = ? ORDER BY position",
+  )
+    .bind(id)
+    .all();
 
   await env.VISITOR_DB.prepare(
     "UPDATE diary_posts SET status = ?, updated_at = ? WHERE id = ?",
@@ -42,7 +48,7 @@ export async function onRequestDelete({ request, env, params }) {
 
   try {
     await Promise.all(
-      [post.media_key, post.audio_key]
+      [...mediaResult.results.map((item) => item.media_key), post.audio_key]
         .filter(Boolean)
         .map((key) => env.DIARY_MEDIA.delete(key)),
     );
@@ -53,9 +59,10 @@ export async function onRequestDelete({ request, env, params }) {
     );
   }
 
-  await env.VISITOR_DB.prepare("DELETE FROM diary_posts WHERE id = ?")
-    .bind(id)
-    .run();
+  await env.VISITOR_DB.batch([
+    env.VISITOR_DB.prepare("DELETE FROM diary_post_media WHERE post_id = ?").bind(id),
+    env.VISITOR_DB.prepare("DELETE FROM diary_posts WHERE id = ?").bind(id),
+  ]);
 
   return jsonResponse({ deleted: true });
 }

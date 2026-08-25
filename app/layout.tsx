@@ -82,11 +82,8 @@ const themeBootScript = `
   (() => {
     try {
       const storedTheme = window.localStorage.getItem("portfolio-theme");
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
       document.documentElement.dataset.theme =
-        storedTheme === "light" || storedTheme === "dark" ? storedTheme : systemTheme;
+        storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
     } catch {
       document.documentElement.dataset.theme = "light";
     }
