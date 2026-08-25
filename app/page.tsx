@@ -425,7 +425,7 @@ export default function Home() {
             <div className={styles.sectionIntroduction}>
               <div>
                 <p>GitHub activity</p>
-                <h2 id="github-activity-title">Recent work, shown honestly.</h2>
+                <h2 id="github-activity-title">Recent works</h2>
               </div>
               <p>
                 A live view of recent public development events—not a guess at private work or a

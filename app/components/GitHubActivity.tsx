@@ -44,6 +44,9 @@ const eventLabels: Record<string, string> = {
   ReleaseEvent: "Published a release",
 };
 
+const calendarDays = 56;
+const publicEventWindowDays = 30;
+
 function dateKey(date: Date) {
   return date.toISOString().slice(0, 10);
 }
@@ -57,9 +60,10 @@ function formatDate(value: string) {
 }
 
 /**
- * GitHub's public events feed is intentionally treated as a recent activity
- * snapshot, not as a contribution count. Private work and older contributions
- * are never estimated or represented as zero.
+ * GitHub's public events feed is treated as a recent activity snapshot rather
+ * than a contribution total. The visual includes eight weeks for context, but
+ * days outside GitHub's public event window are marked as unavailable instead
+ * of being represented as zero.
  */
 export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
   const [events, setEvents] = useState<GitHubEvent[] | null>(null);
@@ -104,23 +108,32 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
 
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    const days = Array.from({ length: 30 }, (_, index) => {
+
+    const availableFrom = new Date(today);
+    availableFrom.setUTCDate(today.getUTCDate() - (publicEventWindowDays - 1));
+
+    const days = Array.from({ length: calendarDays }, (_, index) => {
       const date = new Date(today);
-      date.setUTCDate(today.getUTCDate() - (29 - index));
-      return { key: dateKey(date), count: 0 };
+      date.setUTCDate(today.getUTCDate() - (calendarDays - 1 - index));
+
+      return {
+        key: dateKey(date),
+        count: 0,
+        available: date >= availableFrom,
+      };
     });
     const dayMap = new Map(days.map((day) => [day.key, day]));
 
     for (const event of events) {
       const day = dayMap.get(event.created_at.slice(0, 10));
-      if (day) {
+      if (day?.available) {
         day.count += 1;
       }
     }
 
     return {
       days,
-      activeDays: days.filter((day) => day.count > 0).length,
+      activeDays: days.filter((day) => day.available && day.count > 0).length,
       repositories: new Set(events.map((event) => event.repo.name)).size,
       latest: events.slice(0, 3),
     };
@@ -173,19 +186,52 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
           <div className={styles.githubActivityChart}>
             <div className={styles.githubActivityChartLabel}>
               <span>{formatDate(activity.days[0].key)}</span>
-              <span>Last 30 days</span>
+              <strong>Recent eight-week view</strong>
               <span>{formatDate(activity.days.at(-1)?.key ?? activity.days[0].key)}</span>
             </div>
-            <ol aria-label="Public GitHub development events over the last 30 days">
-              {activity.days.map((day) => (
-                <li
-                  key={day.key}
-                  data-level={Math.min(day.count, 4)}
-                  aria-label={`${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`}
-                  title={`${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`}
-                />
-              ))}
-            </ol>
+
+            <div className={styles.githubActivityCalendar}>
+              <div className={styles.githubActivityWeekdays} aria-hidden="true">
+                <span />
+                <span>Mon</span>
+                <span />
+                <span>Wed</span>
+                <span />
+                <span>Fri</span>
+                <span />
+              </div>
+              <ol aria-label="Recent public GitHub development activity">
+                {activity.days.map((day) => (
+                  <li
+                    key={day.key}
+                    data-level={Math.min(day.count, 4)}
+                    data-available={day.available}
+                    aria-label={
+                      day.available
+                        ? `${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`
+                        : `${formatDate(day.key)}: outside GitHub's public event window`
+                    }
+                    title={
+                      day.available
+                        ? `${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`
+                        : `${formatDate(day.key)} · public event history unavailable`
+                    }
+                  />
+                ))}
+              </ol>
+            </div>
+
+            <div className={styles.githubActivityLegend} aria-hidden="true">
+              <span>Public data unavailable</span>
+              <i data-kind="unavailable" />
+              <span>Less</span>
+              <i data-level="0" />
+              <i data-level="1" />
+              <i data-level="2" />
+              <i data-level="3" />
+              <i data-level="4" />
+              <span>More</span>
+            </div>
           </div>
 
           {activity.latest.length > 0 ? (
@@ -207,8 +253,8 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
       ) : null}
 
       <p className={styles.githubActivityDisclosure}>
-        Public events only · recent 30-day window · private work and older contributions are not
-        inferred.
+        Public GitHub events only · the coloured cells use the available recent event window · older
+        days are shown for layout context and are not treated as zero activity.
       </p>
     </div>
   );

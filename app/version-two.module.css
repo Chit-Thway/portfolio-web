@@ -1785,44 +1785,110 @@
 
 .githubActivityChartLabel {
   display: flex;
-  min-width: 42rem;
+  min-width: 34rem;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.7rem;
+  margin-bottom: 1rem;
   color: var(--v2-muted);
   font-size: 0.63rem;
 }
 
+.githubActivityChartLabel strong {
+  color: var(--v2-text);
+  font-weight: 620;
+}
+
+.githubActivityCalendar {
+  display: grid;
+  min-width: 34rem;
+  grid-template-columns: 2.2rem auto;
+  align-items: start;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.githubActivityWeekdays {
+  display: grid;
+  grid-template-rows: repeat(7, 1.05rem);
+  gap: 0.34rem;
+  color: var(--v2-muted);
+  font-size: 0.58rem;
+  line-height: 1.05rem;
+}
+
+.githubActivityWeekdays span {
+  display: block;
+}
+
 .githubActivityChart ol {
   display: grid;
-  min-width: 42rem;
-  grid-template-columns: repeat(30, minmax(0, 1fr));
-  gap: 0.32rem;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(8, 1.05rem);
+  grid-template-rows: repeat(7, 1.05rem);
+  gap: 0.34rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.githubActivityChart li {
-  aspect-ratio: 1;
+.githubActivityChart li,
+.githubActivityLegend i {
   border: 1px solid color-mix(in srgb, var(--v2-line-dark) 65%, transparent);
-  border-radius: 0.25rem;
+  border-radius: 0.24rem;
   background: #ecece8;
 }
 
-.githubActivityChart li[data-level="1"] {
-  background: #d6e1ff;
+.githubActivityChart li[data-available="false"],
+.githubActivityLegend i[data-kind="unavailable"] {
+  border-style: dashed;
+  border-color: #d8d8d2;
+  background: #f7f7f4;
 }
 
-.githubActivityChart li[data-level="2"] {
-  background: #a9c0ff;
+.githubActivityChart li[data-level="1"],
+.githubActivityLegend i[data-level="1"] {
+  border-color: #b7e3c3;
+  background: #c9efd4;
 }
 
-.githubActivityChart li[data-level="3"] {
-  background: #7098ff;
+.githubActivityChart li[data-level="2"],
+.githubActivityLegend i[data-level="2"] {
+  border-color: #72c88d;
+  background: #89d6a1;
 }
 
-.githubActivityChart li[data-level="4"] {
-  background: var(--v2-accent);
+.githubActivityChart li[data-level="3"],
+.githubActivityLegend i[data-level="3"] {
+  border-color: #35a65c;
+  background: #48b96f;
+}
+
+.githubActivityChart li[data-level="4"],
+.githubActivityLegend i[data-level="4"] {
+  border-color: #1d8645;
+  background: #238f4c;
+}
+
+.githubActivityLegend {
+  display: flex;
+  min-width: 34rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.32rem;
+  margin-top: 1rem;
+  color: var(--v2-muted);
+  font-size: 0.58rem;
+}
+
+.githubActivityLegend i {
+  display: block;
+  width: 0.72rem;
+  height: 0.72rem;
+  font-style: normal;
+}
+
+.githubActivityLegend span:nth-of-type(2) {
+  margin-left: 0.6rem;
 }
 
 .githubRecentEvents {
