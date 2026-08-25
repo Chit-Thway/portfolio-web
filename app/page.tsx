@@ -420,7 +420,7 @@ export default function Home() {
                 The four things I return to when I step away from projects and recharge.
               </p>
             </div>
-            <OutsideIdeStack imageSrc={person.profileImage} />
+            <OutsideIdeStack />
           </section>
         ) : null}
 
