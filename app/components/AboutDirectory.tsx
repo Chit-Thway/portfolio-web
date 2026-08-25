@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useRef, useState, type KeyboardEvent } from "react";
-import { FaLocationDot } from "react-icons/fa6";
 import { portfolio } from "../data/portfolio";
 import styles from "../version-two.module.css";
 
@@ -140,7 +139,7 @@ export function AboutDirectory() {
             <>
               <div className={styles.profileCopy}>
                 <p className={styles.activeFile}>Active file · education.md</p>
-                <h3>Computer Science, grounded in practice.</h3>
+                <h3>Computer Science</h3>
                 <p className={styles.profileSummary}>
                   A broad computing foundation strengthened through applied development, testing,
                   support tooling and collaborative technical work.
@@ -162,11 +161,11 @@ export function AboutDirectory() {
               </div>
               <div className={`${styles.profileVisual} ${styles.educationVisual}`}>
                 <Image
-                  src="/uwa-logo.png"
-                  alt="The University of Western Australia"
-                  width={240}
-                  height={240}
+                  src="/about/uwa-education.png"
+                  alt="University of Western Australia campus courtyard"
+                  fill
                   unoptimized
+                  sizes="(max-width: 820px) 84vw, 280px"
                 />
               </div>
             </>
@@ -197,9 +196,13 @@ export function AboutDirectory() {
                 </dl>
               </div>
               <div className={`${styles.profileVisual} ${styles.locationVisual}`}>
-                <FaLocationDot aria-hidden="true" />
-                <strong>PERTH</strong>
-                <span>WA · AU</span>
+                <Image
+                  src="/about/perth-location.png"
+                  alt="Green Cactus sculpture in central Perth"
+                  fill
+                  unoptimized
+                  sizes="(max-width: 820px) 84vw, 280px"
+                />
               </div>
             </>
           ) : null}

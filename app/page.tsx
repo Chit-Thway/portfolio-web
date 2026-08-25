@@ -3,6 +3,7 @@ import type { IconType } from "react-icons";
 import {
   FaBug,
   FaClock,
+  FaCircleCheck,
   FaDiagramProject,
   FaEnvelope,
   FaGithub,
@@ -52,9 +53,9 @@ const featuredProjects: FeaturedProject[] = [
     outcome: "Live product · Public demo available",
     size: "large",
     media: {
-      kind: "video",
-      src: "/projects/job-application-tracker/demonstration.mp4",
-      label: "Job Application Tracker interface preview",
+      kind: "image",
+      src: "/projects/job-application-tracker/thumbnail.png",
+      alt: "Job Application Tracker applications page with the approved browser extension open",
     },
     tools: [
       { name: "C#", icon: TbBrandCSharp },
@@ -169,7 +170,7 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
       href={`/projects/${project.slug}/`}
       aria-label={`View ${project.title} case study`}
     >
-      <div className={styles.projectMedia}>
+      <div className={`${styles.projectMedia} ${styles.projectMediaDivider}`}>
         <ProjectMedia project={project} />
         <span className={styles.projectOpen} aria-hidden="true">
           ↗
@@ -252,7 +253,16 @@ export default function Home() {
               </div>
             ) : null}
             <div>
-              <p className={styles.heroName}>{person.name}</p>
+              <p className={styles.heroName}>
+                <span>{person.name}</span>
+                <span
+                  className={styles.verifiedMark}
+                  aria-label="Verified portfolio identity and professional links"
+                  title="Verified portfolio identity and professional links"
+                >
+                  <FaCircleCheck aria-hidden="true" />
+                </span>
+              </p>
               <div className={styles.socialLinks} aria-label="Professional profiles">
                 {contact.github ? (
                   <a href={contact.github} target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -406,7 +416,7 @@ export default function Home() {
                 The four things I return to when I step away from projects and recharge.
               </p>
             </div>
-            <OutsideIdeStack imageSrc={person.profileImage} />
+            <OutsideIdeStack />
           </section>
         ) : null}
 
@@ -415,7 +425,7 @@ export default function Home() {
             <div className={styles.sectionIntroduction}>
               <div>
                 <p>GitHub activity</p>
-                <h2 id="github-activity-title">Recent work, shown honestly.</h2>
+                <h2 id="github-activity-title">Recent works</h2>
               </div>
               <p>
                 A live view of recent public development events—not a guess at private work or a
@@ -441,7 +451,7 @@ export default function Home() {
           <div className={styles.contactActions}>
             {contact.email ? (
               <a href={`mailto:${contact.email}`}>
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactEmailIcon}`}>
                   <FaEnvelope aria-hidden="true" />
                 </span>
                 <span>
@@ -453,7 +463,7 @@ export default function Home() {
             ) : null}
             {contact.linkedin ? (
               <a href={contact.linkedin} target="_blank" rel="noreferrer">
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactLinkedinIcon}`}>
                   <FaLinkedinIn aria-hidden="true" />
                 </span>
                 <span>
@@ -465,7 +475,7 @@ export default function Home() {
             ) : null}
             {contact.github ? (
               <a href={contact.github} target="_blank" rel="noreferrer">
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactGithubIcon}`}>
                   <FaGithub aria-hidden="true" />
                 </span>
                 <span>
@@ -477,7 +487,7 @@ export default function Home() {
             ) : null}
             {contact.resume ? (
               <a href={contact.resume} download>
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactResumeIcon}`}>
                   <FaFileArrowDown aria-hidden="true" />
                 </span>
                 <span>

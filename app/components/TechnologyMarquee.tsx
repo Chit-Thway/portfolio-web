@@ -29,6 +29,7 @@ import styles from "../version-two.module.css";
 type Technology = {
   name: string;
   icon: IconType;
+  color: string;
 };
 
 type TechnologyRow = {
@@ -42,37 +43,37 @@ const technologyRows: TechnologyRow[] = [
     label: "Application development",
     direction: "right",
     items: [
-      { name: "C#", icon: TbBrandCSharp },
-      { name: ".NET 10", icon: SiDotnet },
-      { name: "ASP.NET Core", icon: SiDotnet },
-      { name: "Python", icon: SiPython },
-      { name: "JavaScript", icon: SiJavascript },
-      { name: "HTML", icon: TbBrandHtml5 },
-      { name: "CSS", icon: TbBrandCss3 },
+      { name: "C#", icon: TbBrandCSharp, color: "#512bd4" },
+      { name: ".NET 10", icon: SiDotnet, color: "#512bd4" },
+      { name: "ASP.NET Core", icon: SiDotnet, color: "#512bd4" },
+      { name: "Python", icon: SiPython, color: "#3776ab" },
+      { name: "JavaScript", icon: SiJavascript, color: "#b59b00" },
+      { name: "HTML", icon: TbBrandHtml5, color: "#e34f26" },
+      { name: "CSS", icon: TbBrandCss3, color: "#1572b6" },
     ],
   },
   {
     label: "Support and quality",
     direction: "left",
     items: [
-      { name: "PowerShell", icon: TbBrandPowershell },
-      { name: "Windows diagnostics", icon: TbBrandWindows },
-      { name: "QA testing", icon: FaBug },
-      { name: "Jira Service Management", icon: SiJira },
-      { name: "Git & GitHub", icon: SiGithub },
-      { name: "JSON validation", icon: SiJson },
+      { name: "PowerShell", icon: TbBrandPowershell, color: "#2671be" },
+      { name: "Windows diagnostics", icon: TbBrandWindows, color: "#0078d4" },
+      { name: "QA testing", icon: FaBug, color: "#d7263d" },
+      { name: "Jira Service Management", icon: SiJira, color: "#0052cc" },
+      { name: "Git & GitHub", icon: SiGithub, color: "#181717" },
+      { name: "JSON validation", icon: SiJson, color: "#292929" },
     ],
   },
   {
     label: "Platforms and delivery",
     direction: "right",
     items: [
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "Supabase", icon: SiSupabase },
-      { name: "Azure", icon: TbBrandAzure },
-      { name: "GitHub Actions", icon: SiGithubactions },
-      { name: "WordPress", icon: SiWordpress },
-      { name: "Chrome extension", icon: SiGooglechrome },
+      { name: "PostgreSQL", icon: SiPostgresql, color: "#4169e1" },
+      { name: "Supabase", icon: SiSupabase, color: "#2cae78" },
+      { name: "Azure", icon: TbBrandAzure, color: "#0078d4" },
+      { name: "GitHub Actions", icon: SiGithubactions, color: "#2088ff" },
+      { name: "WordPress", icon: SiWordpress, color: "#21759b" },
+      { name: "Chrome extension", icon: SiGooglechrome, color: "#4285f4" },
     ],
   },
 ];
@@ -80,9 +81,9 @@ const technologyRows: TechnologyRow[] = [
 function TechnologyList({ items, duplicate = false }: { items: Technology[]; duplicate?: boolean }) {
   return (
     <ul aria-hidden={duplicate || undefined}>
-      {items.map(({ name, icon: TechnologyIcon }) => (
+      {items.map(({ name, icon: TechnologyIcon, color }) => (
         <li key={name}>
-          <TechnologyIcon aria-hidden="true" />
+          <TechnologyIcon aria-hidden="true" style={{ color }} />
           <span>{name}</span>
         </li>
       ))}

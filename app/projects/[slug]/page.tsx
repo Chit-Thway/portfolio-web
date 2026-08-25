@@ -149,14 +149,16 @@ function CaseStudyDetails({
   return (
     <div className="case-content">
       <section className="case-overview" aria-labelledby="overview-title">
-        <div>
-          <p className="case-section-label">Overview / 01</p>
-          <h2 id="overview-title">What the project demonstrates</h2>
-        </div>
-        <div className="case-overview-copy">
-          {caseStudy.overview.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+        <div className="case-overview-main">
+          <div className="case-overview-heading">
+            <p className="case-section-label">Overview / 01</p>
+            <h2 id="overview-title">What the project demonstrates</h2>
+          </div>
+          <div className="case-overview-copy">
+            {caseStudy.overview.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </div>
         <aside aria-label="Project role and employer relevance">
           <div>

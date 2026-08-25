@@ -18,6 +18,14 @@ type GitHubEvent = {
   };
 };
 
+type GitHubCommit = {
+  sha: string;
+  commit: {
+    author: { date: string | null } | null;
+    committer: { date: string | null } | null;
+  };
+};
+
 const developmentEventTypes = new Set([
   "CreateEvent",
   "DeleteEvent",
@@ -32,6 +40,7 @@ const developmentEventTypes = new Set([
 ]);
 
 const eventLabels: Record<string, string> = {
+  CommitEvent: "Committed changes",
   CreateEvent: "Created a repository or branch",
   DeleteEvent: "Removed a branch or tag",
   ForkEvent: "Forked a repository",
@@ -43,6 +52,18 @@ const eventLabels: Record<string, string> = {
   PushEvent: "Pushed changes",
   ReleaseEvent: "Published a release",
 };
+
+const calendarDays = 56;
+const publicEventWindowDays = 30;
+const publicRepositories = [
+  "portfolio-web",
+  "windows-support-diagnostic-toolkit",
+  "kestrel-ridge-jira-service-desk",
+  "python-network-protocol-simulator",
+];
+
+const verifiedRepositoryCount = 9;
+const mostUsedLanguage = "C#";
 
 function dateKey(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -56,10 +77,56 @@ function formatDate(value: string) {
   }).format(new Date(`${value}T00:00:00Z`));
 }
 
+async function loadRecentPublicCommits(
+  username: string,
+  signal: AbortSignal,
+): Promise<GitHubEvent[]> {
+  const since = new Date();
+  since.setUTCDate(since.getUTCDate() - (publicEventWindowDays - 1));
+
+  const repositoryResults = await Promise.allSettled(
+    publicRepositories.map(async (repository) => {
+      const endpoint =
+        `https://api.github.com/repos/${encodeURIComponent(username)}/${encodeURIComponent(repository)}/commits` +
+        `?author=${encodeURIComponent(username)}&since=${encodeURIComponent(since.toISOString())}&per_page=100`;
+      const response = await fetch(endpoint, {
+        headers: { Accept: "application/vnd.github+json" },
+        signal,
+      });
+
+      if (!response.ok) {
+        return [] as GitHubEvent[];
+      }
+
+      const commits = (await response.json()) as GitHubCommit[];
+      return commits.flatMap((commit) => {
+        const createdAt = commit.commit.author?.date ?? commit.commit.committer?.date;
+        if (!createdAt) {
+          return [];
+        }
+
+        return [
+          {
+            id: `${repository}-${commit.sha}`,
+            type: "CommitEvent",
+            created_at: createdAt,
+            repo: { name: `${username}/${repository}` },
+          },
+        ];
+      });
+    }),
+  );
+
+  return repositoryResults
+    .flatMap((result) => (result.status === "fulfilled" ? result.value : []))
+    .sort((left, right) => right.created_at.localeCompare(left.created_at));
+}
+
 /**
- * GitHub's public events feed is intentionally treated as a recent activity
- * snapshot, not as a contribution count. Private work and older contributions
- * are never estimated or represented as zero.
+ * GitHub's public events feed is treated as a recent activity snapshot rather
+ * than a contribution total. The visual includes eight weeks for context, but
+ * days outside GitHub's public event window are marked as unavailable instead
+ * of being represented as zero.
  */
 export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
   const [events, setEvents] = useState<GitHubEvent[] | null>(null);
@@ -83,7 +150,17 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
         }
 
         const result = (await response.json()) as GitHubEvent[];
-        setEvents(result.filter((event) => developmentEventTypes.has(event.type)));
+        const publicEvents = result.filter((event) => developmentEventTypes.has(event.type));
+
+        if (publicEvents.length > 0) {
+          setEvents(publicEvents);
+          return;
+        }
+
+        // GitHub can return no Events API entries for commits created through
+        // Git data operations. In that case, use authored commits from the
+        // known public repositories as an honest activity fallback.
+        setEvents(await loadRecentPublicCommits(username, controller.signal));
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
@@ -104,25 +181,42 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
 
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    const days = Array.from({ length: 30 }, (_, index) => {
-      const date = new Date(today);
-      date.setUTCDate(today.getUTCDate() - (29 - index));
-      return { key: dateKey(date), count: 0 };
+
+    const availableFrom = new Date(today);
+    availableFrom.setUTCDate(today.getUTCDate() - (publicEventWindowDays - 1));
+
+    // Anchor every calendar column to a Sunday–Saturday week. The final
+    // column is the current partial week, matching GitHub's visual convention.
+    const calendarStart = new Date(today);
+    calendarStart.setUTCDate(today.getUTCDate() - today.getUTCDay() - 7 * 7);
+
+    const days = Array.from({ length: calendarDays }, (_, index) => {
+      const date = new Date(calendarStart);
+      date.setUTCDate(calendarStart.getUTCDate() + index);
+      const future = date > today;
+
+      return {
+        key: dateKey(date),
+        count: 0,
+        future,
+        available: !future && date >= availableFrom,
+      };
     });
     const dayMap = new Map(days.map((day) => [day.key, day]));
 
     for (const event of events) {
       const day = dayMap.get(event.created_at.slice(0, 10));
-      if (day) {
+      if (day?.available) {
         day.count += 1;
       }
     }
 
     return {
       days,
-      activeDays: days.filter((day) => day.count > 0).length,
+      activeDays: days.filter((day) => day.available && day.count > 0).length,
       repositories: new Set(events.map((event) => event.repo.name)).size,
       latest: events.slice(0, 3),
+      todayKey: dateKey(today),
     };
   }, [events]);
 
@@ -157,35 +251,73 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
         <>
           <dl className={styles.githubActivitySummary}>
             <div>
-              <dt>Public events</dt>
+              <dt>Public activity</dt>
               <dd>{events?.length ?? 0}</dd>
             </div>
             <div>
-              <dt>Active days</dt>
-              <dd>{activity.activeDays}</dd>
+              <dt>Most-used language</dt>
+              <dd>{mostUsedLanguage}</dd>
             </div>
             <div>
               <dt>Repositories</dt>
-              <dd>{activity.repositories}</dd>
+              <dd>{verifiedRepositoryCount}</dd>
             </div>
           </dl>
 
           <div className={styles.githubActivityChart}>
             <div className={styles.githubActivityChartLabel}>
               <span>{formatDate(activity.days[0].key)}</span>
-              <span>Last 30 days</span>
-              <span>{formatDate(activity.days.at(-1)?.key ?? activity.days[0].key)}</span>
+              <strong>Recent eight-week view</strong>
+              <span>{formatDate(activity.todayKey)}</span>
             </div>
-            <ol aria-label="Public GitHub development events over the last 30 days">
-              {activity.days.map((day) => (
-                <li
-                  key={day.key}
-                  data-level={Math.min(day.count, 4)}
-                  aria-label={`${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`}
-                  title={`${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`}
-                />
-              ))}
-            </ol>
+
+            <div className={styles.githubActivityCalendar}>
+              <div className={styles.githubActivityWeekdays} aria-hidden="true">
+                <span />
+                <span>Mon</span>
+                <span />
+                <span>Wed</span>
+                <span />
+                <span>Fri</span>
+                <span />
+              </div>
+              <ol aria-label="Recent public GitHub development activity">
+                {activity.days.map((day) => (
+                  <li
+                    key={day.key}
+                    data-level={Math.min(day.count, 4)}
+                    data-available={day.available}
+                    data-future={day.future}
+                    aria-label={
+                      day.future
+                        ? `${formatDate(day.key)}: future date`
+                        : day.available
+                          ? `${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`
+                          : `${formatDate(day.key)}: outside GitHub's public event window`
+                    }
+                    title={
+                      day.future
+                        ? undefined
+                        : day.available
+                          ? `${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`
+                          : `${formatDate(day.key)} · public event history unavailable`
+                    }
+                  />
+                ))}
+              </ol>
+            </div>
+
+            <div className={styles.githubActivityLegend} aria-hidden="true">
+              <span>Public data unavailable</span>
+              <i data-kind="unavailable" />
+              <span>Less</span>
+              <i data-level="0" />
+              <i data-level="1" />
+              <i data-level="2" />
+              <i data-level="3" />
+              <i data-level="4" />
+              <span>More</span>
+            </div>
           </div>
 
           {activity.latest.length > 0 ? (
@@ -207,8 +339,8 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
       ) : null}
 
       <p className={styles.githubActivityDisclosure}>
-        Public events only · recent 30-day window · private work and older contributions are not
-        inferred.
+        Activity cells use recent public GitHub events and authored commits only · repository count
+        and most-used language were verified across all nine owned repositories on 25 Aug 2026.
       </p>
     </div>
   );
