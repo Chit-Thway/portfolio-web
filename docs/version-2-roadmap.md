@@ -83,11 +83,13 @@ Status: complete on `version-2-milestone-6-contact`
 
 ### Milestone 7 — Diary
 
-Status: deferred
+Status: complete on `version-2-milestone-7-diary` · local review only
 
 - Build a public, Instagram-like media diary.
 - Keep the publishing interface behind an unlisted authenticated login route.
 - Add database and media-storage support only when this milestone begins.
+
+The milestone is intentionally not deployed. Cloudflare resources, production secrets and the checked-in D1 migration must be configured only after local review and approval.
 
 ## Milestone 2 implementation notes
 
@@ -120,3 +122,13 @@ The GitHub panel makes one client-side request to GitHub's official public-event
 The contact section exposes the verified email, LinkedIn, GitHub and résumé destinations stored in `app/data/portfolio.ts`. The approved public résumé is available from both the first-screen actions and final contact section. Its editable source is retained as `docs/chit-thway-resume-public.docx`, while the browser-download copy is `public/chit-thway-resume.pdf`.
 
 The public résumé removes the mobile number, accepts any tracked revisions, strips reviewer comments and scrubs author/revision metadata. The remaining general Perth location, email and professional links are intentional public contact information. The Word source and exported PDF were rendered as a single page and checked for clipping, overlap and privacy regressions before being added.
+
+## Milestone 7 implementation notes
+
+The Diary provides a public photo/video feed with an in-page media viewer, written descriptions, captions, optional location and optional credited audio. It begins honestly empty: no placeholder posts or invented personal images were added. The navigation now exposes the completed public Diary, while the publishing entrance remains absent from public links.
+
+An unlisted `/login/` URL is not a security boundary. Publishing and deletion therefore require a signed, HTTP-only server session; state-changing requests also require the same origin, and failed logins are throttled using short-lived opaque hashes rather than stored raw addresses. Passwords and session tokens are never written to D1.
+
+D1 stores structured post metadata and R2 stores the uploaded bytes. The R2 bucket remains private and media is returned through checked same-site endpoints. File type and size limits are enforced on the server, every upload needs a text description, and optional audio requires both a credit and an explicit publishing-rights confirmation.
+
+The local Pages preview uses the production function modules with a local SQLite database and filesystem-backed object storage under the ignored `.wrangler/` directory. Production remains unchanged until the R2 bucket, encrypted secrets and remote D1 migration are deliberately configured.

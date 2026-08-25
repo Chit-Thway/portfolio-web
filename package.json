@@ -10,9 +10,10 @@
     "build": "vinext build",
     "build:pages": "vinext build && node scripts/export-pages.mjs",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs tests/visitor-counter.test.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "test": "npm run build && node --test tests/rendered-html.test.mjs tests/visitor-counter.test.mjs tests/diary-auth.test.mjs tests/diary-store.test.mjs tests/diary-functions.test.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp",
+    "db:generate": "drizzle-kit generate",
+    "dev:pages": "npm run build:pages && node scripts/local-pages-preview.mjs"
   },
   "dependencies": {
     "@primer/octicons-react": "^19.33.0",
