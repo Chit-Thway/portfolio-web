@@ -1,30 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { FaMoon, FaSun } from "react-icons/fa6";
 import styles from "../version-two.module.css";
 
 type Theme = "light" | "dark";
 
+const themeChangeEvent = "portfolio-theme-change";
+
 function readCurrentTheme(): Theme {
   return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
+function readServerTheme(): Theme {
+  return "light";
+}
 
-  useEffect(() => {
-    setTheme(readCurrentTheme());
-  }, []);
+function subscribeToTheme(callback: () => void) {
+  window.addEventListener(themeChangeEvent, callback);
+  window.addEventListener("storage", callback);
+
+  return () => {
+    window.removeEventListener(themeChangeEvent, callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+export function ThemeToggle() {
+  const theme = useSyncExternalStore(subscribeToTheme, readCurrentTheme, readServerTheme);
+  const nextTheme = theme === "dark" ? "light" : "dark";
 
   function toggleTheme() {
-    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = nextTheme;
     window.localStorage.setItem("portfolio-theme", nextTheme);
-    setTheme(nextTheme);
+    window.dispatchEvent(new Event(themeChangeEvent));
   }
-
-  const nextTheme = theme === "dark" ? "light" : "dark";
 
   return (
     <button
