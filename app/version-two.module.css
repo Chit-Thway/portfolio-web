@@ -1838,6 +1838,10 @@
   background: #ecece8;
 }
 
+.githubActivityChart li[data-future="true"] {
+  visibility: hidden;
+}
+
 .githubActivityChart li[data-available="false"],
 .githubActivityLegend i[data-kind="unavailable"] {
   border-style: dashed;

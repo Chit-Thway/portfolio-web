@@ -112,14 +112,21 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
     const availableFrom = new Date(today);
     availableFrom.setUTCDate(today.getUTCDate() - (publicEventWindowDays - 1));
 
+    // Anchor every calendar column to a Sunday–Saturday week. The final
+    // column is the current partial week, matching GitHub's visual convention.
+    const calendarStart = new Date(today);
+    calendarStart.setUTCDate(today.getUTCDate() - today.getUTCDay() - 7 * 7);
+
     const days = Array.from({ length: calendarDays }, (_, index) => {
-      const date = new Date(today);
-      date.setUTCDate(today.getUTCDate() - (calendarDays - 1 - index));
+      const date = new Date(calendarStart);
+      date.setUTCDate(calendarStart.getUTCDate() + index);
+      const future = date > today;
 
       return {
         key: dateKey(date),
         count: 0,
-        available: date >= availableFrom,
+        future,
+        available: !future && date >= availableFrom,
       };
     });
     const dayMap = new Map(days.map((day) => [day.key, day]));
@@ -136,6 +143,7 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
       activeDays: days.filter((day) => day.available && day.count > 0).length,
       repositories: new Set(events.map((event) => event.repo.name)).size,
       latest: events.slice(0, 3),
+      todayKey: dateKey(today),
     };
   }, [events]);
 
@@ -187,7 +195,7 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
             <div className={styles.githubActivityChartLabel}>
               <span>{formatDate(activity.days[0].key)}</span>
               <strong>Recent eight-week view</strong>
-              <span>{formatDate(activity.days.at(-1)?.key ?? activity.days[0].key)}</span>
+              <span>{formatDate(activity.todayKey)}</span>
             </div>
 
             <div className={styles.githubActivityCalendar}>
@@ -206,15 +214,20 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
                     key={day.key}
                     data-level={Math.min(day.count, 4)}
                     data-available={day.available}
+                    data-future={day.future}
                     aria-label={
-                      day.available
-                        ? `${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`
-                        : `${formatDate(day.key)}: outside GitHub's public event window`
+                      day.future
+                        ? `${formatDate(day.key)}: future date`
+                        : day.available
+                          ? `${formatDate(day.key)}: ${day.count} public development ${day.count === 1 ? "event" : "events"}`
+                          : `${formatDate(day.key)}: outside GitHub's public event window`
                     }
                     title={
-                      day.available
-                        ? `${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`
-                        : `${formatDate(day.key)} · public event history unavailable`
+                      day.future
+                        ? undefined
+                        : day.available
+                          ? `${formatDate(day.key)} · ${day.count} ${day.count === 1 ? "event" : "events"}`
+                          : `${formatDate(day.key)} · public event history unavailable`
                     }
                   />
                 ))}
