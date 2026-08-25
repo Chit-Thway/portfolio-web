@@ -18,6 +18,14 @@ type GitHubEvent = {
   };
 };
 
+type GitHubCommit = {
+  sha: string;
+  commit: {
+    author: { date: string | null } | null;
+    committer: { date: string | null } | null;
+  };
+};
+
 const developmentEventTypes = new Set([
   "CreateEvent",
   "DeleteEvent",
@@ -32,6 +40,7 @@ const developmentEventTypes = new Set([
 ]);
 
 const eventLabels: Record<string, string> = {
+  CommitEvent: "Committed changes",
   CreateEvent: "Created a repository or branch",
   DeleteEvent: "Removed a branch or tag",
   ForkEvent: "Forked a repository",
@@ -46,6 +55,12 @@ const eventLabels: Record<string, string> = {
 
 const calendarDays = 56;
 const publicEventWindowDays = 30;
+const publicRepositories = [
+  "portfolio-web",
+  "windows-support-diagnostic-toolkit",
+  "kestrel-ridge-jira-service-desk",
+  "python-network-protocol-simulator",
+];
 
 function dateKey(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -57,6 +72,51 @@ function formatDate(value: string) {
     month: "short",
     timeZone: "UTC",
   }).format(new Date(`${value}T00:00:00Z`));
+}
+
+async function loadRecentPublicCommits(
+  username: string,
+  signal: AbortSignal,
+): Promise<GitHubEvent[]> {
+  const since = new Date();
+  since.setUTCDate(since.getUTCDate() - (publicEventWindowDays - 1));
+
+  const repositoryResults = await Promise.allSettled(
+    publicRepositories.map(async (repository) => {
+      const endpoint =
+        `https://api.github.com/repos/${encodeURIComponent(username)}/${encodeURIComponent(repository)}/commits` +
+        `?author=${encodeURIComponent(username)}&since=${encodeURIComponent(since.toISOString())}&per_page=100`;
+      const response = await fetch(endpoint, {
+        headers: { Accept: "application/vnd.github+json" },
+        signal,
+      });
+
+      if (!response.ok) {
+        return [] as GitHubEvent[];
+      }
+
+      const commits = (await response.json()) as GitHubCommit[];
+      return commits.flatMap((commit) => {
+        const createdAt = commit.commit.author?.date ?? commit.commit.committer?.date;
+        if (!createdAt) {
+          return [];
+        }
+
+        return [
+          {
+            id: `${repository}-${commit.sha}`,
+            type: "CommitEvent",
+            created_at: createdAt,
+            repo: { name: `${username}/${repository}` },
+          },
+        ];
+      });
+    }),
+  );
+
+  return repositoryResults
+    .flatMap((result) => (result.status === "fulfilled" ? result.value : []))
+    .sort((left, right) => right.created_at.localeCompare(left.created_at));
 }
 
 /**
@@ -87,7 +147,17 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
         }
 
         const result = (await response.json()) as GitHubEvent[];
-        setEvents(result.filter((event) => developmentEventTypes.has(event.type)));
+        const publicEvents = result.filter((event) => developmentEventTypes.has(event.type));
+
+        if (publicEvents.length > 0) {
+          setEvents(publicEvents);
+          return;
+        }
+
+        // GitHub can return no Events API entries for commits created through
+        // Git data operations. In that case, use authored commits from the
+        // known public repositories as an honest activity fallback.
+        setEvents(await loadRecentPublicCommits(username, controller.signal));
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
@@ -178,7 +248,7 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
         <>
           <dl className={styles.githubActivitySummary}>
             <div>
-              <dt>Public events</dt>
+              <dt>Public activity</dt>
               <dd>{events?.length ?? 0}</dd>
             </div>
             <div>
@@ -266,8 +336,8 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
       ) : null}
 
       <p className={styles.githubActivityDisclosure}>
-        Public GitHub events only · the coloured cells use the available recent event window · older
-        days are shown for layout context and are not treated as zero activity.
+        Public GitHub events and authored commits only · the coloured cells use the available recent
+        window · older days are shown for layout context and are not treated as zero activity.
       </p>
     </div>
   );
