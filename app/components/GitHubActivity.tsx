@@ -62,6 +62,9 @@ const publicRepositories = [
   "python-network-protocol-simulator",
 ];
 
+const verifiedRepositoryCount = 9;
+const mostUsedLanguage = "C#";
+
 function dateKey(date: Date) {
   return date.toISOString().slice(0, 10);
 }
@@ -252,12 +255,12 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
               <dd>{events?.length ?? 0}</dd>
             </div>
             <div>
-              <dt>Active days</dt>
-              <dd>{activity.activeDays}</dd>
+              <dt>Most-used language</dt>
+              <dd>{mostUsedLanguage}</dd>
             </div>
             <div>
               <dt>Repositories</dt>
-              <dd>{activity.repositories}</dd>
+              <dd>{verifiedRepositoryCount}</dd>
             </div>
           </dl>
 
@@ -336,8 +339,8 @@ export function GitHubActivity({ username, profileUrl }: GitHubActivityProps) {
       ) : null}
 
       <p className={styles.githubActivityDisclosure}>
-        Public GitHub events and authored commits only · the coloured cells use the available recent
-        window · older days are shown for layout context and are not treated as zero activity.
+        Activity cells use recent public GitHub events and authored commits only · repository count
+        and most-used language were verified across all nine owned repositories on 25 Aug 2026.
       </p>
     </div>
   );
