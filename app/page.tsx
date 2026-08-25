@@ -172,7 +172,9 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
     >
       <div
         className={`${styles.projectMedia} ${
-          project.slug === "concise-digital-work" || project.slug === "job-application-tracker"\n            ? styles.projectMediaDivider\n            : ""
+          project.slug === "concise-digital-work" || project.slug === "job-application-tracker"
+            ? styles.projectMediaDivider
+            : ""
         }`}
       >
         <ProjectMedia project={project} />
