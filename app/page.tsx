@@ -441,7 +441,7 @@ export default function Home() {
           <div className={styles.contactActions}>
             {contact.email ? (
               <a href={`mailto:${contact.email}`}>
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactEmailIcon}`}>
                   <FaEnvelope aria-hidden="true" />
                 </span>
                 <span>
@@ -453,7 +453,7 @@ export default function Home() {
             ) : null}
             {contact.linkedin ? (
               <a href={contact.linkedin} target="_blank" rel="noreferrer">
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactLinkedinIcon}`}>
                   <FaLinkedinIn aria-hidden="true" />
                 </span>
                 <span>
@@ -465,7 +465,7 @@ export default function Home() {
             ) : null}
             {contact.github ? (
               <a href={contact.github} target="_blank" rel="noreferrer">
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactGithubIcon}`}>
                   <FaGithub aria-hidden="true" />
                 </span>
                 <span>
@@ -477,7 +477,7 @@ export default function Home() {
             ) : null}
             {contact.resume ? (
               <a href={contact.resume} download>
-                <span className={styles.contactActionIcon}>
+                <span className={`${styles.contactActionIcon} ${styles.contactResumeIcon}`}>
                   <FaFileArrowDown aria-hidden="true" />
                 </span>
                 <span>

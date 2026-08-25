@@ -140,7 +140,7 @@ export function AboutDirectory() {
             <>
               <div className={styles.profileCopy}>
                 <p className={styles.activeFile}>Active file · education.md</p>
-                <h3>Computer Science, grounded in practice.</h3>
+                <h3>Computer Science</h3>
                 <p className={styles.profileSummary}>
                   A broad computing foundation strengthened through applied development, testing,
                   support tooling and collaborative technical work.
