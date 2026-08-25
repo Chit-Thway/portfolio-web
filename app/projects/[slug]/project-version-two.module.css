@@ -412,6 +412,16 @@
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
+.caseSite :global(.case-decisions .case-section-heading) {
+  display: block;
+  max-width: 44rem;
+}
+
+.caseSite :global(.case-decisions .case-section-heading h2) {
+  max-width: 14ch;
+  text-align: left;
+}
+
 .caseSite :global(.case-overview-copy p),
 .caseSite :global(.case-section-heading > p:last-child) {
   color: var(--paper-muted);
