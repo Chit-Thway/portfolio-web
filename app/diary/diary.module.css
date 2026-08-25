@@ -1,0 +1,832 @@
+.diarySite {
+  --diary-background: #f5f5f3;
+  --diary-surface: #ffffff;
+  --diary-text: #171717;
+  --diary-muted: #71716b;
+  --diary-line: #deded8;
+  --diary-accent: #2667ff;
+  min-height: 100vh;
+  background: var(--diary-background);
+  color: var(--diary-text);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.diarySite * {
+  box-sizing: border-box;
+}
+
+.diarySite a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.diarySite :focus-visible {
+  border-radius: 0.2rem;
+  outline: 3px solid color-mix(in srgb, var(--diary-accent) 55%, transparent);
+  outline-offset: 4px;
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  transform: translateY(-150%);
+  border-radius: 0.55rem;
+  background: var(--diary-text);
+  color: white !important;
+  font-size: 0.82rem;
+  font-weight: 650;
+  transition: transform 160ms ease;
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+.header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--diary-line) 78%, transparent);
+  background: color-mix(in srgb, var(--diary-background) 88%, transparent);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+.headerInner,
+.introduction,
+.feed,
+.footer {
+  width: min(calc(100% - 3rem), 1120px);
+  margin-inline: auto;
+}
+
+.headerInner {
+  display: flex;
+  min-height: 4.4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.wordmark {
+  font-size: 0.77rem;
+  font-weight: 760;
+  letter-spacing: 0.085em;
+}
+
+.header nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.3rem);
+  color: var(--diary-muted);
+  font-size: 0.78rem;
+  font-weight: 540;
+}
+
+.header nav a {
+  transition: color 150ms ease;
+}
+
+.header nav a:hover,
+.header nav a[aria-current="page"] {
+  color: var(--diary-text);
+}
+
+.introduction {
+  padding-block: clamp(6rem, 14vw, 10.5rem) clamp(4rem, 8vw, 6rem);
+}
+
+.eyebrow,
+.sectionHeading > p {
+  margin: 0 0 1rem;
+  color: var(--diary-muted);
+  font-size: 0.76rem;
+  font-weight: 610;
+}
+
+.introduction h1 {
+  max-width: 920px;
+  margin: 0;
+  font-size: clamp(3.4rem, 8vw, 7rem);
+  font-weight: 510;
+  letter-spacing: -0.072em;
+  line-height: 0.92;
+}
+
+.lede {
+  max-width: 650px;
+  margin: 2.25rem 0 0;
+  color: var(--diary-muted);
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  letter-spacing: -0.018em;
+  line-height: 1.6;
+}
+
+.feed {
+  padding-block: 0 clamp(6rem, 12vw, 9rem);
+}
+
+.sectionHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem 3rem;
+  margin-bottom: 1.6rem;
+}
+
+.sectionHeading > p {
+  margin: 0 0 0.45rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 520;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.emptyState {
+  display: grid;
+  min-height: 22rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: end;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--diary-line);
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(circle at 78% 22%, rgba(38, 103, 255, 0.08), transparent 28%),
+    var(--diary-surface);
+  box-shadow: 0 28px 90px rgba(31, 31, 28, 0.08), 0 2px 8px rgba(31, 31, 28, 0.04);
+}
+
+.emptyState > span {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.8rem;
+  color: var(--diary-muted);
+  font-size: 0.75rem;
+}
+
+.emptyState strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.emptyState p {
+  margin: 0;
+  color: var(--diary-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer {
+  display: flex;
+  min-height: 6rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--diary-line);
+  color: var(--diary-muted);
+  font-size: 0.7rem;
+}
+
+@media (max-width: 700px) {
+  .headerInner,
+  .introduction,
+  .feed,
+  .footer {
+    width: min(calc(100% - 2rem), 1120px);
+  }
+
+  .headerInner {
+    align-items: flex-start;
+    padding-block: 1rem;
+  }
+
+  .header nav {
+    gap: 1rem;
+  }
+
+  .sectionHeading {
+    grid-template-columns: 1fr;
+  }
+
+  .emptyState {
+    min-height: 18rem;
+  }
+}
+
+@media (max-width: 470px) {
+  .header nav a:not([aria-current="page"]) {
+    display: none;
+  }
+
+  .introduction h1 {
+    font-size: clamp(3rem, 16vw, 4.5rem);
+  }
+
+  .emptyState {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipLink,
+  .header nav a {
+    transition: none;
+  }
+}
+.sectionHeading > div:first-child {
+  align-self: end;
+}
+
+.adminShortcut {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.65rem;
+  background: var(--diary-surface);
+  font-size: 0.76rem;
+  font-weight: 650;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.adminShortcut:hover {
+  transform: translateY(-1px);
+  border-color: #aaa9a3;
+}
+
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.postTile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--diary-line);
+  border-radius: 1rem;
+  background: #e9e9e5;
+  cursor: pointer;
+}
+
+.gridMedia,
+.dialogMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.postTileOverlay {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2.5rem 0.9rem 0.8rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.68));
+  color: white;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.postTile:hover .postTileOverlay,
+.postTile:focus-visible .postTileOverlay {
+  opacity: 1;
+}
+
+.postDialog {
+  width: min(calc(100% - 2rem), 1080px);
+  max-width: none;
+  max-height: min(90vh, 780px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d5d5cf;
+  border-radius: 1.25rem;
+  background: var(--diary-surface);
+  color: var(--diary-text);
+  box-shadow: 0 36px 120px rgba(0, 0, 0, 0.24);
+}
+
+.postDialog::backdrop {
+  background: rgba(24, 24, 22, 0.58);
+  backdrop-filter: blur(10px);
+}
+
+.dialogLayout {
+  display: grid;
+  min-height: min(76vh, 680px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.55fr);
+}
+
+.dialogVisual {
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  overflow: hidden;
+  background: #131313;
+}
+
+.dialogMedia {
+  max-height: min(76vh, 680px);
+  object-fit: contain;
+}
+
+.dialogCopy {
+  position: relative;
+  overflow-y: auto;
+  padding: clamp(2rem, 4vw, 3.25rem);
+}
+
+.dialogClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid var(--diary-line);
+  border-radius: 50%;
+  background: var(--diary-surface);
+  color: var(--diary-text);
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dialogDate {
+  margin: 2.5rem 0 0;
+  color: var(--diary-muted);
+  font-size: 0.75rem;
+}
+
+.dialogLocation {
+  margin: 0.65rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.dialogCaption {
+  margin: 2rem 0 0;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.dialogAudio {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--diary-line);
+}
+
+.dialogAudio span {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--diary-muted);
+  font-size: 0.73rem;
+}
+
+.dialogAudio audio {
+  width: 100%;
+}
+
+.loginPage {
+  display: grid;
+  width: min(calc(100% - 2rem), 1120px);
+  min-height: 100vh;
+  margin-inline: auto;
+  place-items: center;
+  padding-block: 5rem;
+}
+
+.loginReturn {
+  position: absolute;
+  top: 1.5rem;
+  left: max(1rem, calc((100vw - 1120px) / 2));
+  color: var(--diary-muted);
+  font-size: 0.76rem;
+}
+
+.loginPanel {
+  width: min(100%, 32rem);
+  padding: clamp(2rem, 6vw, 3.5rem);
+  border: 1px solid var(--diary-line);
+  border-radius: 1.35rem;
+  background: var(--diary-surface);
+  box-shadow: 0 28px 90px rgba(31, 31, 28, 0.1), 0 2px 8px rgba(31, 31, 28, 0.04);
+}
+
+.loginPanel h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  font-weight: 520;
+  letter-spacing: -0.065em;
+  line-height: 0.95;
+}
+
+.loginPanel > p:not(.eyebrow) {
+  margin: 1.35rem 0 0;
+  color: var(--diary-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.loginForm,
+.composer form {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.loginForm label,
+.composer label {
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.loginForm input,
+.composer input,
+.composer textarea {
+  width: 100%;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.7rem;
+  background: #fafaf8;
+  color: var(--diary-text);
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.loginForm input,
+.composer input {
+  min-height: 3rem;
+  padding-inline: 0.9rem;
+}
+
+.composer textarea {
+  resize: vertical;
+  padding: 0.85rem 0.9rem;
+  line-height: 1.5;
+}
+
+.loginForm button,
+.publishButton {
+  display: flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.35rem;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.72rem;
+  background: var(--diary-text);
+  color: white;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 680;
+  cursor: pointer;
+}
+
+.loginForm button:disabled,
+.publishButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.formMessage {
+  min-height: 1.25rem;
+  margin: 0.25rem 0 0;
+  color: #9a342c;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.managerPage {
+  width: min(calc(100% - 3rem), 1120px);
+  margin-inline: auto;
+  padding-block: clamp(5rem, 10vw, 8rem);
+}
+
+.managerIntroduction {
+  max-width: 750px;
+  margin-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.managerIntroduction h1 {
+  margin: 0;
+  font-size: clamp(3.3rem, 8vw, 6.5rem);
+  font-weight: 510;
+  letter-spacing: -0.07em;
+  line-height: 0.92;
+}
+
+.managerIntroduction > p:not(.eyebrow) {
+  max-width: 570px;
+  margin: 1.5rem 0 0;
+  color: var(--diary-muted);
+  line-height: 1.6;
+}
+
+.managerLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+.composer,
+.managePosts,
+.managerState {
+  border: 1px solid var(--diary-line);
+  border-radius: 1.2rem;
+  background: var(--diary-surface);
+  box-shadow: 0 20px 65px rgba(31, 31, 28, 0.07);
+}
+
+.composer,
+.managePosts {
+  padding: clamp(1.35rem, 3vw, 2rem);
+}
+
+.managerSectionHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.managerSectionHeading p {
+  margin: 0 0 0.5rem;
+  color: var(--diary-muted);
+  font-size: 0.7rem;
+}
+
+.managerSectionHeading h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+}
+
+.managerSectionHeading > button,
+.managePosts li > button {
+  min-height: 2.35rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.6rem;
+  background: transparent;
+  color: var(--diary-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.managerSectionHeading > span {
+  display: grid;
+  min-width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.6rem;
+  color: var(--diary-muted);
+  font-size: 0.73rem;
+}
+
+.composer form {
+  gap: 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--diary-line);
+}
+
+.composer label {
+  margin-top: 0.45rem;
+}
+
+.composer label span {
+  color: var(--diary-muted);
+  font-weight: 450;
+}
+
+.uploadField {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.uploadField input[type="file"] {
+  height: auto;
+  padding: 0.72rem;
+}
+
+.uploadField small {
+  color: var(--diary-muted);
+  font-size: 0.68rem;
+}
+
+.composerPreview {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.85rem;
+  background: #171717;
+}
+
+.composerPreview img,
+.composerPreview video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.audioFields {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+  padding: 1rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.85rem;
+  background: #fafaf8;
+}
+
+.permissionCheck {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  color: var(--diary-muted);
+  font-weight: 500 !important;
+  line-height: 1.45;
+}
+
+.permissionCheck input {
+  width: 1rem;
+  min-height: 1rem;
+  margin-top: 0.15rem;
+}
+
+.managePosts ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.managePosts li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.65rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.8rem;
+}
+
+.managePosts li img,
+.managePosts li video {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.55rem;
+  object-fit: cover;
+  background: #e9e9e5;
+}
+
+.managePosts li > div {
+  min-width: 0;
+}
+
+.managePosts li strong,
+.managePosts li span {
+  display: block;
+}
+
+.managePosts li strong {
+  overflow: hidden;
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.managePosts li span {
+  margin-top: 0.35rem;
+  color: var(--diary-muted);
+  font-size: 0.68rem;
+}
+
+.managePosts li > button {
+  color: #a43d34;
+}
+
+.manageEmpty {
+  margin: 1.5rem 0 0;
+  color: var(--diary-muted);
+  font-size: 0.82rem;
+}
+
+.managerState {
+  padding: clamp(2rem, 5vw, 3.5rem);
+}
+
+.managerState strong {
+  display: block;
+  font-size: 1.2rem;
+}
+
+.managerState p {
+  color: var(--diary-muted);
+  line-height: 1.55;
+}
+
+.managerState a {
+  display: inline-flex;
+  margin-top: 1rem;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+@media (max-width: 850px) {
+  .dialogLayout,
+  .managerLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .dialogLayout {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .dialogVisual {
+    min-height: min(65vw, 28rem);
+  }
+
+  .dialogMedia {
+    max-height: min(65vw, 28rem);
+  }
+}
+
+@media (max-width: 700px) {
+  .postGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .postTileOverlay {
+    opacity: 1;
+  }
+
+  .managerPage {
+    width: min(calc(100% - 2rem), 1120px);
+  }
+}
+
+@media (max-width: 470px) {
+  .postGrid {
+    gap: 0.45rem;
+  }
+
+  .postTile {
+    border-radius: 0.7rem;
+  }
+
+  .managePosts li {
+    grid-template-columns: 3.8rem minmax(0, 1fr);
+  }
+
+  .managePosts li img,
+  .managePosts li video {
+    width: 3.8rem;
+    height: 3.8rem;
+  }
+
+  .managePosts li > button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adminShortcut,
+  .postTileOverlay {
+    transition: none;
+  }
+}

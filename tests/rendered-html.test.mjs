@@ -62,8 +62,9 @@ test("renders the bounded Version 2 navigation", async () => {
   assert.match(html, />Projects</);
   assert.match(html, /href=["']#experience["']/);
   assert.match(html, />Experience</);
+  assert.match(html, /href=["']\/diary\/["']/);
   assert.match(html, />Diary</);
-  assert.match(html, /aria-disabled=["']true["']/);
+  assert.doesNotMatch(html, /aria-disabled=["']true["']/);
   assert.doesNotMatch(html, /href=["']#(?:skills|education|contact)["']/);
 });
 
@@ -257,4 +258,33 @@ test("renders the unlisted visitor department with no-index metadata", async () 
   assert.match(html, /No names, accounts or raw IP addresses are stored/);
   assert.match(html, /name="robots"[^>]*noindex/i);
   assert.doesNotMatch(html, /Sign in|Log in|Password/i);
+});
+test("renders the Milestone 7 Diary and keeps administration unlisted", async () => {
+  const diaryResponse = await render("/diary");
+  assert.equal(diaryResponse.status, 200);
+  const diaryHtml = await diaryResponse.text();
+
+  assert.match(diaryHtml, /<title>Diary \| CHIT THWAY<\/title>/);
+  assert.match(diaryHtml, /Small moments, kept with intention\./);
+  assert.match(diaryHtml, /Checking the archive\./);
+  assert.match(diaryHtml, /Latest entries/);
+  assert.doesNotMatch(diaryHtml, /href=["']\/login\/?["']/);
+
+  const loginResponse = await render("/login");
+  assert.equal(loginResponse.status, 200);
+  const loginHtml = await loginResponse.text();
+
+  assert.match(loginHtml, /<title>Private Entrance \| CHIT THWAY<\/title>/);
+  assert.match(loginHtml, /name=["']robots["'][^>]*noindex/i);
+  assert.match(loginHtml, /Admin passphrase/);
+  assert.match(loginHtml, /Private entrance\./);
+
+  const manageResponse = await render("/diary/manage");
+  assert.equal(manageResponse.status, 200);
+  const manageHtml = await manageResponse.text();
+
+  assert.match(manageHtml, /<title>Diary Publisher \| CHIT THWAY<\/title>/);
+  assert.match(manageHtml, /name=["']robots["'][^>]*noindex/i);
+  assert.match(manageHtml, /Publish a moment\./);
+  assert.match(manageHtml, /Checking the publishing session/);
 });

@@ -231,9 +231,7 @@ export default function Home() {
           <nav className={styles.navigation} aria-label="Primary navigation">
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
-            <span aria-disabled="true" title="Diary will be added in Milestone 7">
-              Diary
-            </span>
+            <a href="/diary/">Diary</a>
           </nav>
         </div>
       </header>
