@@ -170,13 +170,7 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
       href={`/projects/${project.slug}/`}
       aria-label={`View ${project.title} case study`}
     >
-      <div
-        className={`${styles.projectMedia} ${
-          project.slug === "concise-digital-work" || project.slug === "job-application-tracker"
-            ? styles.projectMediaDivider
-            : ""
-        }`}
-      >
+      <div className={`${styles.projectMedia} ${styles.projectMediaDivider}`}>
         <ProjectMedia project={project} />
         <span className={styles.projectOpen} aria-hidden="true">
           ↗
