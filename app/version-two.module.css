@@ -2124,3 +2124,232 @@
     font-size: clamp(2.75rem, 13vw, 4.5rem);
   }
 }
+
+
+/* PORTFOLIO THEME SWITCH */
+:global(html[data-theme="dark"]),
+:global(html[data-theme="dark"] body) {
+  background: #111210;
+}
+
+:global(html[data-theme="dark"]) .v2Site {
+  --v2-background: #111210;
+  --v2-surface: #1a1b18;
+  --v2-text: #f1f1ed;
+  --v2-muted: #aaa9a2;
+  --v2-soft: #7f8079;
+  --v2-line: #30312d;
+  --v2-line-dark: #454640;
+  --v2-accent: #7da5ff;
+  color-scheme: dark;
+}
+
+.v2Site {
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.themeToggle {
+  position: relative;
+  display: inline-flex;
+  width: 3rem;
+  height: 1.7rem;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0.18rem;
+  border: 1px solid var(--v2-line-dark);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--v2-surface) 82%, var(--v2-background));
+  color: var(--v2-muted);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 160ms ease, background-color 220ms ease;
+}
+
+.themeToggle:hover {
+  border-color: color-mix(in srgb, var(--v2-text) 45%, var(--v2-line));
+}
+
+.themeToggleIcons {
+  position: absolute;
+  inset: 0.2rem 0.34rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.themeToggleIcons svg {
+  width: 0.62rem;
+  height: 0.62rem;
+}
+
+.themeToggleIcons svg:first-child {
+  color: #d79a24;
+}
+
+.themeToggleIcons svg:last-child {
+  color: #7086b5;
+}
+
+.themeToggleThumb {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 1.22rem;
+  height: 1.22rem;
+  border-radius: 50%;
+  background: var(--v2-text);
+  box-shadow: 0 2px 7px rgba(20, 20, 18, 0.2);
+  transform: translateX(0);
+  transition: transform 220ms cubic-bezier(0.22, 0.75, 0.2, 1), background-color 220ms ease;
+}
+
+.themeToggle[aria-pressed="true"] .themeToggleThumb {
+  transform: translateX(1.26rem);
+}
+
+:global(html[data-theme="dark"]) .skipLink,
+:global(html[data-theme="dark"]) .primaryAction,
+:global(html[data-theme="dark"]) .interestSelectors button[aria-pressed="true"] {
+  color: #151613 !important;
+}
+
+:global(html[data-theme="dark"]) .portrait,
+:global(html[data-theme="dark"]) .profileVisual,
+:global(html[data-theme="dark"]) .projectMedia,
+:global(html[data-theme="dark"]) .interestCard {
+  background: #292a26;
+}
+
+:global(html[data-theme="dark"]) .hero h1 span {
+  color: var(--v2-soft);
+}
+
+:global(html[data-theme="dark"]) .secondaryAction:hover,
+:global(html[data-theme="dark"]) .marqueeToolbar button:hover,
+:global(html[data-theme="dark"]) .githubActivityHeader > a:hover {
+  border-color: color-mix(in srgb, var(--v2-text) 42%, var(--v2-line));
+}
+
+:global(html[data-theme="dark"]) .profileWindow,
+:global(html[data-theme="dark"]) .projectCard,
+:global(html[data-theme="dark"]) .technologyMarquee,
+:global(html[data-theme="dark"]) .outsideIdeLayout,
+:global(html[data-theme="dark"]) .githubActivityPanel,
+:global(html[data-theme="dark"]) .contactActions > a {
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.24);
+}
+
+:global(html[data-theme="dark"]) .windowChrome {
+  border-bottom-color: var(--v2-line);
+  background: #242521;
+  color: var(--v2-muted);
+}
+
+:global(html[data-theme="dark"]) .windowStatus {
+  border-color: var(--v2-line-dark);
+  background: var(--v2-surface);
+}
+
+:global(html[data-theme="dark"]) .windowPath,
+:global(html[data-theme="dark"]) .directorySidebar {
+  background: #161714;
+}
+
+:global(html[data-theme="dark"]) .windowPath strong,
+:global(html[data-theme="dark"]) .profileFacts dd {
+  color: var(--v2-text);
+}
+
+:global(html[data-theme="dark"]) .directorySidebar > p,
+:global(html[data-theme="dark"]) .directoryTabs button,
+:global(html[data-theme="dark"]) .profileSummary,
+:global(html[data-theme="dark"]) .projectDescription,
+:global(html[data-theme="dark"]) .experienceStrengths li {
+  color: var(--v2-muted);
+}
+
+:global(html[data-theme="dark"]) .directoryTabs button[aria-selected="true"] {
+  border-color: var(--v2-line);
+  background: var(--v2-surface);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.24);
+}
+
+:global(html[data-theme="dark"]) .educationVisual,
+:global(html[data-theme="dark"]) .locationVisual {
+  background: var(--v2-surface);
+}
+
+:global(html[data-theme="dark"]) .projectOpen {
+  border-color: color-mix(in srgb, var(--v2-line-dark) 75%, transparent);
+  background: color-mix(in srgb, var(--v2-surface) 88%, transparent);
+  color: var(--v2-text);
+}
+
+:global(html[data-theme="dark"]) .projectFooter li,
+:global(html[data-theme="dark"]) .marqueeToolbar button,
+:global(html[data-theme="dark"]) .technologyTrack li,
+:global(html[data-theme="dark"]) .interestSelectors button,
+:global(html[data-theme="dark"]) .githubActivityHeader > a,
+:global(html[data-theme="dark"]) .contactActionIcon,
+:global(html[data-theme="dark"]) .loginForm input {
+  background: #20211e;
+  color: var(--v2-text);
+}
+
+:global(html[data-theme="dark"]) .projectFooter li svg,
+:global(html[data-theme="dark"]) .technologyTrack li svg {
+  color: var(--v2-muted);
+}
+
+:global(html[data-theme="dark"]) .currentRole {
+  color: var(--v2-accent);
+}
+
+:global(html[data-theme="dark"]) .githubActivityChart li,
+:global(html[data-theme="dark"]) .githubActivityLegend i {
+  background: #292a26;
+}
+
+:global(html[data-theme="dark"]) .githubActivityChart li[data-available="false"],
+:global(html[data-theme="dark"]) .githubActivityLegend i[data-kind="unavailable"] {
+  border-color: var(--v2-line);
+  background: #181916;
+}
+
+:global(html[data-theme="dark"]) .contactEmailIcon,
+:global(html[data-theme="dark"]) .contactGithubIcon {
+  border-color: var(--v2-line);
+  background: #20211e;
+  color: var(--v2-text);
+}
+
+:global(html[data-theme="dark"]) .contactLinkedinIcon {
+  background: color-mix(in srgb, #0a66c2 16%, var(--v2-surface));
+}
+
+:global(html[data-theme="dark"]) .contactResumeIcon {
+  background: color-mix(in srgb, #d93025 14%, var(--v2-surface));
+}
+
+@media (max-width: 640px) {
+  .navigation {
+    gap: 0.9rem;
+  }
+
+  .themeToggle {
+    width: 2.8rem;
+  }
+
+  .themeToggle[aria-pressed="true"] .themeToggleThumb {
+    transform: translateX(1.06rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2Site,
+  .themeToggle,
+  .themeToggleThumb {
+    transition: none;
+  }
+}

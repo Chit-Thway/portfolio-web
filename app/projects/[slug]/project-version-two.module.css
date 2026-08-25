@@ -412,6 +412,16 @@
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
+.caseSite :global(.case-decisions .case-section-heading) {
+  display: block;
+  max-width: 44rem;
+}
+
+.caseSite :global(.case-decisions .case-section-heading h2) {
+  max-width: 14ch;
+  text-align: left;
+}
+
 .caseSite :global(.case-overview-copy p),
 .caseSite :global(.case-section-heading > p:last-child) {
   color: var(--paper-muted);
@@ -677,4 +687,72 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+
+/* PROJECT CASE STUDY DARK THEME */
+:global(html[data-theme="dark"]) .caseSite {
+  --ink: #111210;
+  --ink-soft: #20211e;
+  --surface: #1a1b18;
+  --surface-soft: #242521;
+  --paper: #f1f1ed;
+  --paper-muted: #aaa9a2;
+  --paper-dim: #7f8079;
+  --line: #30312d;
+  --line-strong: #454640;
+  --accent: #7da5ff;
+  --accent-bright: #9ab8ff;
+  --accent-soft: rgba(125, 165, 255, 0.12);
+  --shadow: 0 20px 62px rgba(0, 0, 0, 0.28);
+  color-scheme: dark;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.project-pagination a:hover),
+:global(html[data-theme="dark"]) .caseSite :global(.project-stack-board) {
+  background: #20211e;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.slide-arrow) {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.slide-arrow:hover),
+:global(html[data-theme="dark"]) .caseSite :global(.case-actions > a),
+:global(html[data-theme="dark"]) .caseSite :global(.repository-button) {
+  background: var(--paper);
+  color: #151613;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.pending-case-study) {
+  background: linear-gradient(145deg, #1d1e1b, #131411);
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.pending-grid) {
+  background-image: radial-gradient(circle, var(--line-strong) 1px, transparent 1.2px);
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.project-stack-mark) {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.project-stack-description) {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.pdf-dialog) {
+  border-color: var(--line-strong);
+  background: var(--surface-soft);
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.pdf-dialog header),
+:global(html[data-theme="dark"]) .caseSite :global(.pdf-dialog footer),
+:global(html[data-theme="dark"]) .caseSite :global(.pdf-page-list figcaption) {
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.pdf-page-list) {
+  background: #10110f;
 }

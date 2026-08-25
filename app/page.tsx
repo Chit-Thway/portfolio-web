@@ -23,6 +23,7 @@ import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
 import { GitHubActivity } from "./components/GitHubActivity";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
+import { ThemeToggle } from "./components/ThemeToggle";
 import { OutsideIdeStack } from "./components/OutsideIdeStack";
 import { portfolio } from "./data/portfolio";
 import styles from "./version-two.module.css";
@@ -233,6 +234,7 @@ export default function Home() {
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
             <a href="/diary/">Diary</a>
+            <ThemeToggle />
           </nav>
         </div>
       </header>
