@@ -382,6 +382,29 @@
   padding-block: clamp(4rem, 8vw, 6.5rem);
 }
 
+.caseSite :global(.case-overview) {
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.36fr);
+  align-items: start;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.caseSite :global(.case-overview-main) {
+  min-width: 0;
+}
+
+.caseSite :global(.case-overview-heading) {
+  max-width: 50rem;
+}
+
+.caseSite :global(.case-overview-heading h2) {
+  max-width: 14ch;
+}
+
+.caseSite :global(.case-overview-copy) {
+  max-width: 48rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
 .caseSite :global(.case-overview h2),
 .caseSite :global(.case-section-heading h2),
 .caseSite :global(.case-capabilities h2) {
