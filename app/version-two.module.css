@@ -568,14 +568,14 @@
 .educationVisual {
   display: grid;
   place-items: center;
-  padding: 2.25rem;
+  padding: 0;
   background: #fbfbfa;
 }
 
-.educationVisual img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+.educationVisual img,
+.locationVisual img {
+  object-fit: cover;
+  object-position: center;
 }
 
 .locationVisual {
@@ -781,7 +781,7 @@
 }
 
 .projectMediaDivider {
-  border-bottom: 0.2625rem solid #111;
+  border-bottom: 0.2625rem solid var(--v2-line-dark);
 }
 
 .projectVideo,
@@ -1525,7 +1525,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border: 0.42rem solid white;
+  border: 0.42rem solid var(--v2-line-dark);
   border-radius: 1.25rem;
   background: #d9d9d4;
   box-shadow: 0 22px 55px rgba(20, 20, 20, 0.16);
