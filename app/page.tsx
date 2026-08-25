@@ -6,6 +6,7 @@ import {
   FaDiagramProject,
   FaEnvelope,
   FaGithub,
+  FaFileArrowDown,
   FaLinkedinIn,
 } from "react-icons/fa6";
 import {
@@ -19,6 +20,7 @@ import {
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
+import { GitHubActivity } from "./components/GitHubActivity";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
 import { OutsideIdeStack } from "./components/OutsideIdeStack";
 import { portfolio } from "./data/portfolio";
@@ -293,6 +295,11 @@ export default function Home() {
             <a className={styles.primaryAction} href="#projects">
               View featured work <span aria-hidden="true">↓</span>
             </a>
+            {contact.resume ? (
+              <a className={styles.secondaryAction} href={contact.resume} download>
+                Download résumé <span aria-hidden="true">↓</span>
+              </a>
+            ) : null}
             {contact.email ? (
               <a className={styles.secondaryAction} href={`mailto:${contact.email}`}>
                 Contact me <span aria-hidden="true">↗</span>
@@ -404,6 +411,86 @@ export default function Home() {
             <OutsideIdeStack imageSrc={person.profileImage} />
           </section>
         ) : null}
+
+        {contact.github ? (
+          <section className={styles.githubSection} aria-labelledby="github-activity-title">
+            <div className={styles.sectionIntroduction}>
+              <div>
+                <p>GitHub activity</p>
+                <h2 id="github-activity-title">Recent work, shown honestly.</h2>
+              </div>
+              <p>
+                A live view of recent public development events—not a guess at private work or a
+                lifetime contribution total.
+              </p>
+            </div>
+            <GitHubActivity username="Chit-Thway" profileUrl={contact.github} />
+          </section>
+        ) : null}
+
+        <section className={styles.contactSection} id="contact" aria-labelledby="contact-title">
+          <div className={styles.contactIntroduction}>
+            <div>
+              <p>Contact</p>
+              <h2 id="contact-title">Let’s solve something useful.</h2>
+            </div>
+            <p>
+              I’m open to graduate and entry-level application support, technical support, QA and
+              web support opportunities in Perth.
+            </p>
+          </div>
+
+          <div className={styles.contactActions}>
+            {contact.email ? (
+              <a href={`mailto:${contact.email}`}>
+                <span className={styles.contactActionIcon}>
+                  <FaEnvelope aria-hidden="true" />
+                </span>
+                <span>
+                  <small>Email</small>
+                  <strong>{contact.email}</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {contact.linkedin ? (
+              <a href={contact.linkedin} target="_blank" rel="noreferrer">
+                <span className={styles.contactActionIcon}>
+                  <FaLinkedinIn aria-hidden="true" />
+                </span>
+                <span>
+                  <small>LinkedIn</small>
+                  <strong>Connect professionally</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {contact.github ? (
+              <a href={contact.github} target="_blank" rel="noreferrer">
+                <span className={styles.contactActionIcon}>
+                  <FaGithub aria-hidden="true" />
+                </span>
+                <span>
+                  <small>GitHub</small>
+                  <strong>Review public repositories</strong>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+            {contact.resume ? (
+              <a href={contact.resume} download>
+                <span className={styles.contactActionIcon}>
+                  <FaFileArrowDown aria-hidden="true" />
+                </span>
+                <span>
+                  <small>Résumé</small>
+                  <strong>Download PDF</strong>
+                </span>
+                <span aria-hidden="true">↓</span>
+              </a>
+            ) : null}
+          </div>
+        </section>
       </main>
 
       <footer className={styles.footer}>

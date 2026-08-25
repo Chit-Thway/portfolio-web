@@ -53,18 +53,18 @@ app/data/portfolio.ts
 
 ### Contact details
 
-The verified email, LinkedIn and GitHub profile are already configured in the `contact` object. The resume value remains empty until a privacy-safe public copy is supplied:
+The verified email, LinkedIn, GitHub profile and public résumé are configured in the `contact` object:
 
 ```ts
 contact: {
   email: "chitthway67@gmail.com",
   linkedin: "https://www.linkedin.com/in/chit-thway-197241332",
   github: "https://github.com/Chit-Thway",
-  resume: null,
+  resume: "/chit-thway-resume.pdf",
 }
 ```
 
-To enable the resume buttons, place the public PDF in `public/` and set `resume` to its root-relative path. The buttons remain hidden while the value is empty.
+The browser-download asset is `public/chit-thway-resume.pdf`. Its editable, privacy-scrubbed source is retained at `docs/chit-thway-resume-public.docx`; update the source, export a replacement PDF under the same public filename, and keep the `contact.resume` path stable. The public copy intentionally omits the private mobile number while retaining the general Perth location and verified professional links.
 
 ### Profile photograph
 
@@ -116,6 +116,7 @@ app/
   components/                       Shared navigation and media viewers
   components/AboutDirectory.tsx    Version 2 keyboard-accessible profile directory
   components/OutsideIdeStack.tsx   Version 2 click-to-cycle personal-interest stack
+  components/GitHubActivity.tsx    Live, failure-safe recent public GitHub activity
   components/TechnologyMarquee.tsx Version 2 accessible three-row technology marquee
   data/portfolio.ts                Central portfolio content and links
   data/projectCaseStudies.ts       Project-page narratives and media mapping

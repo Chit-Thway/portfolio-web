@@ -34,7 +34,7 @@ export const portfolio = {
     email: "chitthway67@gmail.com" as string | null,
     linkedin: "https://www.linkedin.com/in/chit-thway-197241332" as string | null,
     github: "https://github.com/Chit-Thway" as string | null,
-    resume: null as string | null,
+    resume: "/chit-thway-resume.pdf" as string | null,
   },
   navigation: [
     { label: "Home", href: "#home" },
