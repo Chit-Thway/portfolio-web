@@ -3,6 +3,7 @@ import type { IconType } from "react-icons";
 import {
   FaBug,
   FaClock,
+  FaCircleCheck,
   FaDiagramProject,
   FaEnvelope,
   FaGithub,
@@ -252,7 +253,16 @@ export default function Home() {
               </div>
             ) : null}
             <div>
-              <p className={styles.heroName}>{person.name}</p>
+              <p className={styles.heroName}>
+                <span>{person.name}</span>
+                <span
+                  className={styles.verifiedMark}
+                  aria-label="Verified portfolio identity and professional links"
+                  title="Verified portfolio identity and professional links"
+                >
+                  <FaCircleCheck aria-hidden="true" />
+                </span>
+              </p>
               <div className={styles.socialLinks} aria-label="Professional profiles">
                 {contact.github ? (
                   <a href={contact.github} target="_blank" rel="noreferrer" aria-label="GitHub">

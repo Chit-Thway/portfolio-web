@@ -102,24 +102,24 @@
 
 .hero {
   display: flex;
-  min-height: min(710px, calc(100vh - 4.4rem));
+  min-height: auto;
   flex-direction: column;
   justify-content: center;
-  padding-block: clamp(5.5rem, 11vh, 8.5rem);
+  padding-block: clamp(4.5rem, 8vh, 6rem) clamp(3.5rem, 6vh, 4.5rem);
 }
 
 .heroIdentity {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: 1.3rem;
+  margin-bottom: 2.5rem;
 }
 
 .portrait {
   position: relative;
   overflow: hidden;
-  width: 5.5rem;
-  height: 5.5rem;
+  width: 7rem;
+  height: 7rem;
   flex: 0 0 auto;
   border: 1px solid var(--v2-line);
   border-radius: 50%;
@@ -133,25 +133,40 @@
 }
 
 .heroName {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.15rem, 2vw, 1.35rem);
-  font-weight: 690;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+  font-weight: 700;
   letter-spacing: -0.025em;
+}
+
+.verifiedMark {
+  display: inline-grid;
+  place-items: center;
+  color: #2486d9;
+  font-size: 0.78em;
+  line-height: 1;
+}
+
+.verifiedMark svg {
+  display: block;
 }
 
 .socialLinks {
   display: flex;
   align-items: center;
-  gap: 0.72rem;
+  gap: 0.9rem;
 }
 
 .socialLinks a {
   display: grid;
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1.6rem;
+  height: 1.6rem;
   place-items: center;
   color: var(--v2-muted);
-  font-size: 0.92rem;
+  font-size: 1.08rem;
   transition: color 150ms ease, transform 150ms ease;
 }
 
@@ -171,7 +186,7 @@
 .hero h1 {
   max-width: 1010px;
   margin: 0;
-  font-size: clamp(3.5rem, 8.15vw, 7.35rem);
+  font-size: clamp(3.35rem, 6.7vw, 6rem);
   font-weight: 520;
   letter-spacing: -0.073em;
   line-height: 0.93;
@@ -252,7 +267,7 @@
 .about {
   width: min(calc(100% - 3rem), 1120px);
   margin-inline: auto;
-  padding-block: clamp(5rem, 10vw, 8rem);
+  padding-block: 0 clamp(4.5rem, 8vw, 6rem);
   scroll-margin-top: 5.5rem;
 }
 
@@ -643,7 +658,7 @@
 @media (max-width: 640px) {
   .about {
     width: min(calc(100% - 2rem), 1120px);
-    padding-block: 4.5rem;
+    padding-block: 0 4.5rem;
   }
 
   .windowChrome {
@@ -670,7 +685,7 @@
   }
 }
 .projects {
-  padding-block: clamp(5rem, 10vw, 8rem);
+  padding-block: 0 clamp(5rem, 10vw, 8rem);
   scroll-margin-top: 5.5rem;
 }
 
@@ -896,11 +911,11 @@
 
   .hero {
     min-height: auto;
-    padding-block: 5rem 6rem;
+    padding-block: 4.5rem 4rem;
   }
 
   .hero h1 {
-    font-size: clamp(3.1rem, 11.5vw, 5.8rem);
+    font-size: clamp(3rem, 9.5vw, 4.9rem);
   }
 
   .sectionIntroduction {
@@ -937,12 +952,13 @@
   }
 
   .heroIdentity {
-    margin-bottom: 2.4rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
 
   .portrait {
-    width: 4.7rem;
-    height: 4.7rem;
+    width: 5.5rem;
+    height: 5.5rem;
   }
 
   .heroEyebrow {
@@ -951,7 +967,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(2.85rem, 13.2vw, 4.7rem);
+    font-size: clamp(2.65rem, 11.5vw, 4rem);
     letter-spacing: -0.067em;
   }
 
@@ -1643,7 +1659,7 @@
 }
 
 .githubSection {
-  padding-block: 0 clamp(6rem, 12vw, 10rem);
+  padding-block: 0 clamp(3.5rem, 6vw, 5rem);
 }
 
 .githubActivityPanel {
@@ -1855,7 +1871,7 @@
 }
 
 .contactSection {
-  padding-block: clamp(5.5rem, 11vw, 9rem);
+  padding-block: clamp(2.5rem, 4vw, 3.5rem) clamp(5.5rem, 11vw, 9rem);
   border-top: 1px solid var(--v2-line);
   scroll-margin-top: 5.5rem;
 }
@@ -1933,9 +1949,9 @@
 }
 
 .contactEmailIcon {
-  border-color: color-mix(in srgb, #ea4335 24%, var(--v2-line));
-  background: color-mix(in srgb, #ea4335 7%, #fff);
-  color: #d93025;
+  border-color: var(--v2-line);
+  background: #fafaf8;
+  color: #181717;
 }
 
 .contactLinkedinIcon {
