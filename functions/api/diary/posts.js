@@ -28,6 +28,7 @@ export async function onRequestGet({ env }) {
 
   const postIds = postResult.results.map((post) => post.id);
   let mediaRows = [];
+  let linkRows = [];
 
   if (postIds.length > 0) {
     const placeholders = postIds.map(() => "?").join(", ");
@@ -39,6 +40,15 @@ export async function onRequestGet({ env }) {
       .bind(...postIds)
       .all();
     mediaRows = mediaResult.results;
+
+    const linkResult = await env.VISITOR_DB.prepare(
+      "SELECT post_id, position, url FROM diary_post_links WHERE post_id IN (" +
+        placeholders +
+        ") ORDER BY post_id, position",
+    )
+      .bind(...postIds)
+      .all();
+    linkRows = linkResult.results;
   }
 
   const mediaByPost = new Map();
@@ -47,10 +57,20 @@ export async function onRequestGet({ env }) {
     current.push(item);
     mediaByPost.set(item.post_id, current);
   }
+  const linksByPost = new Map();
+  for (const item of linkRows) {
+    const current = linksByPost.get(item.post_id) ?? [];
+    current.push(item);
+    linksByPost.set(item.post_id, current);
+  }
 
   return jsonResponse({
     posts: postResult.results.map((post) =>
-      toPublicDiaryPost(post, mediaByPost.get(post.id) ?? []),
+      toPublicDiaryPost(
+        post,
+        mediaByPost.get(post.id) ?? [],
+        linksByPost.get(post.id) ?? [],
+      ),
     ),
     updatedAt: new Date().toISOString(),
   });
@@ -151,6 +171,11 @@ export async function onRequestPost({ request, env }) {
           item.altText,
         ),
       ),
+      ...entry.links.map((url, position) =>
+        env.VISITOR_DB.prepare(
+          "INSERT INTO diary_post_links (post_id, position, url) VALUES (?, ?, ?)",
+        ).bind(id, position, url),
+      ),
     ];
 
     await env.VISITOR_DB.batch(statements);
@@ -182,6 +207,7 @@ export async function onRequestPost({ request, env }) {
           media_type: item.file.type,
           alt_text: item.altText,
         })),
+        entry.links.map((url, position) => ({ position, url })),
       ),
     },
     { status: 201 },

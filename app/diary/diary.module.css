@@ -538,6 +538,66 @@
   white-space: nowrap;
 }
 
+.postLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--diary-line);
+}
+
+.audioAttribution + .postLinks {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.postLink {
+  display: inline-flex;
+  min-height: 2.15rem;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 100%;
+  padding: 0.48rem 0.7rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.55rem;
+  font-size: 0.69rem;
+  font-weight: 650;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+.postLink:hover {
+  transform: translateY(-1px);
+}
+
+.postLink svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}
+
+.postLink span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.postLinkGithub {
+  background: #ededeb;
+  color: #4f504c !important;
+}
+
+.postLinkLinkedin {
+  border-color: #0a66c2;
+  background: #0a66c2;
+  color: #fff !important;
+}
+
+.postLinkLink {
+  background: var(--diary-surface);
+  color: var(--diary-muted) !important;
+}
+
 @keyframes diaryVinylSpin {
   to {
     transform: rotate(1turn);
@@ -879,6 +939,37 @@
   cursor: pointer;
 }
 
+.managerHeadingActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.managerHeadingActions button,
+.mediaEditActions button,
+.fieldHeading button,
+.linkInputRow button,
+.existingAudioEditor button,
+.managePostActions button {
+  min-height: 2.35rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.6rem;
+  background: transparent;
+  color: var(--diary-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.managerHeadingActions button:disabled,
+.mediaEditActions button:disabled,
+.fieldHeading button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
 .managerSectionHeading > span {
   display: grid;
   min-width: 2.35rem;
@@ -894,6 +985,15 @@
   gap: 0.75rem;
   padding-top: 1.75rem;
   border-top: 1px solid var(--diary-line);
+}
+
+.fixedDateNotice {
+  margin: 0 0 0.4rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.7rem;
+  color: var(--diary-muted);
+  font-size: 0.72rem;
 }
 
 .composer label {
@@ -946,6 +1046,17 @@
   margin-top: 0;
 }
 
+.mediaEditActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.mediaEditActions .removeMediaButton {
+  margin-left: auto;
+  color: #a43d34;
+}
+
 .composerPreview > span {
   position: absolute;
   top: 0.65rem;
@@ -984,6 +1095,48 @@
   overflow-wrap: anywhere;
   font-size: 0.78rem;
   font-weight: 620;
+}
+
+.linkEditor {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.85rem;
+}
+
+.fieldHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fieldHeading p {
+  margin: 0;
+}
+
+.linkInputRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+
+.linkInputRow button {
+  color: #a43d34;
+}
+
+.existingAudioEditor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--diary-line);
+  border-radius: 0.85rem;
+  color: var(--diary-muted);
+  font-size: 0.76rem;
 }
 
 .permissionCheck {
@@ -1052,6 +1205,159 @@
 
 .managePosts li > button {
   color: #a43d34;
+}
+
+.managePostActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.managePostActions button:last-child {
+  color: #a43d34;
+}
+
+@media (min-width: 901px) {
+  .introduction,
+  .feed,
+  .footer {
+    width: min(calc(100% - 3rem), 896px);
+  }
+
+  .introduction {
+    padding-block: clamp(4.8rem, 11.2vw, 8.4rem) clamp(3.2rem, 6.4vw, 4.8rem);
+  }
+
+  .eyebrow {
+    margin-bottom: 0.8rem;
+    font-size: 0.608rem;
+  }
+
+  .introduction h1 {
+    max-width: 736px;
+    font-size: clamp(2.72rem, 6.4vw, 5.6rem);
+  }
+
+  .lede {
+    max-width: 520px;
+    margin-top: 1.8rem;
+    font-size: clamp(0.8rem, 1.36vw, 0.944rem);
+  }
+
+  .feed {
+    padding-bottom: clamp(4.8rem, 9.6vw, 7.2rem);
+  }
+
+  .feedHeading,
+  .postStream {
+    width: min(100%, 33.6rem);
+  }
+
+  .feedHeading {
+    margin-bottom: 1rem;
+  }
+
+  .feedHeading h2 {
+    font-size: 0.64rem;
+  }
+
+  .postStream {
+    gap: clamp(1.2rem, 3.2vw, 2rem);
+  }
+
+  .diaryPost {
+    border-radius: 0.8rem;
+  }
+
+  .postHeader {
+    min-height: 3.68rem;
+    gap: 0.64rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .postAvatar {
+    width: 2.12rem;
+    height: 2.12rem;
+  }
+
+  .postHeader time {
+    font-size: 0.632rem;
+  }
+
+  .postHeader span {
+    font-size: 0.56rem;
+  }
+
+  .postDetails {
+    padding: 0.8rem;
+  }
+
+  .postCaption {
+    font-size: 0.664rem;
+  }
+
+  .carouselCount {
+    top: 0.64rem;
+    right: 0.64rem;
+    padding: 0.24rem 0.4rem;
+    font-size: 0.536rem;
+  }
+
+  .carouselArrow {
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1.28rem;
+  }
+
+  .carouselArrowPrevious {
+    left: 0.6rem;
+  }
+
+  .carouselArrowNext {
+    right: 0.6rem;
+  }
+
+  .carouselDots {
+    bottom: 0.6rem;
+    gap: 0.272rem;
+  }
+
+  .carouselDots button {
+    width: 0.336rem;
+    height: 0.336rem;
+  }
+
+  .audioToggle {
+    right: 0.6rem;
+    bottom: 0.6rem;
+    width: 1.88rem;
+    height: 1.88rem;
+  }
+
+  .audioToggle svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .audioAttribution,
+  .postLinks {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+  }
+
+  .vinylRecord {
+    width: 1.72rem;
+    height: 1.72rem;
+  }
+
+  .audioName,
+  .postLink {
+    font-size: 0.576rem;
+  }
+
+  .postLink {
+    min-height: 1.72rem;
+    padding: 0.38rem 0.56rem;
+  }
 }
 
 .manageEmpty {

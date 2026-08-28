@@ -66,6 +66,21 @@ export const diaryPostMedia = sqliteTable(
   ],
 );
 
+export const diaryPostLinks = sqliteTable(
+  "diary_post_links",
+  {
+    postId: text("post_id")
+      .notNull()
+      .references(() => diaryPosts.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    url: text("url").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.postId, table.position] }),
+    index("idx_diary_post_links_post").on(table.postId, table.position),
+  ],
+);
+
 export const diaryLoginAttempts = sqliteTable("diary_login_attempts", {
   fingerprintHash: text("fingerprint_hash").primaryKey(),
   windowStartedAt: text("window_started_at").notNull(),

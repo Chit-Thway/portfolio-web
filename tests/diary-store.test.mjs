@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  classifyDiaryLink,
   DiaryValidationError,
   isSupportedDiaryId,
   toPublicDiaryPost,
+  validateDiaryPostEditForm,
   validateDiaryPostForm,
 } from "../server/diary-store.js";
 
@@ -21,7 +23,7 @@ function baseForm() {
   return form;
 }
 
-test("accepts a supported Diary photo with required description", () => {
+test("accepts a supported Diary photo with an optional description", () => {
   const entry = validateDiaryPostForm(baseForm());
 
   assert.equal(entry.media.length, 1);
@@ -29,6 +31,13 @@ test("accepts a supported Diary photo with required description", () => {
   assert.equal(entry.media[0].altText, "A clearly described personal moment.");
   assert.equal(entry.caption, "A short note.");
   assert.equal(entry.audio, null);
+});
+
+test("allows a blank media description", () => {
+  const form = baseForm();
+  form.set("altText", "");
+
+  assert.equal(validateDiaryPostForm(form).media[0].altText, "");
 });
 
 test("accepts an ordered multi-media Diary post", () => {
@@ -66,6 +75,66 @@ test("requires publishing permission and keeps the optional audio filename", () 
   const entry = validateDiaryPostForm(form);
   assert.equal(entry.audioExtension, "mp3");
   assert.equal(entry.audioTitle, "sound.mp3");
+});
+
+test("normalises optional HTTPS links and classifies supported services", () => {
+  const form = baseForm();
+  form.append("linkUrl", "https://github.com/Chit-Thway/portfolio-web");
+  form.append("linkUrl", "https://www.linkedin.com/in/example/");
+
+  const entry = validateDiaryPostForm(form);
+  assert.deepEqual(entry.links, [
+    "https://github.com/Chit-Thway/portfolio-web",
+    "https://www.linkedin.com/in/example/",
+  ]);
+  assert.equal(classifyDiaryLink(entry.links[0]), "github");
+  assert.equal(classifyDiaryLink(entry.links[1]), "linkedin");
+  assert.equal(classifyDiaryLink("https://example.com/project"), "link");
+
+  form.append("linkUrl", "http://example.com/insecure");
+  assert.throws(
+    () => validateDiaryPostForm(form),
+    (error) =>
+      error instanceof DiaryValidationError && /complete HTTPS URLs/u.test(error.message),
+  );
+});
+
+test("validates an edit plan that reorders existing media and adds an upload", () => {
+  const form = new FormData();
+  form.set("caption", "Updated caption");
+  form.set("location", "Perth");
+  form.set(
+    "mediaPlan",
+    JSON.stringify([
+      { kind: "existing", position: 1, altText: "Moved first" },
+      { kind: "new", uploadIndex: 0, altText: "New photo" },
+    ]),
+  );
+  form.set(
+    "media",
+    new File([new Uint8Array([9, 8, 7])], "new.webp", { type: "image/webp" }),
+  );
+  form.set("audioAction", "remove");
+
+  const entry = validateDiaryPostEditForm(form, [
+    {
+      position: 0,
+      media_key: "old-zero.jpg",
+      media_type: "image/jpeg",
+      media_size: 10,
+    },
+    {
+      position: 1,
+      media_key: "old-one.webm",
+      media_type: "video/webm",
+      media_size: 20,
+    },
+  ]);
+
+  assert.equal(entry.media[0].mediaKey, "old-one.webm");
+  assert.equal(entry.media[1].extension, "webp");
+  assert.equal(entry.audioAction, "remove");
+  assert.equal(entry.caption, "Updated caption");
 });
 
 test("rejects unsupported media before storage", () => {
@@ -111,6 +180,10 @@ test("maps database records to opaque checked media routes", () => {
         alt_text: "Video description",
       },
     ],
+    [
+      { position: 0, url: "https://github.com/Chit-Thway/portfolio-web" },
+      { position: 1, url: "https://www.linkedin.com/in/example/" },
+    ],
   );
 
   assert.equal(
@@ -124,6 +197,10 @@ test("maps database records to opaque checked media routes", () => {
     "/api/diary/audio/1695ff59-b16f-48b8-a89a-adf666722473",
   );
   assert.doesNotMatch(JSON.stringify(post), /private\/audio/u);
+  assert.deepEqual(
+    post.links.map((link) => link.kind),
+    ["github", "linkedin"],
+  );
 });
 
 test("accepts only UUID-shaped Diary identifiers", () => {

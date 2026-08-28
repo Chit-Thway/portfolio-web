@@ -111,32 +111,31 @@ test("renders the Milestone 4 experience and technology evidence", async () => {
   assert.match(html, /data-direction=["']right["']/);
 });
 
-test("renders the Milestone 5 Outside the IDE stack with honest temporary media", async () => {
+test("renders the Outside the IDE photo stack", async () => {
   const response = await render();
   const html = await response.text();
 
   assert.match(html, /Outside the IDE/);
   assert.match(html, /A life beyond the screen\./);
-  assert.match(html, /Gym/);
+  assert.match(html, /Socials/);
+  assert.match(html, /Travel/);
   assert.match(html, /Gaming/);
-  assert.match(html, /Going out/);
   assert.match(html, /Eating out/);
-  assert.match(html, /Temporary image/);
   assert.match(html, /Click to cycle/);
-  assert.match(html, /aria-label=["']Show next interest: Gaming["']/);
+  assert.match(html, /aria-label=["']Show next photo: Socials["']/);
   assert.match(html, /aria-label=["']Choose an interest["']/);
   assert.match(html, /aria-live=["']polite["']/);
-  assert.match(html, /src=["']\/chit-thway-portrait\.jpg\?v=49cf7aef["']/);
+  assert.match(html, /src=["']\/life-beyond-screen\/socials-2\.jpg["']/);
 });
 
 test("renders the Milestone 6 public GitHub activity and contact actions", async () => {
   const response = await render();
   const html = await response.text();
 
-  assert.match(html, /Recent work, shown honestly\./);
+  assert.match(html, /Recent works/);
   assert.match(html, /data-github-source=["']public-events["']/);
   assert.match(html, /Loading recent public activity/);
-  assert.match(html, /Public events only · recent 30-day window/);
+  assert.match(html, /Activity cells use recent public GitHub events and authored commits only/);
   assert.match(html, /href=["']https:\/\/github\.com\/Chit-Thway["']/);
   assert.match(html, /Let’s solve something useful\./);
   assert.match(html, /id=["']contact["']/);

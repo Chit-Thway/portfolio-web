@@ -7,7 +7,10 @@ import {
   onRequestGet as listPosts,
   onRequestPost as publishPost,
 } from "../functions/api/diary/posts.js";
-import { onRequestDelete as deletePost } from "../functions/api/diary/posts/[id].js";
+import {
+  onRequestDelete as deletePost,
+  onRequestPatch as editPost,
+} from "../functions/api/diary/posts/[id].js";
 import { onRequestGet as getMedia } from "../functions/api/diary/media/[id].js";
 
 class FakeStatement {
@@ -31,6 +34,12 @@ class FakeStatement {
       const post = this.database.posts.get(this.args[0]);
       if (!post || !this.args.slice(1).includes(post.status)) return null;
       return { audio_key: post.audio_key };
+    }
+
+    if (this.query.startsWith("SELECT id, caption, alt_text, location")) {
+      const post = this.database.posts.get(this.args[0]);
+      if (!post || post.status !== this.args[1]) return null;
+      return { ...post };
     }
 
     if (this.query.startsWith("SELECT media.media_key, media.media_type")) {
@@ -66,6 +75,24 @@ class FakeStatement {
           left.post_id.localeCompare(right.post_id) || left.position - right.position,
         );
       return { results };
+    }
+
+    if (this.query.startsWith("SELECT post_id, position, url")) {
+      const postIds = new Set(this.args);
+      const results = [...this.database.links.values()]
+        .filter((item) => postIds.has(item.post_id))
+        .sort((left, right) =>
+          left.post_id.localeCompare(right.post_id) || left.position - right.position,
+        );
+      return { results };
+    }
+
+    if (this.query.startsWith("SELECT position, media_key, media_type")) {
+      return {
+        results: [...this.database.media.values()]
+          .filter((item) => item.post_id === this.args[0])
+          .sort((left, right) => left.position - right.position),
+      };
     }
 
     if (this.query.startsWith("SELECT media_key FROM diary_post_media")) {
@@ -153,6 +180,35 @@ class FakeStatement {
       return { success: true };
     }
 
+    if (this.query.startsWith("INSERT INTO diary_post_links")) {
+      const [postId, position, url] = this.args;
+      this.database.links.set(`${postId}:${position}`, {
+        post_id: postId,
+        position,
+        url,
+      });
+      return { success: true };
+    }
+
+    if (this.query.startsWith("UPDATE diary_posts SET caption")) {
+      const post = this.database.posts.get(this.args[10]);
+      if (post && post.status === this.args[11]) {
+        [
+          post.caption,
+          post.alt_text,
+          post.location,
+          post.media_key,
+          post.media_type,
+          post.media_size,
+          post.audio_key,
+          post.audio_type,
+          post.audio_title,
+          post.updated_at,
+        ] = this.args;
+      }
+      return { success: true };
+    }
+
     if (this.query.startsWith("UPDATE diary_posts SET status")) {
       const post = this.database.posts.get(this.args[2]);
       if (post) {
@@ -174,6 +230,13 @@ class FakeStatement {
       return { success: true };
     }
 
+    if (this.query.startsWith("DELETE FROM diary_post_links")) {
+      for (const [key, item] of this.database.links) {
+        if (item.post_id === this.args[0]) this.database.links.delete(key);
+      }
+      return { success: true };
+    }
+
     throw new Error("Unsupported run query: " + this.query);
   }
 }
@@ -183,6 +246,7 @@ class FakeD1 {
     this.attempts = new Map();
     this.posts = new Map();
     this.media = new Map();
+    this.links = new Map();
   }
 
   prepare(query) {
@@ -279,7 +343,7 @@ test("requires an authenticated session before publishing", async () => {
   assert.equal(env.DIARY_MEDIA.objects.size, 0);
 });
 
-test("signs in, publishes, reads media, and deletes a Diary post", async () => {
+test("signs in, publishes, edits, reads media, and deletes a Diary post", async () => {
   const env = createEnvironment();
   const loginResponse = await login({
     request: sameOriginRequest("/api/diary/login", {
@@ -318,6 +382,7 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   );
   form.append("altText", "A test video from the same post.");
   form.set("caption", "First real entry.");
+  form.append("linkUrl", "https://github.com/Chit-Thway/portfolio-web");
 
   const publishResponse = await publishPost({
     request: sameOriginRequest("/api/diary/posts", {
@@ -333,6 +398,7 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   assert.ok(published.id);
   assert.equal(env.VISITOR_DB.posts.size, 1);
   assert.equal(env.VISITOR_DB.media.size, 2);
+  assert.equal(env.VISITOR_DB.links.size, 1);
   assert.equal(env.DIARY_MEDIA.objects.size, 2);
 
   const listResponse = await listPosts({ env });
@@ -340,6 +406,52 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   assert.equal(listPayload.posts.length, 1);
   assert.equal(listPayload.posts[0].caption, "First real entry.");
   assert.equal(listPayload.posts[0].media.length, 2);
+  assert.equal(listPayload.posts[0].links[0].kind, "github");
+
+  const originalPublishedAt = published.publishedAt;
+  const editForm = new FormData();
+  editForm.set("caption", "Edited entry.");
+  editForm.set("location", "Perth");
+  editForm.set(
+    "mediaPlan",
+    JSON.stringify([
+      { kind: "existing", position: 1, altText: "Video now comes first." },
+      { kind: "new", uploadIndex: 0, altText: "" },
+    ]),
+  );
+  editForm.set(
+    "media",
+    new File([new Uint8Array([90, 91])], "replacement.png", {
+      type: "image/png",
+    }),
+  );
+  editForm.set("audioAction", "keep");
+  editForm.append("linkUrl", "https://www.linkedin.com/in/example/");
+
+  const editResponse = await editPost({
+    request: sameOriginRequest(
+      "/api/diary/posts/" + encodeURIComponent(published.id),
+      {
+        method: "PATCH",
+        headers: { Cookie: cookie },
+        body: editForm,
+      },
+    ),
+    env,
+    params: { id: published.id },
+  });
+
+  assert.equal(editResponse.status, 200);
+  const edited = (await editResponse.json()).post;
+  assert.equal(edited.caption, "Edited entry.");
+  assert.equal(edited.location, "Perth");
+  assert.equal(edited.publishedAt, originalPublishedAt);
+  assert.equal(edited.media[0].mediaType, "video/webm");
+  assert.equal(edited.media[1].altText, "");
+  assert.equal(edited.links[0].kind, "linkedin");
+  assert.equal(env.VISITOR_DB.media.size, 2);
+  assert.equal(env.VISITOR_DB.links.size, 1);
+  assert.equal(env.DIARY_MEDIA.objects.size, 2);
 
   const mediaResponse = await getMedia({
     request: new Request(
@@ -351,11 +463,11 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   });
 
   assert.equal(mediaResponse.status, 206);
-  assert.equal(mediaResponse.headers.get("Content-Type"), "image/jpeg");
-  assert.equal(mediaResponse.headers.get("Content-Range"), "bytes 1-2/4");
+  assert.equal(mediaResponse.headers.get("Content-Type"), "video/webm");
+  assert.equal(mediaResponse.headers.get("Content-Range"), "bytes 1-2/3");
   assert.deepEqual(
     new Uint8Array(await mediaResponse.arrayBuffer()),
-    new Uint8Array([20, 30]),
+    new Uint8Array([60, 70]),
   );
 
   const secondMediaResponse = await getMedia({
@@ -368,10 +480,10 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
     params: { id: published.id },
   });
   assert.equal(secondMediaResponse.status, 200);
-  assert.equal(secondMediaResponse.headers.get("Content-Type"), "video/webm");
+  assert.equal(secondMediaResponse.headers.get("Content-Type"), "image/png");
   assert.deepEqual(
     new Uint8Array(await secondMediaResponse.arrayBuffer()),
-    new Uint8Array([50, 60, 70]),
+    new Uint8Array([90, 91]),
   );
 
   const deleteResponse = await deletePost({
@@ -389,6 +501,7 @@ test("signs in, publishes, reads media, and deletes a Diary post", async () => {
   assert.equal(deleteResponse.status, 200);
   assert.equal(env.VISITOR_DB.posts.size, 0);
   assert.equal(env.VISITOR_DB.media.size, 0);
+  assert.equal(env.VISITOR_DB.links.size, 0);
   assert.equal(env.DIARY_MEDIA.objects.size, 0);
 
   const emptyResponse = await listPosts({ env });

@@ -36,8 +36,8 @@ const photos = [
   },
   {
     category: "Socials",
-    src: "/life-beyond-screen/socials-2.png",
-    alt: "Live music performance viewed from the audience",
+    src: "/life-beyond-screen/socials-2.jpg",
+    alt: "Four friends celebrating graduation together indoors",
   },
   {
     category: "Travel",
