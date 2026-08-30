@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { portfolio } from "../data/portfolio";
 import styles from "../version-two.module.css";
 
@@ -19,8 +19,37 @@ const entries: Array<{ id: DirectoryEntry; label: string }> = [
  */
 export function AboutDirectory() {
   const [activeEntry, setActiveEntry] = useState<DirectoryEntry>("bio");
+  const [pdfOpen, setPdfOpen] = useState(false);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const pdfDialogRef = useRef<HTMLDialogElement | null>(null);
+  const pdfTriggerRef = useRef<HTMLButtonElement | null>(null);
   const { person, education } = portfolio;
+
+  function openPdf() {
+    setPdfOpen(true);
+    requestAnimationFrame(() => pdfDialogRef.current?.showModal());
+  }
+
+  function closePdf() {
+    pdfDialogRef.current?.close();
+    setPdfOpen(false);
+    requestAnimationFrame(() => pdfTriggerRef.current?.focus());
+  }
+
+  useEffect(() => {
+    if (!pdfOpen) return;
+
+    function closeFromKeyboard(event: globalThis.KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      pdfDialogRef.current?.close();
+      setPdfOpen(false);
+      requestAnimationFrame(() => pdfTriggerRef.current?.focus());
+    }
+
+    document.addEventListener("keydown", closeFromKeyboard, true);
+    return () => document.removeEventListener("keydown", closeFromKeyboard, true);
+  }, [pdfOpen]);
 
   function selectFromKeyboard(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const previousKeys = ["ArrowLeft", "ArrowUp"];
@@ -158,6 +187,15 @@ export function AboutDirectory() {
                     <dd>{education.completion}</dd>
                   </div>
                 </dl>
+                <button
+                  className={styles.ahegsButton}
+                  type="button"
+                  ref={pdfTriggerRef}
+                  aria-haspopup="dialog"
+                  onClick={openPdf}
+                >
+                  View graduation statement <span aria-hidden="true">↗</span>
+                </button>
               </div>
               <div className={`${styles.profileVisual} ${styles.educationVisual}`}>
                 <Image
@@ -208,6 +246,38 @@ export function AboutDirectory() {
           ) : null}
         </div>
       </div>
+
+      {pdfOpen ? (
+        <dialog
+          className={styles.pdfDialog}
+          ref={pdfDialogRef}
+          aria-labelledby="ahegs-dialog-title"
+          onCancel={(event) => {
+            event.preventDefault();
+            closePdf();
+          }}
+        >
+          <div className={styles.pdfDialogHeader}>
+            <div>
+              <span>Education record</span>
+              <strong id="ahegs-dialog-title">Australian Higher Education Graduation Statement</strong>
+            </div>
+            <div className={styles.pdfDialogActions}>
+              <a href="/chit-thway-ahegs.pdf" target="_blank" rel="noreferrer">
+                Open separately
+              </a>
+              <button type="button" onClick={closePdf} aria-label="Close graduation statement">
+                ×
+              </button>
+            </div>
+          </div>
+          <iframe
+            className={styles.pdfViewer}
+            src="/chit-thway-ahegs.pdf#view=FitH&toolbar=1"
+            title="Australian Higher Education Graduation Statement for Chit Thway"
+          />
+        </dialog>
+      ) : null}
     </div>
   );
 }

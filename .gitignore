@@ -49,3 +49,9 @@ yarn-error.log*
 /outputs/
 /tmp/
 /work/
+
+# local design and media working files
+/.codex-artifacts/
+/artifacts/
+/prototypes/
+/video/
