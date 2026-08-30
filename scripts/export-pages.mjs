@@ -1,8 +1,22 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
+
+const generatedWranglerConfigUrl = new URL(
+  "../dist/server/wrangler.json",
+  import.meta.url,
+);
+const generatedDeployRedirectUrl = new URL(
+  "../.wrangler/deploy/config.json",
+  import.meta.url,
+);
+await rm(generatedWranglerConfigUrl, { force: true });
+await rm(generatedDeployRedirectUrl, { force: true });
+console.log("Removed generated Worker-only deployment metadata before Pages deployment.");
 
 const origin = process.env.PAGES_ORIGIN ?? "https://chitthway-portfolio.pages.dev";
 const projectSlugs = [
+  "portfolio-v2",
   "windows-support-toolkit",
+  "windows-storage-extension",
   "jira-service-management",
   "quick-fire-questions",
   "job-application-tracker",

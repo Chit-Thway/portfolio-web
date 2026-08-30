@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:08.000
+The local Storage Insights dashboard opens with a selected drive and its scan status.
+
+00:00:08.000 --> 00:00:17.000
+A non-overlapping chart explains free space, Windows files, applications, user content, development storage and unreadable space.
+
+00:00:17.000 --> 00:00:27.000
+Storage evidence can be narrowed through file, folder and file-type views without silently starting another scan.
+
+00:00:27.000 --> 00:00:36.000
+The interface keeps partial coverage, protected locations and review-only items visible while presenting the matching evidence.
+
+00:00:36.000 --> 00:00:43.000
+Cleanup remains a separate confirmed action with live revalidation and Recycle Bin-only handling.
