@@ -9,6 +9,7 @@ import {
   FaVial,
 } from "react-icons/fa6";
 import {
+  SiCloudflare,
   SiDotnet,
   SiGithub,
   SiGithubactions,
@@ -21,6 +22,8 @@ import {
   SiPython,
   SiRobloxstudio,
   SiSupabase,
+  SiReact,
+  SiTypescript,
 } from "react-icons/si";
 import {
   TbBrandAzure,
@@ -33,6 +36,9 @@ import {
 import type { ProjectStack as ProjectStackData, ProjectStackIcon } from "@/app/data/projectCaseStudies";
 
 const stackIcons: Record<ProjectStackIcon, IconType> = {
+  react: SiReact,
+  typescript: SiTypescript,
+  cloudflare: SiCloudflare,
   powershell: TbBrandPowershell,
   windows: TbBrandWindows,
   python: SiPython,
@@ -61,6 +67,9 @@ const stackIcons: Record<ProjectStackIcon, IconType> = {
 };
 
 const stackIconColors: Record<ProjectStackIcon, string> = {
+  react: "#61dafb",
+  typescript: "#3178c6",
+  cloudflare: "#f38020",
   powershell: "#5391fe",
   windows: "#00a4ef",
   python: "#ffd343",

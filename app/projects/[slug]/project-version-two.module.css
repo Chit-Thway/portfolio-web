@@ -147,17 +147,39 @@
   box-shadow: var(--shadow);
 }
 
+.caseSite :global(.slide-frame) {
+  --slide-arrow-size: clamp(3.8rem, 5.6vw, 4.7rem);
+  --slide-arrow-gap: 0.7rem;
+}
+
 .caseSite :global(.slide-arrow) {
-  border-color: rgba(23, 23, 23, 0.12);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 9px 28px rgba(20, 20, 18, 0.12);
-  color: var(--paper);
+  width: var(--slide-arrow-size);
+  height: var(--slide-arrow-size);
+  border: 2px solid #b8b8b5;
+  background: #ffffff;
+  box-shadow: none;
+  color: #9c9c99;
+  backdrop-filter: none;
 }
 
 .caseSite :global(.slide-arrow:hover) {
-  border-color: var(--paper);
-  background: var(--paper);
-  color: white;
+  border-color: #888885;
+  background: #ffffff;
+  color: #686865;
+}
+
+.caseSite :global(.slide-arrow svg) {
+  width: 52%;
+  height: 52%;
+  stroke-width: 2.2;
+}
+
+.caseSite :global(.slide-arrow-previous) {
+  left: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
+}
+
+.caseSite :global(.slide-arrow-next) {
+  right: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
 }
 
 .caseSite :global(.slide-counter) {
@@ -312,6 +334,350 @@
   font-size: 0.78rem;
 }
 
+.caseSite :global(.project-journey) {
+  margin-bottom: clamp(4rem, 8vw, 6.5rem);
+}
+
+.caseSite :global(.journey-trigger) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-height: 8rem;
+  padding: 1rem clamp(1rem, 3vw, 1.7rem);
+  border: 0;
+  border-radius: 2.2rem;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(255, 255, 255, 0.26), transparent 10rem),
+    linear-gradient(118deg, #5b4be8 0%, #7857ee 46%, #d55787 100%);
+  box-shadow: 0 18px 46px rgba(93, 70, 208, 0.2);
+  color: white;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  text-align: left;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.caseSite :global(.journey-trigger::before),
+.caseSite :global(.journey-trigger::after) {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  content: "";
+}
+
+.caseSite :global(.journey-trigger::before) {
+  top: -8rem;
+  right: 8%;
+  width: 20rem;
+  height: 20rem;
+}
+
+.caseSite :global(.journey-trigger::after) {
+  right: 18%;
+  bottom: -7rem;
+  width: 13rem;
+  height: 13rem;
+}
+
+.caseSite :global(.journey-trigger:hover) {
+  box-shadow: 0 24px 58px rgba(93, 70, 208, 0.3);
+  transform: translateY(-3px);
+}
+
+.caseSite :global(.journey-trigger-icon) {
+  display: grid;
+  width: 5.2rem;
+  height: 5.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 0 0 0.6rem rgba(255, 255, 255, 0.045);
+  place-items: center;
+}
+
+.caseSite :global(.journey-trigger-icon svg) {
+  width: 2.8rem;
+  height: 2.8rem;
+  stroke-width: 1.8;
+}
+
+.caseSite :global(.journey-trigger-copy) {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.caseSite :global(.journey-trigger-copy > span),
+.caseSite :global(.journey-trigger-action) {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.66rem;
+  font-weight: 720;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.caseSite :global(.journey-trigger-copy strong) {
+  color: white;
+  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.caseSite :global(.journey-trigger-action) {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.caseSite :global(.journey-trigger-action svg) {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.caseSite :global(.journey-dialog) {
+  --journey-bg: #f8f6ef;
+  --journey-card: #fffefa;
+  --journey-header: #fcfbf7;
+  --journey-line: #d9ddd5;
+  --journey-muted: #666a63;
+  position: fixed;
+  inset: 0;
+  width: min(calc(100% - 2rem), 1080px);
+  height: min(90dvh, 880px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #cdd3ca;
+  border-radius: 1.15rem;
+  background: var(--journey-bg);
+  box-shadow: 0 30px 100px rgba(17, 18, 16, 0.3);
+  color: #20241f;
+}
+
+.caseSite :global(.journey-dialog::backdrop) {
+  background: rgba(17, 18, 16, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.caseSite :global(.journey-dialog-shell) {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.caseSite :global(.journey-dialog-header) {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 1.35rem;
+  border-bottom: 1px solid var(--journey-line);
+  background: var(--journey-header);
+}
+
+.caseSite :global(.journey-dialog-heading) {
+  display: flex;
+  min-width: 0;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.caseSite :global(.journey-dialog-mark),
+.caseSite :global(.journey-dialog-header > button) {
+  display: grid;
+  border: 0;
+  border-radius: 50%;
+  background: #e4ece2;
+  color: #28583c;
+  place-items: center;
+}
+
+.caseSite :global(.journey-dialog-mark) {
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+}
+
+.caseSite :global(.journey-dialog-mark svg) {
+  width: 1.65rem;
+  height: 1.65rem;
+  stroke-width: 1.7;
+}
+
+.caseSite :global(.journey-dialog-heading p) {
+  margin: 0;
+  color: #5b705f;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.caseSite :global(.journey-dialog-heading h2) {
+  overflow: hidden;
+  margin: 0.24rem 0 0;
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  font-weight: 570;
+  letter-spacing: -0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.caseSite :global(.journey-dialog-header > button) {
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.caseSite :global(.journey-dialog-header > button svg) {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.caseSite :global(.journey-dialog-body) {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.4rem, 4vw, 3rem);
+}
+
+.caseSite :global(.journey-timeline) {
+  position: relative;
+  display: grid;
+  gap: 0;
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.caseSite :global(.journey-timeline::before) {
+  position: absolute;
+  top: 1.3rem;
+  bottom: 1.3rem;
+  left: 1.7rem;
+  width: 2px;
+  background: linear-gradient(#79937f, #b5a17a);
+  content: "";
+}
+
+.caseSite :global(.journey-timeline li) {
+  --journey-color: #7b61ff;
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding-bottom: 1rem;
+}
+
+.caseSite :global(.journey-timeline li[data-journey-kind="problem"]) {
+  --journey-color: #e86745;
+}
+
+.caseSite :global(.journey-timeline li[data-journey-kind="solution"]) {
+  --journey-color: #249a70;
+}
+
+.caseSite :global(.journey-timeline li[data-journey-kind="result"]) {
+  --journey-color: #bd8a17;
+}
+
+.caseSite :global(.journey-timeline li[data-journey-kind="lesson"]) {
+  --journey-color: #bc4f86;
+}
+
+.caseSite :global(.journey-node) {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--journey-color);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--journey-color) 10%, var(--journey-card));
+  box-shadow: 0 0 0 0.35rem var(--journey-bg);
+  color: var(--journey-color);
+  place-items: center;
+  font-family: Georgia, serif;
+  font-size: 0.78rem;
+}
+
+.caseSite :global(.journey-card) {
+  position: relative;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--journey-color) 24%, var(--journey-line));
+  border-left: 4px solid var(--journey-color);
+  border-radius: 0.25rem 0.85rem 0.85rem 0.25rem;
+  background: color-mix(in srgb, var(--journey-color) 7%, var(--journey-card));
+}
+
+.caseSite :global(.journey-card.has-link) {
+  padding-right: 4.3rem;
+}
+
+.caseSite :global(.journey-kind) {
+  margin: 0;
+  color: var(--journey-color);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.caseSite :global(.journey-card h3) {
+  margin: 0.42rem 0 0;
+  font-size: clamp(1rem, 2vw, 1.22rem);
+  font-weight: 610;
+  letter-spacing: -0.025em;
+}
+
+.caseSite :global(.journey-card > p:last-of-type) {
+  margin: 0.55rem 0 0;
+  color: var(--journey-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.caseSite :global(.journey-node-link) {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid color-mix(in srgb, var(--journey-color) 44%, var(--journey-line));
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--journey-card) 78%, transparent);
+  color: var(--journey-color);
+  place-items: center;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.caseSite :global(.journey-node-link:hover) {
+  background: var(--journey-card);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--journey-color) 18%, transparent);
+  transform: translateY(-2px);
+}
+
+.caseSite :global(.journey-node-link svg) {
+  width: 1.08rem;
+  height: 1.08rem;
+  stroke-width: 2;
+}
+
 .caseSite :global(.project-stack) {
   margin-bottom: clamp(4rem, 8vw, 6.5rem);
   border-color: var(--line);
@@ -368,6 +734,26 @@
   border-radius: 0 0.65rem 0.65rem 0;
   background: #f2f5ff;
   color: var(--paper-muted);
+}
+
+.caseSite :global(.case-companion) {
+  margin-bottom: clamp(4rem, 8vw, 6.5rem);
+  padding-top: clamp(1rem, 2vw, 2rem);
+}
+
+.caseSite :global(.case-companion > .case-section-heading) {
+  grid-template-columns: minmax(0, 0.82fr) minmax(18rem, 0.52fr);
+  align-items: end;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.caseSite :global(.case-companion .case-section-heading h2) {
+  max-width: 14ch;
+  text-align: left;
+}
+
+.caseSite :global(.case-companion .slide-viewer) {
+  margin-bottom: 0;
 }
 
 .caseSite :global(.case-content > section),
@@ -614,7 +1000,8 @@
   .caseSite :global(.case-overview),
   .caseSite :global(.case-section-heading),
   .caseSite :global(.case-capabilities),
-  .caseSite :global(.pdf-case-hero) {
+  .caseSite :global(.pdf-case-hero),
+  .caseSite :global(.case-companion > .case-section-heading) {
     grid-template-columns: 1fr;
   }
 
@@ -649,21 +1036,74 @@
     text-align: left;
   }
 
+  .caseSite :global(.journey-trigger) {
+    min-height: 10rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    border-radius: 1.6rem;
+  }
+
+  .caseSite :global(.journey-trigger-icon) {
+    width: 4.1rem;
+    height: 4.1rem;
+  }
+
+  .caseSite :global(.journey-trigger-icon svg) {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .caseSite :global(.journey-trigger-action) {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .caseSite :global(.journey-dialog) {
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .caseSite :global(.journey-dialog-heading h2) {
+    max-width: 12rem;
+    font-size: 1.1rem;
+  }
+
+  .caseSite :global(.journey-dialog-body) {
+    padding: 1.2rem;
+  }
+
+  .caseSite :global(.journey-timeline::before) {
+    left: 1.35rem;
+  }
+
+  .caseSite :global(.journey-timeline li) {
+    grid-template-columns: 2.8rem minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .caseSite :global(.journey-node) {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
   .caseSite :global(.slide-frame) {
-    margin-inline: 2.4rem;
+    --slide-arrow-size: 2.75rem;
+    --slide-arrow-gap: 0.4rem;
+    margin-inline: calc(var(--slide-arrow-size) + var(--slide-arrow-gap));
   }
 
   .caseSite :global(.slide-arrow) {
-    width: 3.2rem;
-    height: 3.2rem;
+    width: var(--slide-arrow-size);
+    height: var(--slide-arrow-size);
   }
 
   .caseSite :global(.slide-arrow-previous) {
-    left: -2.5rem;
+    left: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
   }
 
   .caseSite :global(.slide-arrow-next) {
-    right: -2.5rem;
+    right: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
   }
 
   .caseSite :global(.slide-viewer-meta),
@@ -714,8 +1154,9 @@
 }
 
 :global(html[data-theme="dark"]) .caseSite :global(.slide-arrow) {
-  border-color: var(--line-strong);
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border-color: #73746f;
+  background: #f2f2ef;
+  color: #777873;
 }
 
 :global(html[data-theme="dark"]) .caseSite :global(.slide-arrow:hover),
@@ -723,6 +1164,12 @@
 :global(html[data-theme="dark"]) .caseSite :global(.repository-button) {
   background: var(--paper);
   color: #151613;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.slide-arrow:hover) {
+  border-color: #a3a49e;
+  background: #ffffff;
+  color: #555650;
 }
 
 :global(html[data-theme="dark"]) .caseSite :global(.pending-case-study) {
@@ -739,6 +1186,27 @@
 
 :global(html[data-theme="dark"]) .caseSite :global(.project-stack-description) {
   background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.journey-dialog) {
+  --journey-bg: #151613;
+  --journey-card: #1d1e1b;
+  --journey-header: #191a17;
+  --journey-line: #383a34;
+  --journey-muted: #aaa9a2;
+  border-color: var(--journey-line);
+  color: #f1f1ed;
+  color-scheme: dark;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.journey-dialog-mark),
+:global(html[data-theme="dark"]) .caseSite :global(.journey-dialog-header > button) {
+  background: #203027;
+  color: #8bc49c;
+}
+
+:global(html[data-theme="dark"]) .caseSite :global(.journey-dialog-heading p) {
+  color: #8bc49c;
 }
 
 :global(html[data-theme="dark"]) .caseSite :global(.pdf-dialog) {

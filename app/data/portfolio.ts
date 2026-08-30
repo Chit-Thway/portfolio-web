@@ -69,6 +69,40 @@ export const portfolio = {
   ],
   projects: [
     {
+      id: "portfolio-v2",
+      number: "00",
+      title: "Portfolio V2",
+      category: "Personal product and portfolio",
+      status: "Live · You are already here",
+      summary:
+        "The website you are using right now: a portfolio rebuilt to get to the useful stuff quickly, then make the deeper work easy to check when someone wants the details.",
+      contribution:
+        "I designed it, wrote it, built it, tested it and shipped it on Cloudflare. I also gave myself permission to make the Diary much more ambitious than a portfolio technically needed to be.",
+      employerSignal:
+        "It shows how I turn a slightly vague brief into a real, production-backed product—then keep polishing the details without losing sight of the person using it.",
+      technologies: [
+        "React",
+        "TypeScript",
+        "Vinext",
+        "CSS Modules",
+        "Cloudflare Pages",
+        "D1",
+        "R2",
+      ],
+      highlights: [
+        "Designed for quick scanning without flattening the work",
+        "Deeper case studies and downloadable evidence",
+        "Production Diary with private publishing and media storage",
+      ],
+      links: [
+        {
+          label: "View repository",
+          href: "https://github.com/Chit-Thway/portfolio-web",
+        },
+      ],
+      featured: true,
+    },
+    {
       id: "windows-support-toolkit",
       number: "01",
       title: "Windows Support Diagnostic Toolkit",

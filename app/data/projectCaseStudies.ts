@@ -5,6 +5,9 @@ export type ProjectMedia =
   | { kind: "pending"; label: string; message: string };
 
 export type ProjectStackIcon =
+  | "react"
+  | "typescript"
+  | "cloudflare"
   | "powershell"
   | "windows"
   | "python"
@@ -47,10 +50,28 @@ export type ProjectCaseStudy = {
   introduction: string;
   media: ProjectMedia;
   stack?: ProjectStack;
+  companion?: {
+    eyebrow: string;
+    title: string;
+    introduction: string;
+    media: Extract<ProjectMedia, { kind: "slides" }>;
+  };
   actions?: Array<{
     label: string;
     href?: string;
   }>;
+  journey?: {
+    title: string;
+    items: Array<{
+      kind: "Goal" | "Problem" | "Solution" | "Result" | "Lesson";
+      title: string;
+      detail: string;
+      link?: {
+        label: string;
+        href: string;
+      };
+    }>;
+  };
   facts: Array<{ label: string; value: string }>;
   overview: string[];
   setup?: {
@@ -72,7 +93,203 @@ const qaReportPages = Array.from(
   (_, index) => `/projects/concise-digital-work/report-page-${index + 1}.png`,
 );
 
+const portfolioSlides = Array.from(
+  { length: 6 },
+  (_, index) => `/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-${index + 1}.png`,
+);
+
+const portfolioDiarySlides = Array.from(
+  { length: 6 },
+  (_, index) => `/projects/portfolio-v2/diary-slides/slide-${index + 1}.png`,
+);
+
 export const projectCaseStudies: ProjectCaseStudy[] = [
+  {
+    slug: "portfolio-v2",
+    eyebrow: "A case study about this very website",
+    introduction:
+      "yes, you are looking at it... this is the project and the place where the project is being explained. I rebuilt the portfolio so the useful stuff is easy to find, the deeper proof is there when someone wants it, and the whole thing still feels like me.",
+    media: {
+      kind: "slides",
+      slides: portfolioSlides,
+      downloadHref: "/projects/portfolio-v2/Portfolio-V2-Case-Study.pptx",
+      label: "Portfolio V2 website case study",
+    },
+    stack: {
+      subtitle: "A React portfolio with a Cloudflare-backed personal archive",
+      mark: "react",
+      groups: [
+        {
+          label: "Interface",
+          items: [
+            { name: "React", icon: "react" },
+            { name: "TypeScript", icon: "typescript" },
+            { name: "CSS Modules", icon: "css" },
+          ],
+        },
+        {
+          label: "Framework",
+          items: [
+            { name: "Vinext", icon: "javascript" },
+            { name: "Vite", icon: "javascript" },
+          ],
+        },
+        {
+          label: "Cloud",
+          items: [
+            { name: "Cloudflare Pages", icon: "cloudflare" },
+            { name: "Wrangler", icon: "cloudflare" },
+          ],
+        },
+        {
+          label: "Data and media",
+          items: [
+            { name: "D1", icon: "database" },
+            { name: "R2", icon: "cloudflare" },
+          ],
+        },
+        {
+          label: "Quality",
+          items: [
+            { name: "Rendered route checks", icon: "testing" },
+            { name: "ESLint", icon: "testing" },
+          ],
+        },
+      ],
+      description:
+        "The public portfolio stays mostly static and quick, while Cloudflare Pages Functions, D1 and R2 step in for the parts that genuinely need a backend—visitor data, Diary posts, private sessions and uploaded media.",
+    },
+    companion: {
+      eyebrow: "The personal side of the build",
+      title: "The Diary deserves its own little detour.",
+      introduction:
+        "The Diary started as a small personal archive and quietly became a proper feature: multi-media posts, audio, links, editing and a private publisher. Cramming all of that into the main deck felt a bit rude, so it gets its own six-slide case study here.",
+      media: {
+        kind: "slides",
+        slides: portfolioDiarySlides,
+        downloadHref: "/projects/portfolio-v2/Portfolio-Diary-Case-Study.pptx",
+        label: "Portfolio Diary case study",
+      },
+    },
+    actions: [
+      {
+        label: "View the live site",
+        href: "https://chitthway-portfolio.pages.dev",
+      },
+    ],
+    journey: {
+      title: "How this portfolio grew",
+      items: [
+        {
+          kind: "Goal",
+          title: "Give employers proof, not just claims",
+          detail:
+            "I wanted employers to see live demonstrations, understand each project quickly and judge the work for themselves.",
+        },
+        {
+          kind: "Problem",
+          title: "The evidence was scattered",
+          detail:
+            "LinkedIn’s limitations meant live projects, repositories, videos, reports and presentations all lived in different places.",
+        },
+        {
+          kind: "Solution",
+          title: "Give every project one complete home",
+          detail:
+            "I built my own portfolio so each project could bring its explanation, technology, demonstration, repository and supporting files together.",
+          link: {
+            label: "Open the portfolio homepage",
+            href: "https://chitthway-portfolio.pages.dev/",
+          },
+        },
+        {
+          kind: "Problem",
+          title: "Too much detail could overwhelm a quick visitor",
+          detail:
+            "Employers might leave if they had to read an entire case study before understanding what a project demonstrates.",
+        },
+        {
+          kind: "Solution",
+          title: "Create layers of information",
+          detail:
+            "The homepage provides the quick version, project pages provide the important detail, and presentations offer the deepest explanation.",
+        },
+        {
+          kind: "Problem",
+          title: "A professional feed is not a personal scrapbook",
+          detail:
+            "Posting casual photos and small moments repeatedly on LinkedIn would bury the work, but hiding that side of me felt incomplete too.",
+        },
+        {
+          kind: "Solution",
+          title: "Give the personal side its own home",
+          detail:
+            "I built the Diary: an Instagram-like visual feed with audio that shows I have a life outside the IDE without making the professional story noisy.",
+          link: {
+            label: "Open the Diary",
+            href: "https://chitthway-portfolio.pages.dev/diary/",
+          },
+        },
+        {
+          kind: "Result",
+          title: "Employers can choose how deeply to explore",
+          detail:
+            "They can scan the homepage, open a project, watch a demonstration, inspect the technology or read a complete case study.",
+          link: {
+            label: "Open the live portfolio website",
+            href: "https://chitthway-portfolio.pages.dev/",
+          },
+        },
+        {
+          kind: "Result",
+          title: "Professional work and personality can coexist",
+          detail:
+            "Project pages remain focused while the Diary provides an optional view of my life outside the IDE.",
+        },
+        {
+          kind: "Lesson",
+          title: "Content structure matters as much as visual design",
+          detail:
+            "Organising information around how employers browse was just as important as choosing the colors, layouts and interactions.",
+        },
+      ],
+    },
+    facts: [
+      { label: "Status", value: "Live and still being polished" },
+      { label: "Role", value: "Design, writing, build and delivery" },
+      { label: "Hosting", value: "Cloudflare Pages" },
+      { label: "Backend", value: "Pages Functions, D1 and R2" },
+    ],
+    overview: [
+      "The problem was pretty simple: a list of skills can say a lot without really proving much. I wanted the first screen to tell someone who I am and what I do, then give every serious claim a short path to something real—working software, a case study, a public repository or a downloadable artifact.",
+      "So I treated the portfolio like a product instead of a decorative résumé. The homepage handles the quick scan; project pages slow things down when the detail matters. Light and dark themes, keyboard-aware interactions, reduced-motion behaviour and clear fallbacks are part of the build rather than an accessibility paragraph added afterwards.",
+      "There is also a more personal corner of the site. The Diary has its own production backend and publishing workflow, but it stays a supporting character here; its companion case study below tells that story properly.",
+    ],
+    decisions: [
+      {
+        title: "Get to the point",
+        detail:
+          "The opening screen covers role, location, availability and the useful next actions before asking anyone to scroll through my life story.",
+      },
+      {
+        title: "Let the work explain itself",
+        detail:
+          "Project cards give the short version, while the deeper pages keep architecture, decisions, media and honest project status close together.",
+      },
+      {
+        title: "Keep the human bit",
+        detail:
+          "The visual system stays restrained, but the writing, photo directory, life outside the IDE and Diary stop the site from feeling like a very tidy spreadsheet.",
+      },
+      {
+        title: "Ship it like a real thing",
+        detail:
+          "Wrangler deployment, production bindings, rendered-route checks and backend tests make updates repeatable instead of depending on a lucky drag-and-drop release.",
+      },
+    ],
+    note:
+      "This page will probably keep changing a little, which is the point. The portfolio is live, but it is also allowed to grow as the work does.",
+  },
   {
     slug: "windows-support-toolkit",
     eyebrow: "Support engineering case study",

@@ -11,6 +11,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import {
+  SiCloudflare,
   SiDotnet,
   SiGit,
   SiGooglechrome,
@@ -18,6 +19,8 @@ import {
   SiPython,
   SiJira,
   SiWordpress,
+  SiReact,
+  SiTypescript,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
@@ -43,6 +46,27 @@ type FeaturedProject = {
 };
 
 const featuredProjects: FeaturedProject[] = [
+  {
+    slug: "portfolio-v2",
+    label: "The site you are on · Live",
+    title: "Portfolio V2",
+    description:
+      "A portfolio I rebuilt because a list of skills was never going to tell the whole story. It gets to the useful bits quickly, then lets the work speak for itself.",
+    contribution:
+      "Designed, wrote, built, tested and shipped the whole thing—including the slightly over-engineered Diary I wanted anyway.",
+    outcome: "Live, evolving and very much mine",
+    size: "large",
+    media: {
+      kind: "image",
+      src: "/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-1.png",
+      alt: "Opening slide of the Portfolio V2 website case study",
+    },
+    tools: [
+      { name: "React", icon: SiReact },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Cloudflare", icon: SiCloudflare },
+    ],
+  },
   {
     slug: "job-application-tracker",
     label: "Flagship product · Live",
@@ -315,6 +339,9 @@ export default function Home() {
                 Contact me <span aria-hidden="true">↗</span>
               </a>
             ) : null}
+            <a className={styles.secondaryAction} href="/diary/">
+              View Memoir <span aria-hidden="true">→</span>
+            </a>
           </div>
 
           <div className={styles.availability}>
@@ -339,7 +366,7 @@ export default function Home() {
               <h2 id="projects-title">Evidence, not just claims.</h2>
             </div>
             <p>
-              Four selected projects showing how I build, investigate, test and support software.
+              Five selected projects showing how I build, investigate, test and support software.
             </p>
           </div>
 

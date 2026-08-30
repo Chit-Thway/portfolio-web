@@ -36,6 +36,8 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /troubleshooting/);
   assert.match(html, /software quality/);
   assert.match(html, /Job Application Tracker/);
+  assert.match(html, /Portfolio V2/);
+  assert.match(html, /Live, evolving and very much mine/);
   assert.match(html, /Windows Support Diagnostic Toolkit/);
   assert.match(html, /Web Development &amp; QA Work/);
   assert.match(html, /Flagship product · Live/);
@@ -64,6 +66,7 @@ test("renders the bounded Version 2 navigation", async () => {
   assert.match(html, />Experience</);
   assert.match(html, /href=["']\/diary\/["']/);
   assert.match(html, />Diary</);
+  assert.match(html, /View Memoir/);
   assert.doesNotMatch(html, /aria-disabled=["']true["']/);
   assert.doesNotMatch(html, /href=["']#(?:skills|education|contact)["']/);
 });
@@ -148,11 +151,12 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /Download PDF/);
 });
 
-test("links the four selected projects to their case studies", async () => {
+test("links the five selected projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();
 
   for (const slug of [
+    "portfolio-v2",
     "job-application-tracker",
     "windows-support-toolkit",
     "concise-digital-work",
@@ -164,6 +168,32 @@ test("links the four selected projects to their case studies", async () => {
 
   assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
+});
+
+test("renders the Portfolio V2 and Diary companion case studies in order", async () => {
+  const response = await render("/projects/portfolio-v2");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /yes, you are looking at it\.\.\./);
+  assert.match(html, /Portfolio V2 website case study, slide 1 of 6/);
+  assert.match(html, /Portfolio-V2-Case-Study\.pptx/);
+  assert.match(html, /The Diary deserves its own little detour\./);
+  assert.match(html, /Portfolio Diary case study, slide 1 of 6/);
+  assert.match(html, /Portfolio-Diary-Case-Study\.pptx/);
+  assert.match(html, /How this project grew/);
+  assert.match(html, /How this portfolio grew/);
+  assert.match(html, /data-journey-kind="problem"/);
+  assert.match(html, /data-journey-kind="solution"/);
+  assert.match(html, /The evidence was scattered/);
+  assert.match(html, /Create layers of information/);
+  assert.match(html, /Professional work and personality can coexist/);
+  assert.match(html, /Content structure matters as much as visual design/);
+  assert.match(html, /aria-label="Open the Diary \(opens in a new tab\)"/);
+  assert.doesNotMatch(html, /data-journey-kind="decision"/);
+  assert.ok(html.indexOf('class="case-hero"') < html.indexOf('class="project-journey"'));
+  assert.ok(html.indexOf("The Diary deserves its own little detour.") < html.indexOf("Technology architecture"));
+  assert.ok(html.indexOf("Portfolio V2 website case study") < html.indexOf("Portfolio Diary case study"));
 });
 
 test("renders the Windows toolkit video and simple setup", async () => {
