@@ -16,6 +16,7 @@ const origin = process.env.PAGES_ORIGIN ?? "https://chitthway-portfolio.pages.de
 const projectSlugs = [
   "portfolio-v2",
   "windows-support-toolkit",
+  "windows-storage-extension",
   "jira-service-management",
   "quick-fire-questions",
   "job-application-tracker",

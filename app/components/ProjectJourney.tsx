@@ -67,15 +67,27 @@ export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
           <div className="journey-dialog-body">
             <ol className="journey-timeline">
               {journey.items.map((item, index) => (
-                <li key={`${item.kind}-${item.title}`} data-journey-kind={item.kind.toLowerCase()}>
+                <li
+                  key={`${item.kind}-${item.title}`}
+                  data-journey-kind={item.kind.toLowerCase()}
+                  data-journey-highlight={item.badge ? "true" : undefined}
+                >
                   <span className="journey-node" aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
+                    {item.badge ? <span className="journey-node-star">★</span> : null}
                   </span>
-                  <article className={item.link ? "journey-card has-link" : "journey-card"}>
-                    <p className="journey-kind">{item.kind}</p>
+                  <article
+                    className={journey.showLinks !== false && item.link ? "journey-card has-link" : "journey-card"}
+                  >
+                    {item.badge ? (
+                      <p className="journey-badge">
+                        <span aria-hidden="true">★</span> {item.badge}
+                      </p>
+                    ) : null}
+                    <p className="journey-kind">{item.label ?? item.kind}</p>
                     <h3>{item.title}</h3>
                     <p>{item.detail}</p>
-                    {item.link ? (
+                    {journey.showLinks !== false && item.link ? (
                       <a
                         className="journey-node-link"
                         href={item.link.href}

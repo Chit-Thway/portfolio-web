@@ -589,7 +589,7 @@
 }
 
 .caseSite :global(.journey-timeline li[data-journey-kind="result"]) {
-  --journey-color: #bd8a17;
+  --journey-color: #3274d9;
 }
 
 .caseSite :global(.journey-timeline li[data-journey-kind="lesson"]) {
@@ -612,6 +612,29 @@
   font-size: 0.78rem;
 }
 
+.caseSite :global(.journey-timeline li[data-journey-highlight="true"] .journey-node) {
+  box-shadow:
+    0 0 0 0.35rem var(--journey-bg),
+    0 0 0 0.5rem rgba(199, 148, 29, 0.3);
+}
+
+.caseSite :global(.journey-node-star) {
+  position: absolute;
+  top: -0.55rem;
+  right: -0.55rem;
+  display: grid;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 2px solid var(--journey-bg);
+  border-radius: 50%;
+  background: #c7941d;
+  box-shadow: 0 4px 12px rgba(125, 88, 7, 0.28);
+  color: #fff9df;
+  font-family: inherit;
+  font-size: 0.7rem;
+  place-items: center;
+}
+
 .caseSite :global(.journey-card) {
   position: relative;
   padding: 1.1rem 1.2rem 1.2rem;
@@ -631,6 +654,24 @@
   font-size: 0.68rem;
   font-weight: 760;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.caseSite :global(.journey-badge) {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+  padding: 0.28rem 0.52rem;
+  border: 1px solid rgba(177, 126, 15, 0.34);
+  border-radius: 999px;
+  background: rgba(218, 167, 49, 0.12);
+  color: #9a6b05;
+  font-size: 0.64rem;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  line-height: 1;
   text-transform: uppercase;
 }
 

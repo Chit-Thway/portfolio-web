@@ -39,9 +39,11 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Portfolio V2/);
   assert.match(html, /Live, evolving and very much mine/);
   assert.match(html, /Windows Support Diagnostic Toolkit/);
+  assert.match(html, /Storage Insights &amp; Guided Cleanup/);
   assert.match(html, /Web Development &amp; QA Work/);
   assert.match(html, /Flagship product · Live/);
-  assert.match(html, /Live product · Public demo available/);
+  assert.match(html, /Live product · Free account available/);
+  assert.match(html, /save up to 10 applications/);
   assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=49cf7aef"/);
   assert.match(html, /Jira Service Management Simulation/);
   assert.match(html, /Service-management simulation · Public/);
@@ -151,7 +153,7 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /Download PDF/);
 });
 
-test("links the five selected projects to their case studies", async () => {
+test("links the six selected projects to their case studies", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -159,6 +161,7 @@ test("links the five selected projects to their case studies", async () => {
     "portfolio-v2",
     "job-application-tracker",
     "windows-support-toolkit",
+    "windows-storage-extension",
     "concise-digital-work",
     "jira-service-management",
   ]) {
@@ -168,6 +171,7 @@ test("links the five selected projects to their case studies", async () => {
 
   assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
+  assert.ok(html.indexOf("Windows Support Diagnostic Toolkit") < html.indexOf("Storage Insights &amp; Guided Cleanup"));
 });
 
 test("renders the Portfolio V2 and Diary companion case studies in order", async () => {
@@ -185,8 +189,15 @@ test("renders the Portfolio V2 and Diary companion case studies in order", async
   assert.match(html, /How this portfolio grew/);
   assert.match(html, /data-journey-kind="problem"/);
   assert.match(html, /data-journey-kind="solution"/);
-  assert.match(html, /The evidence was scattered/);
+  assert.match(html, /LinkedIn could not keep the evidence together/);
+  assert.match(html, /Initial Problem/);
+  assert.match(html, /Give every project one complete home/);
+  assert.match(html, /First idea/);
+  assert.doesNotMatch(html, /The evidence was scattered/);
   assert.match(html, /Create layers of information/);
+  assert.match(html, /data-journey-highlight="true"/);
+  assert.match(html, /Unexpected idea/);
+  assert.match(html, /The personal section became a Diary/);
   assert.match(html, /Professional work and personality can coexist/);
   assert.match(html, /Content structure matters as much as visual design/);
   assert.match(html, /aria-label="Open the Diary \(opens in a new tab\)"/);
@@ -213,8 +224,43 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /Read-only Windows evidence pipeline/);
   assert.match(html, /PowerShell/);
   assert.match(html, /Pytest/);
+  assert.match(html, /How this toolkit grew/);
+  assert.match(html, /Initial Problem/);
+  assert.match(html, /First idea/);
+  assert.match(html, /Make Windows evidence understandable/);
+  assert.match(html, /Collect, validate, explain/);
+  assert.match(html, /A local support workflow/);
+  assert.doesNotMatch(html, /class="journey-node-link"/);
   assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.ok(html.indexOf("Other projects") < html.indexOf("demonstration.mp4"));
+});
+
+test("renders the Windows storage extension with a simple run and process tree", async () => {
+  const response = await render("/projects/windows-storage-extension");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Storage Insights &amp; Guided Cleanup/);
+  assert.match(html, /\/projects\/windows-storage-extension\/demonstration\.mp4/);
+  assert.match(html, /\/projects\/windows-storage-extension\/demonstration\.vtt/);
+  assert.match(html, /43 second demonstration/);
+  assert.match(html, /Local storage evidence and guarded cleanup workflow/);
+  assert.match(html, /non-overlapping drive accounting/i);
+  assert.match(html, /Recycle Bin only/);
+  assert.match(html, /python -m storage/);
+  assert.match(html, /selected-drive-report\.json/);
+  assert.match(html, /selected-drive-file-types\.json/);
+  assert.match(html, /Replace C:\\ with the drive you want to review/);
+  assert.match(html, /storage-extension-v2-ui-polish/);
+  assert.match(html, /class="project-journey"/);
+  assert.match(html, /How this extension grew/);
+  assert.match(html, /A warning without a next step/);
+  assert.match(html, /Find old files/);
+  assert.match(html, /Pivot to file types/);
+  assert.match(html, /Unexpected idea/);
+  assert.match(html, /Scan once, filter many times/);
+  assert.match(html, /Guardrails cannot fix the wrong model/);
+  assert.doesNotMatch(html, /class="journey-node-link"/);
 });
 
 test("renders the Jira slide viewer and presentation download", async () => {
@@ -241,25 +287,34 @@ test("renders an honest in-progress page for Quick-Fire Questions", async () => 
   assert.match(html, /Two-client testing/);
 });
 
-test("renders the deployed Job Tracker with live actions and no setup steps", async () => {
+test("renders the public Job Tracker with its free plan and live actions", async () => {
   const response = await render("/projects/job-application-tracker");
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /\/projects\/job-application-tracker\/demonstration\.mp4/);
-  assert.match(html, /Deployed MVP — Private QA/);
+  assert.match(html, /Live · Public/);
+  assert.match(html, /Up to 10 saved applications/);
   assert.match(html, /Solo Product Architect and Full-Stack Engineer/);
   assert.match(html, /View live project/);
   assert.match(html, /Explore public demo/);
   assert.match(html, /Get Chrome extension/);
   assert.match(html, /chromewebstore\.google\.com\/detail\/job-application-tracker-c\/ofeagkadonbdgjhdiobfdnmafhoknkig/);
   assert.match(html, /Available on Chrome Web Store/);
-  assert.match(html, /azurewebsites\.net\/demo/);
+  assert.match(html, /myjobtracker\.com\.au\/demo/);
   assert.match(html, /More than 200 automated tests/);
   assert.match(html, /Secure production job-search platform/);
   assert.match(html, /ASP\.NET Core MVC/);
   assert.match(html, /PostgreSQL/);
   assert.match(html, /Azure App Service/);
   assert.match(html, /Chrome Manifest V3/);
+  assert.match(html, /How this tracker grew/);
+  assert.match(html, /Initial Problem/);
+  assert.match(html, /First idea/);
+  assert.match(html, /Lost track in a phone interview/);
+  assert.match(html, /Unexpected idea/);
+  assert.match(html, /Inspired idea/);
+  assert.match(html, /myjobtracker\.com\.au\/settings/);
+  assert.doesNotMatch(html, /azurewebsites\.net|Private QA|QA in progress/);
   assert.doesNotMatch(html, /pending review|awaiting (Google )?review|not publicly available yet/i);
   assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.doesNotMatch(html, /Private until launch|production hosting[^<]*not available|final application domain[^<]*not available/i);

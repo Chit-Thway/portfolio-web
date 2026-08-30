@@ -72,10 +72,10 @@ const featuredProjects: FeaturedProject[] = [
     label: "Flagship product · Live",
     title: "Job Application Tracker",
     description:
-      "A private workspace for capturing job ads, tracking applications and keeping every follow-up and next action in one place.",
+      "A public workspace where anyone can create a free account, save up to 10 applications and keep every follow-up and next action together.",
     contribution:
       "Designed, built, tested and deployed end to end, including its approved Chrome extension.",
-    outcome: "Live product · Public demo available",
+    outcome: "Live product · Free account available",
     size: "large",
     media: {
       kind: "image",
@@ -108,6 +108,27 @@ const featuredProjects: FeaturedProject[] = [
     tools: [
       { name: "PowerShell", icon: TbBrandPowershell },
       { name: "Python", icon: SiPython },
+      { name: "QA", icon: FaBug },
+    ],
+  },
+  {
+    slug: "windows-storage-extension",
+    label: "Windows support extension · Public",
+    title: "Storage Insights & Guided Cleanup",
+    description:
+      "A local extension that explains where drive space is used, narrows the review by file type or folder and keeps cleanup recoverable.",
+    contribution:
+      "Built the storage contracts, metadata-only scanners, review interfaces and guarded Recycle Bin workflow.",
+    outcome: "Storage evidence made safe to review",
+    size: "standard",
+    media: {
+      kind: "image",
+      src: "/projects/windows-storage-extension/thumbnail.png",
+      alt: "Storage Insights dashboard showing non-overlapping drive-space categories",
+    },
+    tools: [
+      { name: "Python", icon: SiPython },
+      { name: "Windows", icon: TbBrandPowershell },
       { name: "QA", icon: FaBug },
     ],
   },
@@ -366,7 +387,7 @@ export default function Home() {
               <h2 id="projects-title">Evidence, not just claims.</h2>
             </div>
             <p>
-              Five selected projects showing how I build, investigate, test and support software.
+              Six selected projects showing how I build, investigate, test and support software.
             </p>
           </div>
 
