@@ -1,7 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element, jsx-a11y/media-has-caption -- runtime media uses required written descriptions; timed caption files are not part of this milestone */
+/* eslint-disable @next/next/no-img-element, jsx-a11y/media-has-caption -- runtime media can include written descriptions; timed caption files are not part of this milestone */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FaLinkedinIn } from "react-icons/fa6";
+import { FiExternalLink } from "react-icons/fi";
+import { SiGithub } from "react-icons/si";
 import styles from "../diary/diary.module.css";
 
 type DiaryMediaItem = {
@@ -22,6 +25,11 @@ type DiaryPost = {
   audioType: string | null;
   audioTitle: string | null;
   audioUrl: string | null;
+  links?: Array<{
+    position: number;
+    url: string;
+    kind: "github" | "linkedin" | "link";
+  }>;
   publishedAt: string;
 };
 
@@ -80,7 +88,7 @@ function DiaryMedia({ item }: { item: DiaryMediaItem }) {
         controls
         playsInline
         preload="metadata"
-        aria-label={item.altText}
+        aria-label={item.altText || "Diary video"}
       >
         <source src={item.mediaUrl} type={item.mediaType} />
       </video>
@@ -94,6 +102,37 @@ function DiaryMedia({ item }: { item: DiaryMediaItem }) {
       alt={item.altText}
       loading="lazy"
     />
+  );
+}
+
+function DiaryPostLinks({ post }: { post: DiaryPost }) {
+  const links = post.links ?? [];
+  if (links.length === 0) return null;
+
+  return (
+    <div className={styles.postLinks} aria-label="Post links">
+      {links.map((link) => {
+        const label = link.kind === "github"
+          ? "GitHub"
+          : link.kind === "linkedin"
+            ? "LinkedIn"
+            : new URL(link.url).hostname.replace(/^www\./u, "");
+        return (
+          <a
+            className={`${styles.postLink} ${styles[`postLink${link.kind[0].toUpperCase()}${link.kind.slice(1)}`]}`}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={`${link.position}-${link.url}`}
+          >
+            {link.kind === "github" ? <SiGithub aria-hidden="true" /> : null}
+            {link.kind === "linkedin" ? <FaLinkedinIn aria-hidden="true" /> : null}
+            {link.kind === "link" ? <FiExternalLink aria-hidden="true" /> : null}
+            <span>{label}</span>
+          </a>
+        );
+      })}
+    </div>
   );
 }
 
@@ -491,7 +530,7 @@ export function DiaryFeed() {
                 onToggleMuted={toggleAudio}
               />
 
-              {post.caption || post.audioUrl ? (
+              {post.caption || post.audioUrl || (post.links?.length ?? 0) > 0 ? (
                 <div className={styles.postDetails}>
                   {post.caption ? (
                     <p className={styles.postCaption}>
@@ -506,6 +545,7 @@ export function DiaryFeed() {
                       registerAudio={registerAudio}
                     />
                   ) : null}
+                  <DiaryPostLinks post={post} />
                 </div>
               ) : null}
             </article>

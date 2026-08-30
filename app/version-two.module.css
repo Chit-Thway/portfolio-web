@@ -7,7 +7,9 @@
   --v2-line: #dfdfda;
   --v2-line-dark: #c9c9c2;
   --v2-accent: #2667ff;
+  width: 100%;
   min-height: 100vh;
+  overflow-x: clip;
   background: var(--v2-background);
   color: var(--v2-text);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -529,6 +531,125 @@
   vertical-align: 0.05rem;
 }
 
+.ahegsButton {
+  display: inline-flex;
+  min-height: 2.65rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.4rem;
+  margin-top: 1rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--v2-line-dark);
+  border-radius: 0.68rem;
+  background: var(--v2-surface);
+  color: var(--v2-text);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+.ahegsButton:hover {
+  transform: translateY(-2px);
+  border-color: #9a9a94;
+}
+
+.pdfDialog {
+  width: min(calc(100vw - 2rem), 72rem);
+  height: min(calc(100vh - 2rem), 52rem);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--v2-line-dark);
+  border-radius: 1rem;
+  background: var(--v2-surface);
+  color: var(--v2-text);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+
+.pdfDialog::backdrop {
+  background: rgba(12, 12, 11, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.pdfDialogHeader {
+  display: flex;
+  min-height: 4.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--v2-line);
+}
+
+.pdfDialogHeader > div:first-child {
+  min-width: 0;
+}
+
+.pdfDialogHeader span,
+.pdfDialogHeader strong {
+  display: block;
+}
+
+.pdfDialogHeader span {
+  margin-bottom: 0.2rem;
+  color: var(--v2-soft);
+  font-size: 0.61rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdfDialogHeader strong {
+  overflow: hidden;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdfDialogActions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.pdfDialogActions a,
+.pdfDialogActions button {
+  display: inline-grid;
+  min-height: 2.35rem;
+  place-items: center;
+  border: 1px solid var(--v2-line-dark);
+  border-radius: 0.62rem;
+  background: var(--v2-surface);
+  color: var(--v2-text);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.pdfDialogActions a {
+  padding-inline: 0.8rem;
+}
+
+.pdfDialogActions button {
+  width: 2.35rem;
+  padding: 0;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.pdfViewer {
+  display: block;
+  width: 100%;
+  height: calc(100% - 4.25rem);
+  border: 0;
+  background: #e7e7e4;
+}
+
 .profileVisual {
   position: relative;
   overflow: hidden;
@@ -690,6 +811,31 @@
 
   .profileFacts > div {
     grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+
+  .ahegsButton {
+    width: 100%;
+  }
+
+  .pdfDialog {
+    width: calc(100vw - 1rem);
+    height: calc(100vh - 1rem);
+    border-radius: 0.8rem;
+  }
+
+  .pdfDialogHeader {
+    min-height: 7rem;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+
+  .pdfDialogActions {
+    justify-content: space-between;
+  }
+
+  .pdfViewer {
+    height: calc(100% - 7rem);
   }
 }
 .projects {

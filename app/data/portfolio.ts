@@ -69,6 +69,40 @@ export const portfolio = {
   ],
   projects: [
     {
+      id: "portfolio-v2",
+      number: "00",
+      title: "Portfolio V2",
+      category: "Personal product and portfolio",
+      status: "Live · You are already here",
+      summary:
+        "The website you are using right now: a portfolio rebuilt to get to the useful stuff quickly, then make the deeper work easy to check when someone wants the details.",
+      contribution:
+        "I designed it, wrote it, built it, tested it and shipped it on Cloudflare. I also gave myself permission to make the Diary much more ambitious than a portfolio technically needed to be.",
+      employerSignal:
+        "It shows how I turn a slightly vague brief into a real, production-backed product—then keep polishing the details without losing sight of the person using it.",
+      technologies: [
+        "React",
+        "TypeScript",
+        "Vinext",
+        "CSS Modules",
+        "Cloudflare Pages",
+        "D1",
+        "R2",
+      ],
+      highlights: [
+        "Designed for quick scanning without flattening the work",
+        "Deeper case studies and downloadable evidence",
+        "Production Diary with private publishing and media storage",
+      ],
+      links: [
+        {
+          label: "View repository",
+          href: "https://github.com/Chit-Thway/portfolio-web",
+        },
+      ],
+      featured: true,
+    },
+    {
       id: "windows-support-toolkit",
       number: "01",
       title: "Windows Support Diagnostic Toolkit",
@@ -91,6 +125,39 @@ export const portfolio = {
         "Read-only collection by design",
         "Healthy, malformed, partial and problem fixtures",
         "Privacy and failure hardening",
+      ],
+      links: [
+        {
+          label: "View repository",
+          href: "https://github.com/Chit-Thway/windows-support-diagnostic-toolkit",
+        },
+      ],
+      featured: true,
+    },
+    {
+      id: "windows-storage-extension",
+      number: "01B",
+      title: "Storage Insights & Guided Cleanup",
+      category: "Windows support extension",
+      status: "Completed · Public repository",
+      summary:
+        "A local storage-analysis extension that explains where drive space is used, supports focused file and folder review, and keeps cleanup deliberate and recoverable.",
+      contribution:
+        "Extended the Windows support workflow with explicit metadata-only scanning, versioned report contracts, non-overlapping drive accounting, file-type and ranked-folder exploration, and guarded Recycle Bin cleanup with live revalidation.",
+      employerSignal:
+        "Demonstrates safety-focused feature expansion, transparent data modelling, careful handling of partial Windows evidence, and the ability to turn a broad disk-space warning into a practical support workflow.",
+      technologies: [
+        "Python",
+        "Flask",
+        "JavaScript",
+        "JSON Schema",
+        "Pytest",
+        "Windows",
+      ],
+      highlights: [
+        "Non-overlapping drive-space accounting",
+        "File-type and ranked-folder exploration",
+        "Revalidated Recycle Bin-only cleanup",
       ],
       links: [
         {
@@ -150,9 +217,9 @@ export const portfolio = {
       number: "04",
       title: "Job Application Tracker",
       category: "Production full-stack application",
-      status: "Live · QA in progress",
+      status: "Live · Free account available",
       summary:
-        "A production-deployed job-search management platform for capturing opportunities, tracking application progress, planning follow-ups and preserving important applications. Built with ASP.NET Core, PostgreSQL, Azure and a companion Chrome extension.",
+        "A public, production-deployed job-search platform where anyone can create a free account, save up to 10 applications, track progress and plan follow-ups. Built with ASP.NET Core, PostgreSQL, Azure and a companion Chrome extension.",
       contribution:
         "As Solo Product Architect and Full-Stack Engineer, architected and delivered the application across secure identity, private user data, deterministic job capture, workflow management, retention automation, administration and production deployment.",
       employerSignal:

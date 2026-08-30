@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { KeyboardEvent, TouchEvent } from "react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 type ProjectVideoProps = {
   src: string;
@@ -110,7 +111,7 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
           onClick={showPrevious}
           aria-label="Show previous slide"
         >
-          <span aria-hidden="true">←</span>
+          <LuChevronLeft aria-hidden="true" />
         </button>
         <button
           className="slide-arrow slide-arrow-next"
@@ -118,7 +119,7 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
           onClick={showNext}
           aria-label="Show next slide"
         >
-          <span aria-hidden="true">→</span>
+          <LuChevronRight aria-hidden="true" />
         </button>
       </div>
       <p className="slide-counter" aria-live="polite">

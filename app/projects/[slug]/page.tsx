@@ -8,6 +8,7 @@ import {
   SlideViewer,
 } from "@/app/components/ProjectMedia";
 import { ProjectStack } from "@/app/components/ProjectStack";
+import { ProjectJourney } from "@/app/components/ProjectJourney";
 import { RepositoryLink } from "@/app/components/RepositoryLink";
 import {
   getProjectCaseStudy,
@@ -240,6 +241,19 @@ function CaseStudyDetails({
   );
 }
 
+function CompanionCaseStudy({ companion }: { companion: NonNullable<ProjectCaseStudy["companion"]> }) {
+  return (
+    <section className="case-companion" aria-labelledby="companion-case-title">
+      <div className="case-section-heading">
+        <p className="case-section-label">{companion.eyebrow}</p>
+        <h2 id="companion-case-title">{companion.title}</h2>
+        <p>{companion.introduction}</p>
+      </div>
+      <SlideViewer {...companion.media} />
+    </section>
+  );
+}
+
 function ProjectPagination({ slug }: { slug: string }) {
   const availableProjects = projectCaseStudies.filter((item) => item.media.kind !== "pending");
   const currentIndex = availableProjects.findIndex((item) => item.slug === slug);
@@ -307,6 +321,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <StandardHero caseStudy={caseStudy} project={project} />
           </>
         )}
+
+        {caseStudy.journey ? (
+          <ProjectJourney projectTitle={project.title} journey={caseStudy.journey} />
+        ) : null}
+
+        {caseStudy.companion ? <CompanionCaseStudy companion={caseStudy.companion} /> : null}
 
         {caseStudy.stack ? (
           <ProjectStack projectTitle={project.title} stack={caseStudy.stack} />

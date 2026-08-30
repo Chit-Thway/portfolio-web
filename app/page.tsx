@@ -11,6 +11,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import {
+  SiCloudflare,
   SiDotnet,
   SiGit,
   SiGooglechrome,
@@ -18,6 +19,8 @@ import {
   SiPython,
   SiJira,
   SiWordpress,
+  SiReact,
+  SiTypescript,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
 import { AboutDirectory } from "./components/AboutDirectory";
@@ -44,14 +47,35 @@ type FeaturedProject = {
 
 const featuredProjects: FeaturedProject[] = [
   {
+    slug: "portfolio-v2",
+    label: "The site you are on · Live",
+    title: "Portfolio V2",
+    description:
+      "A portfolio I rebuilt because a list of skills was never going to tell the whole story. It gets to the useful bits quickly, then lets the work speak for itself.",
+    contribution:
+      "Designed, wrote, built, tested and shipped the whole thing—including the slightly over-engineered Diary I wanted anyway.",
+    outcome: "Live, evolving and very much mine",
+    size: "large",
+    media: {
+      kind: "image",
+      src: "/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-1.png",
+      alt: "Opening slide of the Portfolio V2 website case study",
+    },
+    tools: [
+      { name: "React", icon: SiReact },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Cloudflare", icon: SiCloudflare },
+    ],
+  },
+  {
     slug: "job-application-tracker",
     label: "Flagship product · Live",
     title: "Job Application Tracker",
     description:
-      "A private workspace for capturing job ads, tracking applications and keeping every follow-up and next action in one place.",
+      "A public workspace where anyone can create a free account, save up to 10 applications and keep every follow-up and next action together.",
     contribution:
       "Designed, built, tested and deployed end to end, including its approved Chrome extension.",
-    outcome: "Live product · Public demo available",
+    outcome: "Live product · Free account available",
     size: "large",
     media: {
       kind: "image",
@@ -84,6 +108,27 @@ const featuredProjects: FeaturedProject[] = [
     tools: [
       { name: "PowerShell", icon: TbBrandPowershell },
       { name: "Python", icon: SiPython },
+      { name: "QA", icon: FaBug },
+    ],
+  },
+  {
+    slug: "windows-storage-extension",
+    label: "Windows support extension · Public",
+    title: "Storage Insights & Guided Cleanup",
+    description:
+      "A local extension that explains where drive space is used, narrows the review by file type or folder and keeps cleanup recoverable.",
+    contribution:
+      "Built the storage contracts, metadata-only scanners, review interfaces and guarded Recycle Bin workflow.",
+    outcome: "Storage evidence made safe to review",
+    size: "standard",
+    media: {
+      kind: "image",
+      src: "/projects/windows-storage-extension/thumbnail.png",
+      alt: "Storage Insights dashboard showing non-overlapping drive-space categories",
+    },
+    tools: [
+      { name: "Python", icon: SiPython },
+      { name: "Windows", icon: TbBrandPowershell },
       { name: "QA", icon: FaBug },
     ],
   },
@@ -315,6 +360,9 @@ export default function Home() {
                 Contact me <span aria-hidden="true">↗</span>
               </a>
             ) : null}
+            <a className={styles.secondaryAction} href="/diary/">
+              View Memoir <span aria-hidden="true">→</span>
+            </a>
           </div>
 
           <div className={styles.availability}>
@@ -339,7 +387,7 @@ export default function Home() {
               <h2 id="projects-title">Evidence, not just claims.</h2>
             </div>
             <p>
-              Four selected projects showing how I build, investigate, test and support software.
+              Six selected projects showing how I build, investigate, test and support software.
             </p>
           </div>
 
