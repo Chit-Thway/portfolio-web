@@ -44,6 +44,22 @@ export type ProjectStack = {
   description: string;
 };
 
+export type ProjectJourneyData = {
+  title: string;
+  showLinks?: boolean;
+  items: Array<{
+    kind: "Goal" | "Problem" | "Solution" | "Result" | "Lesson";
+    label?: "Initial Problem" | "First idea";
+    title: string;
+    detail: string;
+    badge?: "Unexpected idea" | "Inspired idea";
+    link?: {
+      label: string;
+      href: string;
+    };
+  }>;
+};
+
 export type ProjectCaseStudy = {
   slug: string;
   eyebrow: string;
@@ -60,21 +76,7 @@ export type ProjectCaseStudy = {
     label: string;
     href?: string;
   }>;
-  journey?: {
-    title: string;
-    showLinks?: boolean;
-    items: Array<{
-      kind: "Goal" | "Problem" | "Solution" | "Result" | "Lesson";
-      label?: "Initial Problem" | "First idea";
-      title: string;
-      detail: string;
-      badge?: "Unexpected idea" | "Inspired idea";
-      link?: {
-        label: string;
-        href: string;
-      };
-    }>;
-  };
+  journey?: ProjectJourneyData;
   facts: Array<{ label: string; value: string }>;
   overview: string[];
   setup?: {

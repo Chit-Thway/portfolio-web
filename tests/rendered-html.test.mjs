@@ -202,7 +202,7 @@ test("renders the Portfolio V2 and Diary companion case studies in order", async
   assert.match(html, /Content structure matters as much as visual design/);
   assert.match(html, /aria-label="Open the Diary \(opens in a new tab\)"/);
   assert.doesNotMatch(html, /data-journey-kind="decision"/);
-  assert.ok(html.indexOf('class="case-hero"') < html.indexOf('class="project-journey"'));
+  assert.ok(html.indexOf('class="case-hero"') < html.indexOf('data-project-journey="true"'));
   assert.ok(html.indexOf("The Diary deserves its own little detour.") < html.indexOf("Technology architecture"));
   assert.ok(html.indexOf("Portfolio V2 website case study") < html.indexOf("Portfolio Diary case study"));
 });
@@ -230,7 +230,7 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /Make Windows evidence understandable/);
   assert.match(html, /Collect, validate, explain/);
   assert.match(html, /A local support workflow/);
-  assert.doesNotMatch(html, /class="journey-node-link"/);
+  assert.doesNotMatch(html, /data-journey-link="true"/);
   assert.ok(html.indexOf("Technology architecture") < html.indexOf("What the project demonstrates"));
   assert.ok(html.indexOf("Other projects") < html.indexOf("demonstration.mp4"));
 });
@@ -252,7 +252,7 @@ test("renders the Windows storage extension with a simple run and process tree",
   assert.match(html, /selected-drive-file-types\.json/);
   assert.match(html, /Replace C:\\ with the drive you want to review/);
   assert.match(html, /storage-extension-v2-ui-polish/);
-  assert.match(html, /class="project-journey"/);
+  assert.match(html, /data-project-journey="true"/);
   assert.match(html, /How this extension grew/);
   assert.match(html, /A warning without a next step/);
   assert.match(html, /Find old files/);
@@ -260,7 +260,7 @@ test("renders the Windows storage extension with a simple run and process tree",
   assert.match(html, /Unexpected idea/);
   assert.match(html, /Scan once, filter many times/);
   assert.match(html, /Guardrails cannot fix the wrong model/);
-  assert.doesNotMatch(html, /class="journey-node-link"/);
+  assert.doesNotMatch(html, /data-journey-link="true"/);
 });
 
 test("renders the Jira slide viewer and presentation download", async () => {
