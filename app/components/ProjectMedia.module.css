@@ -394,6 +394,7 @@
   .slideViewerMeta,
   .videoFrame figcaption {
     align-items: flex-start;
+    display: grid;
     flex-direction: column;
   }
 

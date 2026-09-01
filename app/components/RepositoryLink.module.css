@@ -1,4 +1,4 @@
-.button {
+.button.button {
   position: relative;
   z-index: 2;
   display: inline-flex;
@@ -21,7 +21,7 @@
     transform 160ms ease;
 }
 
-.button:hover {
+.button.button:hover {
   background: #343432;
   transform: translateY(-2px);
 }
@@ -37,7 +37,7 @@
   font-size: 1rem;
 }
 
-:global(html[data-theme="dark"]) .button {
+:global(html[data-theme="dark"]) .button.button {
   background: var(--paper);
   color: #151613;
 }
