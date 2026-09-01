@@ -34,12 +34,10 @@ http://localhost:3000/
 ## Quality checks
 
 ```bash
-npm run lint
-npm run build
-npm test
+npm run check
 ```
 
-`npm test` performs a production build, validates the rendered portfolio routes and exercises the Diary authentication, storage, media and visitor-counting behaviour.
+`npm run check` runs linting, performs a production build, validates the rendered portfolio routes and exercises the Diary authentication, storage, media and visitor-counting behaviour. The same command runs automatically for every pushed branch and pull request.
 
 ## Diary development
 

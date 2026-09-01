@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import type { KeyboardEvent, TouchEvent } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { useDialogBackdropClose } from "@/app/hooks/useDialogBackdropClose";
 import styles from "./ProjectMedia.module.css";
 
 type ProjectVideoProps = {
@@ -155,6 +156,7 @@ type PdfViewerProps = {
 
 export function PdfViewer({ src, coverSrc, pages, label }: PdfViewerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  useDialogBackdropClose(dialogRef);
 
   return (
     <>

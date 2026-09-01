@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { portfolio } from "../data/portfolio";
+import { useDialogBackdropClose } from "../hooks/useDialogBackdropClose";
 import styles from "../version-two.module.css";
 
 type DirectoryEntry = "bio" | "education" | "location";
@@ -30,11 +31,13 @@ export function AboutDirectory() {
     requestAnimationFrame(() => pdfDialogRef.current?.showModal());
   }
 
-  function closePdf() {
+  const closePdf = useCallback(() => {
     pdfDialogRef.current?.close();
     setPdfOpen(false);
     requestAnimationFrame(() => pdfTriggerRef.current?.focus());
-  }
+  }, []);
+
+  useDialogBackdropClose(pdfDialogRef, closePdf, pdfOpen);
 
   useEffect(() => {
     if (!pdfOpen) return;

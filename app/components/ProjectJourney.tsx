@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { LuArrowUpRight, LuSprout, LuTreePine, LuX } from "react-icons/lu";
 import type { ProjectJourneyData } from "@/app/data/projectCaseStudies";
+import { useDialogBackdropClose } from "@/app/hooks/useDialogBackdropClose";
 import styles from "./ProjectJourney.module.css";
 
 type ProjectJourneyProps = {
@@ -17,9 +18,11 @@ export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
     dialogRef.current?.showModal();
   }
 
-  function closeJourney() {
+  const closeJourney = useCallback(() => {
     dialogRef.current?.close();
-  }
+  }, []);
+
+  useDialogBackdropClose(dialogRef, closeJourney);
 
   return (
     <section
@@ -49,9 +52,6 @@ export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
         ref={dialogRef}
         className={styles.dialog}
         aria-labelledby="journey-dialog-title"
-        onClick={(event) => {
-          if (event.target === event.currentTarget) closeJourney();
-        }}
       >
         <div className={styles.dialogShell}>
           <header className={styles.dialogHeader}>
