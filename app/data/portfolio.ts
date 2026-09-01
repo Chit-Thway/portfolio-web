@@ -3,6 +3,39 @@ export type PortfolioLink = {
   href: string;
 };
 
+export type HomeProjectTool =
+  | "react"
+  | "typescript"
+  | "cloudflare"
+  | "csharp"
+  | "dotnet"
+  | "postgresql"
+  | "azure"
+  | "chrome"
+  | "powershell"
+  | "python"
+  | "qa"
+  | "windows"
+  | "wordpress"
+  | "git"
+  | "jira"
+  | "workflows"
+  | "slas";
+
+export type HomeProjectPresentation = {
+  order: number;
+  label: string;
+  cardTitle?: string;
+  description: string;
+  contribution: string;
+  outcome: string;
+  size: "large" | "standard" | "wide";
+  media:
+    | { kind: "video"; src: string; label: string }
+    | { kind: "image"; src: string; alt: string };
+  tools: HomeProjectTool[];
+};
+
 export type Project = {
   id: string;
   number: string;
@@ -15,7 +48,7 @@ export type Project = {
   technologies: string[];
   highlights: string[];
   links: PortfolioLink[];
-  featured?: boolean;
+  home?: HomeProjectPresentation;
 };
 
 export const portfolio = {
@@ -28,7 +61,7 @@ export const portfolio = {
     availability: "Open to graduate & entry-level opportunities",
     intro:
       "I investigate how systems work, turn unclear problems into practical next steps, and care about making technology easier for people to use.",
-    profileImage: "/chit-thway-portrait.jpg?v=49cf7aef" as string | null,
+    profileImage: "/chit-thway-portrait.jpg?v=14019d07" as string | null,
   },
   contact: {
     email: "chitthway67@gmail.com" as string | null,
@@ -100,7 +133,22 @@ export const portfolio = {
           href: "https://github.com/Chit-Thway/portfolio-web",
         },
       ],
-      featured: true,
+      home: {
+        order: 0,
+        label: "The site you are on · Live",
+        description:
+          "A portfolio I rebuilt because a list of skills was never going to tell the whole story. It gets to the useful bits quickly, then lets the work speak for itself.",
+        contribution:
+          "Designed, wrote, built, tested and shipped the whole thing—including the slightly over-engineered Diary I wanted anyway.",
+        outcome: "Live, evolving and very much mine",
+        size: "large",
+        media: {
+          kind: "image",
+          src: "/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-1.png",
+          alt: "Opening slide of the Portfolio V2 website case study",
+        },
+        tools: ["react", "typescript", "cloudflare"],
+      },
     },
     {
       id: "windows-support-toolkit",
@@ -132,7 +180,22 @@ export const portfolio = {
           href: "https://github.com/Chit-Thway/windows-support-diagnostic-toolkit",
         },
       ],
-      featured: true,
+      home: {
+        order: 2,
+        label: "Support engineering · Public",
+        description:
+          "A read-only diagnostic workflow that collects Windows evidence and turns it into clear, testable support findings.",
+        contribution:
+          "Built the collector, validation contract, failure-safe evaluation and browser dashboard.",
+        outcome: "Safe diagnostic evidence verified",
+        size: "standard",
+        media: {
+          kind: "video",
+          src: "/projects/windows-support-toolkit/demonstration.mp4?v=fe683d4d",
+          label: "Windows Support Diagnostic Toolkit interface preview",
+        },
+        tools: ["powershell", "python", "qa"],
+      },
     },
     {
       id: "windows-storage-extension",
@@ -165,7 +228,22 @@ export const portfolio = {
           href: "https://github.com/Chit-Thway/windows-support-diagnostic-toolkit",
         },
       ],
-      featured: true,
+      home: {
+        order: 3,
+        label: "Windows support extension · Public",
+        description:
+          "A local extension that explains where drive space is used, narrows the review by file type or folder and keeps cleanup recoverable.",
+        contribution:
+          "Built the storage contracts, metadata-only scanners, review interfaces and guarded Recycle Bin workflow.",
+        outcome: "Storage evidence made safe to review",
+        size: "standard",
+        media: {
+          kind: "image",
+          src: "/projects/windows-storage-extension/thumbnail.png",
+          alt: "Storage Insights dashboard showing non-overlapping drive-space categories",
+        },
+        tools: ["python", "windows", "qa"],
+      },
     },
     {
       id: "jira-service-management",
@@ -191,6 +269,22 @@ export const portfolio = {
           href: "https://github.com/Chit-Thway/kestrel-ridge-jira-service-desk",
         },
       ],
+      home: {
+        order: 5,
+        label: "Service-management simulation · Public",
+        description:
+          "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",
+        contribution:
+          "Designed the request pathways, workflow states, approval logic and evidence-led support journey.",
+        outcome: "12-slide workflow case study",
+        size: "wide",
+        media: {
+          kind: "image",
+          src: "/projects/jira-service-management/slides/slide-1.png",
+          alt: "Opening slide of the Jira Service Management simulation case study",
+        },
+        tools: ["jira", "workflows", "slas"],
+      },
     },
     {
       id: "quick-fire-questions",
@@ -238,6 +332,22 @@ export const portfolio = {
         "200+ automated tests and production monitoring",
       ],
       links: [],
+      home: {
+        order: 1,
+        label: "Flagship product · Live",
+        description:
+          "A public workspace where anyone can create a free account, save up to 10 applications and keep every follow-up and next action together.",
+        contribution:
+          "Designed, built, tested and deployed end to end, including its approved Chrome extension.",
+        outcome: "Live product · Free account available",
+        size: "large",
+        media: {
+          kind: "image",
+          src: "/projects/job-application-tracker/thumbnail.png",
+          alt: "Job Application Tracker applications page with the approved browser extension open",
+        },
+        tools: ["csharp", "dotnet", "postgresql", "azure", "chrome"],
+      },
     },
     {
       id: "concise-digital-work",
@@ -258,6 +368,23 @@ export const portfolio = {
         "Documented QA findings",
       ],
       links: [],
+      home: {
+        order: 4,
+        label: "Commercial experience · Internship",
+        cardTitle: "Web Development & QA Work",
+        description:
+          "Selected implementation, CMS and quality-assurance work completed across real client websites and existing systems.",
+        contribution:
+          "Delivered WordPress changes, reusable web components and reproducible bug reports within a team workflow.",
+        outcome: "Client work implemented and tested",
+        size: "standard",
+        media: {
+          kind: "image",
+          src: "/projects/concise-digital-work/report-cover.png",
+          alt: "Cover of the sanitised web quality-assurance report",
+        },
+        tools: ["wordpress", "git", "qa"],
+      },
     },
   ] satisfies Project[],
   experience: [

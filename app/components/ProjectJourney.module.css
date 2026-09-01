@@ -1,0 +1,458 @@
+.projectJourney {
+  margin-bottom: clamp(4rem, 8vw, 6.5rem);
+}
+
+.trigger {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-height: 8rem;
+  padding: 1rem clamp(1rem, 3vw, 1.7rem);
+  border: 0;
+  border-radius: 2.2rem;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(255, 255, 255, 0.26), transparent 10rem),
+    linear-gradient(118deg, #5b4be8 0%, #7857ee 46%, #d55787 100%);
+  box-shadow: 0 18px 46px rgba(93, 70, 208, 0.2);
+  color: white;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  text-align: left;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.trigger::before,
+.trigger::after {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  content: "";
+}
+
+.trigger::before {
+  top: -8rem;
+  right: 8%;
+  width: 20rem;
+  height: 20rem;
+}
+
+.trigger::after {
+  right: 18%;
+  bottom: -7rem;
+  width: 13rem;
+  height: 13rem;
+}
+
+.trigger:hover {
+  box-shadow: 0 24px 58px rgba(93, 70, 208, 0.3);
+  transform: translateY(-3px);
+}
+
+.triggerIcon {
+  display: grid;
+  width: 5.2rem;
+  height: 5.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 0 0 0.6rem rgba(255, 255, 255, 0.045);
+  place-items: center;
+}
+
+.triggerIcon svg {
+  width: 2.8rem;
+  height: 2.8rem;
+  stroke-width: 1.8;
+}
+
+.triggerCopy {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.triggerCopy > span,
+.triggerAction {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.66rem;
+  font-weight: 720;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.triggerCopy strong {
+  color: white;
+  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.triggerAction {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.triggerAction svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.dialog {
+  --journey-bg: #f8f6ef;
+  --journey-card: #fffefa;
+  --journey-header: #fcfbf7;
+  --journey-line: #d9ddd5;
+  --journey-muted: #666a63;
+  position: fixed;
+  inset: 0;
+  width: min(calc(100% - 2rem), 1080px);
+  height: min(90dvh, 880px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #cdd3ca;
+  border-radius: 1.15rem;
+  background: var(--journey-bg);
+  box-shadow: 0 30px 100px rgba(17, 18, 16, 0.3);
+  color: #20241f;
+}
+
+.dialog::backdrop {
+  background: rgba(17, 18, 16, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.dialogShell {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.dialogHeader {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 1.35rem;
+  border-bottom: 1px solid var(--journey-line);
+  background: var(--journey-header);
+}
+
+.dialogHeading {
+  display: flex;
+  min-width: 0;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.dialogMark,
+.dialogHeader > button {
+  display: grid;
+  border: 0;
+  border-radius: 50%;
+  background: #e4ece2;
+  color: #28583c;
+  place-items: center;
+}
+
+.dialogMark {
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+}
+
+.dialogMark svg {
+  width: 1.65rem;
+  height: 1.65rem;
+  stroke-width: 1.7;
+}
+
+.dialogHeading p {
+  margin: 0;
+  color: #5b705f;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dialogHeading h2 {
+  overflow: hidden;
+  margin: 0.24rem 0 0;
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  font-weight: 570;
+  letter-spacing: -0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dialogHeader > button {
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.dialogHeader > button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.dialogBody {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.4rem, 4vw, 3rem);
+}
+
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 0;
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  position: absolute;
+  top: 1.3rem;
+  bottom: 1.3rem;
+  left: 1.7rem;
+  width: 2px;
+  background: linear-gradient(#79937f, #b5a17a);
+  content: "";
+}
+
+.timeline li {
+  --journey-color: #7b61ff;
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding-bottom: 1rem;
+}
+
+.timeline li[data-journey-kind="problem"] {
+  --journey-color: #e86745;
+}
+
+.timeline li[data-journey-kind="solution"] {
+  --journey-color: #249a70;
+}
+
+.timeline li[data-journey-kind="result"] {
+  --journey-color: #3274d9;
+}
+
+.timeline li[data-journey-kind="lesson"] {
+  --journey-color: #bc4f86;
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--journey-color);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--journey-color) 10%, var(--journey-card));
+  box-shadow: 0 0 0 0.35rem var(--journey-bg);
+  color: var(--journey-color);
+  place-items: center;
+  font-family: Georgia, serif;
+  font-size: 0.78rem;
+}
+
+.timeline li[data-journey-highlight="true"] .node {
+  box-shadow:
+    0 0 0 0.35rem var(--journey-bg),
+    0 0 0 0.5rem rgba(199, 148, 29, 0.3);
+}
+
+.nodeStar {
+  position: absolute;
+  top: -0.55rem;
+  right: -0.55rem;
+  display: grid;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 2px solid var(--journey-bg);
+  border-radius: 50%;
+  background: #c7941d;
+  box-shadow: 0 4px 12px rgba(125, 88, 7, 0.28);
+  color: #fff9df;
+  font-family: inherit;
+  font-size: 0.7rem;
+  place-items: center;
+}
+
+.card {
+  position: relative;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--journey-color) 24%, var(--journey-line));
+  border-left: 4px solid var(--journey-color);
+  border-radius: 0.25rem 0.85rem 0.85rem 0.25rem;
+  background: color-mix(in srgb, var(--journey-color) 7%, var(--journey-card));
+}
+
+.cardHasLink {
+  padding-right: 4.3rem;
+}
+
+.kind {
+  margin: 0;
+  color: var(--journey-color);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+  padding: 0.28rem 0.52rem;
+  border: 1px solid rgba(177, 126, 15, 0.34);
+  border-radius: 999px;
+  background: rgba(218, 167, 49, 0.12);
+  color: #9a6b05;
+  font-size: 0.64rem;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.card h3 {
+  margin: 0.42rem 0 0;
+  font-size: clamp(1rem, 2vw, 1.22rem);
+  font-weight: 610;
+  letter-spacing: -0.025em;
+}
+
+.card > p:last-of-type {
+  margin: 0.55rem 0 0;
+  color: var(--journey-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.card .nodeLink {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid color-mix(in srgb, var(--journey-color) 44%, var(--journey-line));
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--journey-card) 78%, transparent);
+  color: var(--journey-color);
+  place-items: center;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.card .nodeLink:hover {
+  background: var(--journey-card);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--journey-color) 18%, transparent);
+  transform: translateY(-2px);
+}
+
+.nodeLink svg {
+  width: 1.08rem;
+  height: 1.08rem;
+  stroke-width: 2;
+}
+
+@media (max-width: 600px) {
+  .trigger {
+    min-height: 10rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    border-radius: 1.6rem;
+  }
+
+  .triggerIcon {
+    width: 4.1rem;
+    height: 4.1rem;
+  }
+
+  .triggerIcon svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .triggerAction {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .dialog {
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .dialogHeading h2 {
+    max-width: 12rem;
+    font-size: 1.1rem;
+  }
+
+  .dialogBody {
+    padding: 1.2rem;
+  }
+
+  .timeline::before {
+    left: 1.35rem;
+  }
+
+  .timeline li {
+    grid-template-columns: 2.8rem minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .node {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+}
+
+:global(html[data-theme="dark"]) .dialog {
+  --journey-bg: #151613;
+  --journey-card: #1d1e1b;
+  --journey-header: #191a17;
+  --journey-line: #383a34;
+  --journey-muted: #aaa9a2;
+  border-color: var(--journey-line);
+  color: #f1f1ed;
+  color-scheme: dark;
+}
+
+:global(html[data-theme="dark"]) .dialogMark,
+:global(html[data-theme="dark"]) .dialogHeader > button {
+  background: #203027;
+  color: #8bc49c;
+}
+
+:global(html[data-theme="dark"]) .dialogHeading p {
+  color: #8bc49c;
+}

@@ -1,0 +1,453 @@
+.media {
+  overflow: hidden;
+  margin: 0 0 clamp(4rem, 8vw, 6.5rem);
+  border: 1px solid var(--line-strong);
+  border-radius: 1.15rem;
+  background: #0a0a0a;
+  box-shadow: var(--shadow);
+}
+
+.videoFrame video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #050809;
+  object-fit: contain;
+}
+
+.videoFrame figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1.15rem;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--paper-dim);
+  font-family: inherit;
+  font-size: 0.7rem;
+}
+
+.slideViewer {
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.slideViewerCompact {
+  margin-bottom: 0;
+}
+
+.slideFrame {
+  --slide-arrow-size: clamp(3.8rem, 5.6vw, 4.7rem);
+  --slide-arrow-gap: 0.7rem;
+  position: relative;
+  margin-inline: clamp(4.75rem, 7vw, 6rem);
+}
+
+.slideStage {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.slideStage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.slideArrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  display: flex;
+  width: var(--slide-arrow-size);
+  height: var(--slide-arrow-size);
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #b8b8b5;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: none;
+  color: #9c9c99;
+  cursor: pointer;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  transform: translateY(-50%);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.slideArrow:hover {
+  border-color: #888885;
+  background: #ffffff;
+  color: #686865;
+}
+
+.slideArrow svg {
+  width: 52%;
+  height: 52%;
+  stroke-width: 2.2;
+}
+
+.slideArrowPrevious {
+  left: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
+}
+
+.slideArrowNext {
+  right: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
+}
+
+.slideCounter {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.75rem auto;
+  padding: 0.3rem 0.55rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--paper-dim);
+  font-family: inherit;
+  font-size: 0.68rem;
+}
+
+.slideCounter strong {
+  color: var(--paper);
+  font-size: 0.74rem;
+  font-weight: 650;
+}
+
+.slideViewerMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--paper-dim);
+  font-size: 0.7rem;
+}
+
+.slideViewerMeta a {
+  flex: 0 0 auto;
+  padding: 0.4rem 0;
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 650;
+  text-transform: none;
+}
+
+.pendingCaseStudy {
+  position: relative;
+  display: grid;
+  min-height: clamp(22rem, 48vw, 34rem);
+  overflow: hidden;
+  padding: 3rem;
+  background: linear-gradient(145deg, #ffffff, #ecece8);
+  place-items: center;
+}
+
+.pendingGrid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  background-image: radial-gradient(circle, #cacac4 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+.pendingCaseStudy > div:last-child {
+  position: relative;
+  max-width: 42rem;
+  text-align: center;
+}
+
+.pendingCaseStudy span {
+  color: var(--paper-dim);
+  font-family: inherit;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pendingCaseStudy h2 {
+  margin: 1.1rem 0 1rem;
+  color: var(--paper);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 520;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+
+.pendingCaseStudy p {
+  margin: 0 auto;
+  color: var(--paper-muted);
+  line-height: 1.7;
+}
+
+.pdfPreview {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: left;
+}
+
+.pdfPreview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pdfPreview > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  background: var(--surface);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 650;
+  text-transform: none;
+}
+
+.pdfPreview i {
+  font-style: normal;
+}
+
+.pdfDialog {
+  position: fixed;
+  inset: 0;
+  width: min(94vw, 1100px);
+  height: min(92vh, 900px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #cdcdc7;
+  border-radius: 0.85rem;
+  background: #f2f2ef;
+  box-shadow: 0 36px 120px rgba(0, 0, 0, 0.36);
+  color: var(--paper);
+}
+
+.pdfDialog::backdrop {
+  background: rgba(18, 18, 17, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.pdfDialogPanel {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto 1fr auto;
+}
+
+.pdfDialog header,
+.pdfDialog footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.9rem 1rem;
+  border-color: #d7d7d1;
+  background: #f7f7f5;
+}
+
+.pdfDialog header {
+  border-bottom: 1px solid #d7d7d1;
+}
+
+.pdfDialog header span {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.54rem;
+  text-transform: none;
+}
+
+.pdfDialog header strong {
+  font-size: 0.78rem;
+  font-weight: 520;
+}
+
+.pdfDialog button {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cecec8;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--paper-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.7rem;
+  text-transform: none;
+}
+
+.pdfPageList {
+  overflow-y: auto;
+  padding: 1.25rem;
+  background: #dfe2e3;
+}
+
+.pdfPageList figure {
+  max-width: 880px;
+  margin: 0 auto 1.25rem;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
+}
+
+.pdfPageList img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+}
+
+.pdfPageList figcaption {
+  padding: 0.6rem 0.8rem;
+  background: #f6f6f4;
+  color: var(--paper-dim);
+  font-family: inherit;
+  font-size: 0.55rem;
+  text-align: center;
+}
+
+.pdfDialog footer {
+  border-top: 1px solid #d7d7d1;
+  color: var(--paper-dim);
+  font-size: 0.66rem;
+}
+
+.pdfDialog footer p {
+  margin: 0;
+}
+
+.pdfDialog footer a {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.7rem;
+  text-transform: none;
+}
+
+@media (max-width: 820px) {
+  .pdfPreview {
+    width: min(100%, 34rem);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .media {
+    margin-inline: -1rem;
+    border-inline: 0;
+  }
+
+  .slideViewer {
+    margin-inline: 0;
+  }
+
+  .slideFrame {
+    --slide-arrow-size: 2.75rem;
+    --slide-arrow-gap: 0.4rem;
+    margin-inline: calc(var(--slide-arrow-size) + var(--slide-arrow-gap));
+  }
+
+  .slideArrow {
+    width: var(--slide-arrow-size);
+    height: var(--slide-arrow-size);
+    font-size: 1.3rem;
+  }
+
+  .slideArrowPrevious {
+    left: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
+  }
+
+  .slideArrowNext {
+    right: calc(-1 * var(--slide-arrow-size) - var(--slide-arrow-gap));
+  }
+
+  .slideCounter {
+    padding: 0.28rem 0.5rem;
+  }
+
+  .slideViewerMeta,
+  .videoFrame figcaption {
+    align-items: flex-start;
+    display: grid;
+    flex-direction: column;
+  }
+
+  .pendingCaseStudy {
+    min-height: 25rem;
+    padding: 2rem;
+  }
+
+  .pdfDialog {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+  }
+
+  .pdfDialog footer p {
+    display: none;
+  }
+}
+
+:global(html[data-theme="dark"]) .slideArrow {
+  border-color: #73746f;
+  background: #f2f2ef;
+  color: #777873;
+}
+
+:global(html[data-theme="dark"]) .slideArrow:hover {
+  border-color: #a3a49e;
+  background: #ffffff;
+  color: #555650;
+}
+
+:global(html[data-theme="dark"]) .pendingCaseStudy {
+  background: linear-gradient(145deg, #1d1e1b, #131411);
+}
+
+:global(html[data-theme="dark"]) .pendingGrid {
+  background-image: radial-gradient(circle, var(--line-strong) 1px, transparent 1.2px);
+}
+
+:global(html[data-theme="dark"]) .pdfDialog {
+  border-color: var(--line-strong);
+  background: var(--surface-soft);
+}
+
+:global(html[data-theme="dark"]) .pdfDialog header,
+:global(html[data-theme="dark"]) .pdfDialog footer,
+:global(html[data-theme="dark"]) .pdfPageList figcaption {
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+:global(html[data-theme="dark"]) .pdfPageList {
+  background: #10110f;
+}

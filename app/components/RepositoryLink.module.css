@@ -1,0 +1,43 @@
+.button.button {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--paper);
+  border-radius: 0.65rem;
+  background: var(--paper);
+  color: white;
+  font-family: inherit;
+  font-size: 0.69rem;
+  font-weight: 680;
+  letter-spacing: 0;
+  text-transform: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.button.button:hover {
+  background: #343432;
+  transform: translateY(-2px);
+}
+
+.githubMark {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+}
+
+.arrow {
+  margin-left: 0.35rem;
+  font-size: 1rem;
+}
+
+:global(html[data-theme="dark"]) .button.button {
+  background: var(--paper);
+  color: #151613;
+}

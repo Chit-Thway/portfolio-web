@@ -1,8 +1,6 @@
-# Portfolio Version 2 roadmap
+# Portfolio Version 2 release history
 
-Version 2 is a staged redesign of CHIT THWAY's public portfolio. Its purpose is to make the strongest evidence easier for employers to scan while replacing the darker developer-themed presentation with a clean, restrained interface.
-
-The live site remains on `main` until the redesign has been reviewed locally and approved for release.
+Version 2 was delivered as a staged redesign of CHIT THWAY's public portfolio. Its purpose was to make the strongest evidence easier for employers to scan while replacing the darker developer-themed presentation with a clean, restrained interface. The completed redesign, Diary and subsequent project-page improvements now run from `main` in production.
 
 ## Design principles
 
@@ -17,12 +15,12 @@ The live site remains on `main` until the redesign has been reviewed locally and
 
 | Branch | Purpose |
 | --- | --- |
-| `main` | Current deployed Version 1 portfolio |
+| `main` | Current deployed Version 2 portfolio |
 | `version-1` | Preserved Version 1 source |
-| `version-2` | Reviewed Version 2 baseline |
-| `version-2-milestone-*` | Isolated work for one Version 2 milestone |
+| `version-2` | Historical reviewed Version 2 baseline |
+| `version-2-milestone-*` | Historical isolated milestone branches |
 
-Milestone branches are reviewed locally before they are merged into `version-2`. Version 2 is not merged into `main` or deployed until the redesign is approved as a whole.
+Each milestone was reviewed locally before it was combined into Version 2 and released through `main`.
 
 ## Milestones
 
@@ -83,13 +81,13 @@ Status: complete on `version-2-milestone-6-contact`
 
 ### Milestone 7 — Diary
 
-Status: complete on `version-2-milestone-7-diary` · local review only
+Status: complete and deployed
 
 - Build a public, Instagram-like media diary.
 - Keep the publishing interface behind an unlisted authenticated login route.
 - Add database and media-storage support only when this milestone begins.
 
-The milestone is intentionally not deployed. Cloudflare resources, production secrets and the checked-in D1 migration must be configured only after local review and approval.
+The production Diary now uses configured Cloudflare D1 and R2 resources with encrypted runtime secrets. Publishing remains protected behind signed server sessions, same-origin checks and login throttling.
 
 ## Milestone 2 implementation notes
 
@@ -131,4 +129,4 @@ An unlisted `/login/` URL is not a security boundary. Publishing and deletion th
 
 D1 stores structured post metadata and R2 stores the uploaded bytes. The R2 bucket remains private and media is returned through checked same-site endpoints. File type and size limits are enforced on the server, every upload needs a text description, and optional audio requires both a credit and an explicit publishing-rights confirmation.
 
-The local Pages preview uses the production function modules with a local SQLite database and filesystem-backed object storage under the ignored `.wrangler/` directory. Production remains unchanged until the R2 bucket, encrypted secrets and remote D1 migration are deliberately configured.
+The local Pages preview uses the production function modules with a local SQLite database and filesystem-backed object storage under the ignored `.wrangler/` directory. Production uses the configured D1 database, private R2 bucket and encrypted secrets described in the operations guide.

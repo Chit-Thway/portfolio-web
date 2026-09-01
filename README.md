@@ -1,17 +1,15 @@
 # CHIT THWAY — Portfolio
 
-A single-page professional portfolio for graduate and entry-level roles in application support, product support, technical support, QA, IT service delivery and web support.
+A production portfolio for graduate and entry-level roles in application support, product support, technical support, QA, IT service delivery and web support.
 
 The site uses React 19, TypeScript, vinext and Vite. Most portfolio content is statically rendered; Cloudflare Pages Functions, D1 and R2 support the visitor counter and optional Diary publishing. There is no fake contact form.
 
-## Version branches
+## Repository workflow
 
-- `main` is the deployed Version 1 site.
-- `version-1` preserves the Version 1 source as an explicit archive branch.
-- `version-2` is the stable base for the redesign while it is reviewed locally.
-- Milestones are developed on branches named `version-2-milestone-*` before they are reviewed and merged into `version-2`.
-
-The Version 2 redesign is not deployed automatically. See [the Version 2 roadmap](docs/version-2-roadmap.md) for the design principles, milestone boundaries and current status.
+- `main` is the current production source for the live Version 2 portfolio.
+- Focused work is developed on short-lived branches, reviewed locally and merged into `main` only when complete.
+- `version-1` preserves the original portfolio for historical reference.
+- The completed redesign history is documented in [the Version 2 release history](docs/version-2-roadmap.md).
 
 ## Prerequisites
 
@@ -36,16 +34,14 @@ http://localhost:3000/
 ## Quality checks
 
 ```bash
-npm run lint
-npm run build
-npm test
+npm run check
 ```
 
-`npm test` performs a production build and checks the server-rendered HTML for the main portfolio content, required section destinations, structured data and invalid placeholder links.
+`npm run check` runs linting, performs a production build, validates the rendered portfolio routes and exercises the Diary authentication, storage, media and visitor-counting behaviour. The same command runs automatically for every pushed branch and pull request.
 
 ## Diary development
 
-Milestone 7 adds a public media Diary and a server-protected publishing workspace. Copy `.dev.vars.example` to `.dev.vars`, replace its placeholders and run:
+The public Diary uses a server-protected publishing workspace, D1 for structured data and R2 for private media storage. Copy `.dev.vars.example` to `.dev.vars`, replace its placeholders and run:
 
 ```bash
 npm run dev:pages
@@ -57,10 +53,16 @@ See [Diary operations](docs/diary-operations.md) before configuring Cloudflare D
 
 ## Editing portfolio content
 
-All personal details, navigation items, about copy, projects, experience, skills, education and optional certificates are centralised in:
+Personal details, navigation items, project summaries, experience, skills, education and optional certificates are centralised in:
 
 ```text
 app/data/portfolio.ts
+```
+
+Detailed project narratives, Process trees, demonstrations, presentation mappings and project facts are stored in:
+
+```text
+app/data/projectCaseStudies.ts
 ```
 
 ### Contact details
@@ -94,7 +96,7 @@ The employment date ranges are populated from the supplied resume. Each range is
 
 ### Project links and visibility
 
-The Windows Support Diagnostic Toolkit and Jira Service Management Simulation link to their verified public repositories. Quick-Fire Questions and the Job Application Tracker keep their private repositories unlinked; the Job Application Tracker case study instead links to its deployed application and public synthetic demo.
+The Windows Support Diagnostic Toolkit and Jira Service Management Simulation link to their verified public repositories. Quick-Fire Questions remains unlinked while it is in progress. The Job Application Tracker case study links to its production service at `myjobtracker.com.au`, its public synthetic demo and its Chrome Web Store extension.
 
 Each project supports a `status` and a `links` array:
 
@@ -131,6 +133,9 @@ app/
   components/GitHubActivity.tsx    Live, failure-safe recent public GitHub activity
   components/DiaryFeed.tsx         Public Diary feed and native media dialog
   components/DiaryManager.tsx      Protected Diary publishing interface
+  components/ProjectJourney.tsx    Reusable data-driven project Process dialog
+  components/ProjectMedia.tsx      Shared video, slide and document viewers
+  components/ProjectStack.tsx      Reusable technology-architecture display
   components/TechnologyMarquee.tsx Version 2 accessible three-row technology marquee
   data/portfolio.ts                Central portfolio content and links
   data/projectCaseStudies.ts       Project-page narratives and media mapping
@@ -159,7 +164,7 @@ The site includes semantic landmarks, keyboard-visible focus states, a skip link
 
 ## Project case studies
 
-Every homepage project links to its own case-study route. The Windows toolkit and Job Tracker use embedded demonstrations, the service-management project includes a 12-slide presentation viewer, the QA sample includes an in-page PDF reader, and Quick-Fire Questions is clearly marked as in progress until verified public material is ready.
+Every homepage project links to its own case-study route. Portfolio V2 includes its website and Diary presentations; the Windows projects and Job Tracker use embedded demonstrations; the service-management project includes a 12-slide presentation viewer; and the QA sample includes an in-page PDF reader. Quick-Fire Questions remains clearly marked as in progress until verified public material is ready.
 
 ## Deployment
 
@@ -169,4 +174,9 @@ The portfolio is publicly deployed with Cloudflare Pages:
 https://chitthway-portfolio.pages.dev
 ```
 
-Create the static Pages output with `npm run build:pages`, then deploy the generated `dist/client` directory to the `chitthway-portfolio` Cloudflare Pages project.
+Create and deploy the static Pages output with:
+
+```bash
+npm run build:pages
+npx wrangler pages deploy dist/client --project-name chitthway-portfolio --branch main
+```

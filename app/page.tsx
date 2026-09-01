@@ -28,161 +28,52 @@ import { GitHubActivity } from "./components/GitHubActivity";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { OutsideIdeStack } from "./components/OutsideIdeStack";
-import { portfolio } from "./data/portfolio";
+import {
+  portfolio,
+  type HomeProjectPresentation,
+  type HomeProjectTool,
+  type Project,
+} from "./data/portfolio";
 import styles from "./version-two.module.css";
 
-type FeaturedProject = {
-  slug: string;
-  label: string;
-  title: string;
-  description: string;
-  contribution: string;
-  outcome: string;
-  size: "large" | "standard" | "wide";
-  media:
-    | { kind: "video"; src: string; label: string }
-    | { kind: "image"; src: string; alt: string };
-  tools: Array<{ name: string; icon: IconType }>;
+type FeaturedProject = Project & {
+  home: HomeProjectPresentation;
 };
 
-const featuredProjects: FeaturedProject[] = [
-  {
-    slug: "portfolio-v2",
-    label: "The site you are on · Live",
-    title: "Portfolio V2",
-    description:
-      "A portfolio I rebuilt because a list of skills was never going to tell the whole story. It gets to the useful bits quickly, then lets the work speak for itself.",
-    contribution:
-      "Designed, wrote, built, tested and shipped the whole thing—including the slightly over-engineered Diary I wanted anyway.",
-    outcome: "Live, evolving and very much mine",
-    size: "large",
-    media: {
-      kind: "image",
-      src: "/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-1.png",
-      alt: "Opening slide of the Portfolio V2 website case study",
-    },
-    tools: [
-      { name: "React", icon: SiReact },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "Cloudflare", icon: SiCloudflare },
-    ],
-  },
-  {
-    slug: "job-application-tracker",
-    label: "Flagship product · Live",
-    title: "Job Application Tracker",
-    description:
-      "A public workspace where anyone can create a free account, save up to 10 applications and keep every follow-up and next action together.",
-    contribution:
-      "Designed, built, tested and deployed end to end, including its approved Chrome extension.",
-    outcome: "Live product · Free account available",
-    size: "large",
-    media: {
-      kind: "image",
-      src: "/projects/job-application-tracker/thumbnail.png",
-      alt: "Job Application Tracker applications page with the approved browser extension open",
-    },
-    tools: [
-      { name: "C#", icon: TbBrandCSharp },
-      { name: ".NET 10", icon: SiDotnet },
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "Azure", icon: TbBrandAzure },
-      { name: "Chrome", icon: SiGooglechrome },
-    ],
-  },
-  {
-    slug: "windows-support-toolkit",
-    label: "Support engineering · Public",
-    title: "Windows Support Diagnostic Toolkit",
-    description:
-      "A read-only diagnostic workflow that collects Windows evidence and turns it into clear, testable support findings.",
-    contribution:
-      "Built the collector, validation contract, failure-safe evaluation and browser dashboard.",
-    outcome: "Safe diagnostic evidence verified",
-    size: "standard",
-    media: {
-      kind: "video",
-      src: "/projects/windows-support-toolkit/demonstration.mp4",
-      label: "Windows Support Diagnostic Toolkit interface preview",
-    },
-    tools: [
-      { name: "PowerShell", icon: TbBrandPowershell },
-      { name: "Python", icon: SiPython },
-      { name: "QA", icon: FaBug },
-    ],
-  },
-  {
-    slug: "windows-storage-extension",
-    label: "Windows support extension · Public",
-    title: "Storage Insights & Guided Cleanup",
-    description:
-      "A local extension that explains where drive space is used, narrows the review by file type or folder and keeps cleanup recoverable.",
-    contribution:
-      "Built the storage contracts, metadata-only scanners, review interfaces and guarded Recycle Bin workflow.",
-    outcome: "Storage evidence made safe to review",
-    size: "standard",
-    media: {
-      kind: "image",
-      src: "/projects/windows-storage-extension/thumbnail.png",
-      alt: "Storage Insights dashboard showing non-overlapping drive-space categories",
-    },
-    tools: [
-      { name: "Python", icon: SiPython },
-      { name: "Windows", icon: TbBrandPowershell },
-      { name: "QA", icon: FaBug },
-    ],
-  },
-  {
-    slug: "concise-digital-work",
-    label: "Commercial experience · Internship",
-    title: "Web Development & QA Work",
-    description:
-      "Selected implementation, CMS and quality-assurance work completed across real client websites and existing systems.",
-    contribution:
-      "Delivered WordPress changes, reusable web components and reproducible bug reports within a team workflow.",
-    outcome: "Client work implemented and tested",
-    size: "standard",
-    media: {
-      kind: "image",
-      src: "/projects/concise-digital-work/report-cover.png",
-      alt: "Cover of the sanitised web quality-assurance report",
-    },
-    tools: [
-      { name: "WordPress", icon: SiWordpress },
-      { name: "Git", icon: SiGit },
-      { name: "QA", icon: FaBug },
-    ],
-  },
-  {
-    slug: "jira-service-management",
-    label: "Service-management simulation · Public",
-    title: "Jira Service Management Simulation",
-    description:
-      "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",
-    contribution:
-      "Designed the request pathways, workflow states, approval logic and evidence-led support journey.",
-    outcome: "12-slide workflow case study",
-    size: "wide",
-    media: {
-      kind: "image",
-      src: "/projects/jira-service-management/slides/slide-1.png",
-      alt: "Opening slide of the Jira Service Management simulation case study",
-    },
-    tools: [
-      { name: "Jira", icon: SiJira },
-      { name: "Workflows", icon: FaDiagramProject },
-      { name: "SLAs", icon: FaClock },
-    ],
-  },
-];
+const homeToolDetails: Record<
+  HomeProjectTool,
+  { name: string; icon: IconType }
+> = {
+  react: { name: "React", icon: SiReact },
+  typescript: { name: "TypeScript", icon: SiTypescript },
+  cloudflare: { name: "Cloudflare", icon: SiCloudflare },
+  csharp: { name: "C#", icon: TbBrandCSharp },
+  dotnet: { name: ".NET 10", icon: SiDotnet },
+  postgresql: { name: "PostgreSQL", icon: SiPostgresql },
+  azure: { name: "Azure", icon: TbBrandAzure },
+  chrome: { name: "Chrome", icon: SiGooglechrome },
+  powershell: { name: "PowerShell", icon: TbBrandPowershell },
+  python: { name: "Python", icon: SiPython },
+  qa: { name: "QA", icon: FaBug },
+  windows: { name: "Windows", icon: TbBrandPowershell },
+  wordpress: { name: "WordPress", icon: SiWordpress },
+  git: { name: "Git", icon: SiGit },
+  jira: { name: "Jira", icon: SiJira },
+  workflows: { name: "Workflows", icon: FaDiagramProject },
+  slas: { name: "SLAs", icon: FaClock },
+};
+
+const featuredProjects = portfolio.projects
+  .filter((project): project is FeaturedProject => Boolean(project.home))
+  .sort((first, second) => first.home.order - second.home.order);
 
 function ProjectMedia({ project }: { project: FeaturedProject }) {
-  if (project.media.kind === "video") {
+  if (project.home.media.kind === "video") {
     return (
       <video
         className={styles.projectVideo}
-        src={project.media.src}
-        aria-label={project.media.label}
+        src={project.home.media.src}
+        aria-label={project.home.media.label}
         muted
         playsInline
         preload="metadata"
@@ -194,8 +85,8 @@ function ProjectMedia({ project }: { project: FeaturedProject }) {
   return (
     <Image
       className={styles.projectImage}
-      src={project.media.src}
-      alt={project.media.alt}
+      src={project.home.media.src}
+      alt={project.home.media.alt}
       fill
       unoptimized
       sizes="(max-width: 760px) 92vw, 46vw"
@@ -204,17 +95,19 @@ function ProjectMedia({ project }: { project: FeaturedProject }) {
 }
 
 function ProjectCard({ project }: { project: FeaturedProject }) {
+  const cardTitle = project.home.cardTitle ?? project.title;
   const sizeClass =
-    project.size === "large"
+    project.home.size === "large"
       ? styles.projectCardLarge
-      : project.size === "wide"
+      : project.home.size === "wide"
         ? styles.projectCardWide
         : "";
 
   return (
-    <a className={`${styles.projectCard} ${sizeClass}`}
-      href={`/projects/${project.slug}/`}
-      aria-label={`View ${project.title} case study`}
+    <a
+      className={`${styles.projectCard} ${sizeClass}`}
+      href={`/projects/${project.id}/`}
+      aria-label={`View ${cardTitle} case study`}
     >
       <div className={`${styles.projectMedia} ${styles.projectMediaDivider}`}>
         <ProjectMedia project={project} />
@@ -223,20 +116,24 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
         </span>
       </div>
       <div className={styles.projectBody}>
-        <p className={styles.projectLabel}>{project.label}</p>
-        <h3>{project.title}</h3>
-        <p className={styles.projectDescription}>{project.description}</p>
-        <p className={styles.projectContribution}>{project.contribution}</p>
+        <p className={styles.projectLabel}>{project.home.label}</p>
+        <h3>{cardTitle}</h3>
+        <p className={styles.projectDescription}>{project.home.description}</p>
+        <p className={styles.projectContribution}>{project.home.contribution}</p>
         <div className={styles.projectFooter}>
-          <ul aria-label={`${project.title} primary technologies`}>
-            {project.tools.map(({ name, icon: ToolIcon }) => (
-              <li key={name} title={name}>
-                <ToolIcon aria-hidden="true" />
-                <span>{name}</span>
-              </li>
-            ))}
+          <ul aria-label={`${cardTitle} primary technologies`}>
+            {project.home.tools.map((tool) => {
+              const { name, icon: ToolIcon } = homeToolDetails[tool];
+
+              return (
+                <li key={tool} title={name}>
+                  <ToolIcon aria-hidden="true" />
+                  <span>{name}</span>
+                </li>
+              );
+            })}
           </ul>
-          <span>{project.outcome}</span>
+          <span>{project.home.outcome}</span>
         </div>
       </div>
     </a>

@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { LuArrowUpRight, LuSprout, LuTreePine, LuX } from "react-icons/lu";
-import type { ProjectCaseStudy } from "@/app/data/projectCaseStudies";
+import type { ProjectJourneyData } from "@/app/data/projectCaseStudies";
+import { useDialogBackdropClose } from "@/app/hooks/useDialogBackdropClose";
+import styles from "./ProjectJourney.module.css";
 
 type ProjectJourneyProps = {
   projectTitle: string;
-  journey: NonNullable<ProjectCaseStudy["journey"]>;
+  journey: ProjectJourneyData;
 };
 
 export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
@@ -16,42 +18,45 @@ export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
     dialogRef.current?.showModal();
   }
 
-  function closeJourney() {
+  const closeJourney = useCallback(() => {
     dialogRef.current?.close();
-  }
+  }, []);
+
+  useDialogBackdropClose(dialogRef, closeJourney);
 
   return (
-    <section className="project-journey" aria-label={`${projectTitle} process`}>
+    <section
+      className={styles.projectJourney}
+      data-project-journey="true"
+      aria-label={`${projectTitle} process`}
+    >
       <button
-        className="journey-trigger"
+        className={styles.trigger}
         type="button"
         aria-haspopup="dialog"
         onClick={openJourney}
       >
-        <span className="journey-trigger-icon" aria-hidden="true">
+        <span className={styles.triggerIcon} aria-hidden="true">
           <LuSprout />
         </span>
-        <span className="journey-trigger-copy">
+        <span className={styles.triggerCopy}>
           <span>The process</span>
           <strong>How this project grew</strong>
         </span>
-        <span className="journey-trigger-action" aria-hidden="true">
+        <span className={styles.triggerAction} aria-hidden="true">
           Open <LuArrowUpRight />
         </span>
       </button>
 
       <dialog
         ref={dialogRef}
-        className="journey-dialog"
+        className={styles.dialog}
         aria-labelledby="journey-dialog-title"
-        onClick={(event) => {
-          if (event.target === event.currentTarget) closeJourney();
-        }}
       >
-        <div className="journey-dialog-shell">
-          <header className="journey-dialog-header">
-            <div className="journey-dialog-heading">
-              <span className="journey-dialog-mark" aria-hidden="true">
+        <div className={styles.dialogShell}>
+          <header className={styles.dialogHeader}>
+            <div className={styles.dialogHeading}>
+              <span className={styles.dialogMark} aria-hidden="true">
                 <LuTreePine />
               </span>
               <div>
@@ -64,32 +69,37 @@ export function ProjectJourney({ projectTitle, journey }: ProjectJourneyProps) {
             </button>
           </header>
 
-          <div className="journey-dialog-body">
-            <ol className="journey-timeline">
+          <div className={styles.dialogBody}>
+            <ol className={styles.timeline}>
               {journey.items.map((item, index) => (
                 <li
                   key={`${item.kind}-${item.title}`}
                   data-journey-kind={item.kind.toLowerCase()}
                   data-journey-highlight={item.badge ? "true" : undefined}
                 >
-                  <span className="journey-node" aria-hidden="true">
+                  <span className={styles.node} aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
-                    {item.badge ? <span className="journey-node-star">★</span> : null}
+                    {item.badge ? <span className={styles.nodeStar}>★</span> : null}
                   </span>
                   <article
-                    className={journey.showLinks !== false && item.link ? "journey-card has-link" : "journey-card"}
+                    className={`${styles.card}${
+                      journey.showLinks !== false && item.link
+                        ? ` ${styles.cardHasLink}`
+                        : ""
+                    }`}
                   >
                     {item.badge ? (
-                      <p className="journey-badge">
+                      <p className={styles.badge}>
                         <span aria-hidden="true">★</span> {item.badge}
                       </p>
                     ) : null}
-                    <p className="journey-kind">{item.label ?? item.kind}</p>
+                    <p className={styles.kind}>{item.label ?? item.kind}</p>
                     <h3>{item.title}</h3>
                     <p>{item.detail}</p>
                     {journey.showLinks !== false && item.link ? (
                       <a
-                        className="journey-node-link"
+                        className={styles.nodeLink}
+                        data-journey-link="true"
                         href={item.link.href}
                         target="_blank"
                         rel="noreferrer"

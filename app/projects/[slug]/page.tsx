@@ -249,7 +249,7 @@ function CompanionCaseStudy({ companion }: { companion: NonNullable<ProjectCaseS
         <h2 id="companion-case-title">{companion.title}</h2>
         <p>{companion.introduction}</p>
       </div>
-      <SlideViewer {...companion.media} />
+      <SlideViewer {...companion.media} compact />
     </section>
   );
 }
