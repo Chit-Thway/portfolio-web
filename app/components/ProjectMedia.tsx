@@ -13,13 +13,15 @@ type ProjectVideoProps = {
 };
 
 export function ProjectVideo({ src, label, duration }: ProjectVideoProps) {
+  const captionsSrc = src.replace(/\.mp4(?=$|\?)/i, ".vtt");
+
   return (
     <figure className={`${styles.media} ${styles.videoFrame}`}>
       <video controls playsInline preload="metadata" aria-label={label}>
         <source src={src} type="video/mp4" />
         <track
           kind="captions"
-          src={src.replace(/\.mp4$/i, ".vtt")}
+          src={captionsSrc}
           srcLang="en"
           label="English"
           default

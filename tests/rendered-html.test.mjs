@@ -44,7 +44,7 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /Flagship product · Live/);
   assert.match(html, /Live product · Free account available/);
   assert.match(html, /save up to 10 applications/);
-  assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=49cf7aef"/);
+  assert.match(html, /src="\/chit-thway-portrait\.jpg\?v=14019d07"/);
   assert.match(html, /Jira Service Management Simulation/);
   assert.match(html, /Service-management simulation · Public/);
   assert.doesNotMatch(html, /\/_next\/image\?url=/);
@@ -130,7 +130,7 @@ test("renders the Outside the IDE photo stack", async () => {
   assert.match(html, /aria-label=["']Show next photo: Socials["']/);
   assert.match(html, /aria-label=["']Choose an interest["']/);
   assert.match(html, /aria-live=["']polite["']/);
-  assert.match(html, /src=["']\/life-beyond-screen\/socials-2\.jpg["']/);
+  assert.match(html, /src=["']\/life-beyond-screen\/socials-2\.webp["']/);
 });
 
 test("renders the Milestone 6 public GitHub activity and contact actions", async () => {

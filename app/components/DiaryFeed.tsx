@@ -514,7 +514,7 @@ export function DiaryFeed() {
               <header className={styles.postHeader}>
                 <img
                   className={styles.postAvatar}
-                  src="/chit-thway-portrait.jpg"
+                  src="/chit-thway-portrait.jpg?v=14019d07"
                   alt=""
                   aria-hidden="true"
                 />

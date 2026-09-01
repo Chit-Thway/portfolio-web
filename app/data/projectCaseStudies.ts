@@ -299,7 +299,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "A local, read-only diagnostic workflow that collects bounded Windows evidence, validates a structured report and turns it into clear support findings in a Python dashboard.",
     media: {
       kind: "video",
-      src: "/projects/windows-support-toolkit/demonstration.mp4",
+        src: "/projects/windows-support-toolkit/demonstration.mp4?v=fe683d4d",
       label: "Windows Support Diagnostic Toolkit demonstration",
       duration: "32 second demonstration",
     },
@@ -434,7 +434,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "A local storage-analysis and guided-cleanup extension that turns a broad disk-space warning into clear evidence, focused review and deliberately recoverable action.",
     media: {
       kind: "video",
-      src: "/projects/windows-storage-extension/demonstration.mp4",
+        src: "/projects/windows-storage-extension/demonstration.mp4?v=5260c1b9",
       label: "Storage Insights and Guided Cleanup demonstration",
       duration: "43 second demonstration",
     },
@@ -818,7 +818,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
       "A public, production-deployed job application tracker where anyone can create a free account, save up to 10 applications, capture job details and manage the work around each application.",
     media: {
       kind: "video",
-      src: "/projects/job-application-tracker/demonstration.mp4",
+        src: "/projects/job-application-tracker/demonstration.mp4?v=528b5984",
       label: "Job Application Tracker demonstration",
       duration: "49 second demonstration",
     },

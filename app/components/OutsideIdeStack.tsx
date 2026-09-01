@@ -31,42 +31,42 @@ const interests = [
 const photos = [
   {
     category: "Socials",
-    src: "/life-beyond-screen/socials-1.jpg",
+    src: "/life-beyond-screen/socials-1.webp",
     alt: "Friends gathered for a graduation celebration outdoors",
   },
   {
     category: "Socials",
-    src: "/life-beyond-screen/socials-2.jpg",
+    src: "/life-beyond-screen/socials-2.webp",
     alt: "Four friends celebrating graduation together indoors",
   },
   {
     category: "Travel",
-    src: "/life-beyond-screen/travel-1.png",
+    src: "/life-beyond-screen/travel-1.webp",
     alt: "Hotel lounge with city views during a trip",
   },
   {
     category: "Travel",
-    src: "/life-beyond-screen/travel-2.png",
+    src: "/life-beyond-screen/travel-2.webp",
     alt: "Visiting an elephant sanctuary",
   },
   {
     category: "Gaming",
-    src: "/life-beyond-screen/gaming-1.png",
+    src: "/life-beyond-screen/gaming-1.webp",
     alt: "Stardew Valley farm during gameplay",
   },
   {
     category: "Gaming",
-    src: "/life-beyond-screen/gaming-2.png",
+    src: "/life-beyond-screen/gaming-2.webp",
     alt: "Esports tournament winners on stage",
   },
   {
     category: "Eating out",
-    src: "/life-beyond-screen/eating-out-1.png",
+    src: "/life-beyond-screen/eating-out-1.webp",
     alt: "Sharing bowls of ramen while eating out",
   },
   {
     category: "Eating out",
-    src: "/life-beyond-screen/eating-out-2.png",
+    src: "/life-beyond-screen/eating-out-2.webp",
     alt: "Mapo tofu and rice at a restaurant",
   },
 ];

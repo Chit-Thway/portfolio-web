@@ -61,7 +61,7 @@ export const portfolio = {
     availability: "Open to graduate & entry-level opportunities",
     intro:
       "I investigate how systems work, turn unclear problems into practical next steps, and care about making technology easier for people to use.",
-    profileImage: "/chit-thway-portrait.jpg?v=49cf7aef" as string | null,
+    profileImage: "/chit-thway-portrait.jpg?v=14019d07" as string | null,
   },
   contact: {
     email: "chitthway67@gmail.com" as string | null,
@@ -191,7 +191,7 @@ export const portfolio = {
         size: "standard",
         media: {
           kind: "video",
-          src: "/projects/windows-support-toolkit/demonstration.mp4",
+          src: "/projects/windows-support-toolkit/demonstration.mp4?v=fe683d4d",
           label: "Windows Support Diagnostic Toolkit interface preview",
         },
         tools: ["powershell", "python", "qa"],
