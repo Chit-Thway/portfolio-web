@@ -34,6 +34,7 @@ import {
   TbBrandWindows,
 } from "react-icons/tb";
 import type { ProjectStack as ProjectStackData, ProjectStackIcon } from "@/app/data/projectCaseStudies";
+import styles from "./ProjectStack.module.css";
 
 const stackIcons: Record<ProjectStackIcon, IconType> = {
   react: SiReact,
@@ -101,9 +102,9 @@ export function ProjectStack({ projectTitle, stack }: { projectTitle: string; st
   const MarkIcon = stackIcons[stack.mark];
 
   return (
-    <section className="project-stack" aria-labelledby="project-stack-title">
-      <div className="project-stack-heading">
-        <div className="project-stack-mark" aria-hidden="true">
+    <section className={styles.projectStack} aria-labelledby="project-stack-title">
+      <div className={styles.heading}>
+        <div className={styles.mark} aria-hidden="true">
           <MarkIcon />
         </div>
         <div>
@@ -113,9 +114,9 @@ export function ProjectStack({ projectTitle, stack }: { projectTitle: string; st
         </div>
       </div>
 
-      <div className="project-stack-board">
+      <div className={styles.board}>
         {stack.groups.map((group) => (
-          <div className="project-stack-row" key={group.label}>
+          <div className={styles.row} key={group.label}>
             <h3>{group.label}</h3>
             <ul>
               {group.items.map((item) => {
@@ -135,7 +136,7 @@ export function ProjectStack({ projectTitle, stack }: { projectTitle: string; st
         ))}
       </div>
 
-      <p className="project-stack-description">{stack.description}</p>
+      <p className={styles.description}>{stack.description}</p>
     </section>
   );
 }

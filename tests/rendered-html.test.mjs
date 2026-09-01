@@ -218,7 +218,7 @@ test("renders the Windows toolkit video and simple setup", async () => {
   assert.match(html, /\/projects\/windows-support-toolkit\/demonstration\.mp4/);
   assert.match(html, /A simple first run/);
   assert.match(html, /python -m dashboard/);
-  assert.match(html, /class="repository-button case-title-repository"/);
+  assert.match(html, /data-repository-link="true"/);
   assert.match(html, /<track[^>]*\sdefault(?:=|\s|>)/i);
   assert.match(html, /Technology architecture/);
   assert.match(html, /Read-only Windows evidence pipeline/);
@@ -272,7 +272,7 @@ test("renders the Jira slide viewer and presentation download", async () => {
   assert.match(html, /Kestrel-Ridge-JSM-Case-Study\.pptx/);
   assert.match(html, /aria-label="Show previous slide"/);
   assert.match(html, /aria-label="Show next slide"/);
-  assert.match(html, /class="slide-counter"/);
+  assert.match(html, /data-slide-counter="true"/);
   assert.ok(html.indexOf("Other projects") < html.indexOf("slide-1.png"));
 });
 

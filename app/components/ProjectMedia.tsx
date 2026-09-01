@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import type { KeyboardEvent, TouchEvent } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import styles from "./ProjectMedia.module.css";
 
 type ProjectVideoProps = {
   src: string;
@@ -13,7 +14,7 @@ type ProjectVideoProps = {
 
 export function ProjectVideo({ src, label, duration }: ProjectVideoProps) {
   return (
-    <figure className="case-media case-video-frame">
+    <figure className={`${styles.media} ${styles.videoFrame}`}>
       <video controls playsInline preload="metadata" aria-label={label}>
         <source src={src} type="video/mp4" />
         <track
@@ -37,9 +38,10 @@ type SlideViewerProps = {
   slides: string[];
   downloadHref: string;
   label: string;
+  compact?: boolean;
 };
 
-export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
+export function SlideViewer({ slides, downloadHref, label, compact = false }: SlideViewerProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStart = useRef<number | null>(null);
 
@@ -83,10 +85,16 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
   };
 
   return (
-    <section className="case-media slide-viewer" aria-label={`${label} slide viewer`}>
-      <div className="slide-frame">
+    <section
+      className={`${styles.media} ${styles.slideViewer}${
+        compact ? ` ${styles.slideViewerCompact}` : ""
+      }`}
+      data-slide-viewer="true"
+      aria-label={`${label} slide viewer`}
+    >
+      <div className={styles.slideFrame}>
         <button
-          className="slide-stage"
+          className={styles.slideStage}
           type="button"
           onClick={showNext}
           onKeyDown={handleKeyDown}
@@ -106,7 +114,7 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
           />
         </button>
         <button
-          className="slide-arrow slide-arrow-previous"
+          className={`${styles.slideArrow} ${styles.slideArrowPrevious}`}
           type="button"
           onClick={showPrevious}
           aria-label="Show previous slide"
@@ -114,7 +122,7 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
           <LuChevronLeft aria-hidden="true" />
         </button>
         <button
-          className="slide-arrow slide-arrow-next"
+          className={`${styles.slideArrow} ${styles.slideArrowNext}`}
           type="button"
           onClick={showNext}
           aria-label="Show next slide"
@@ -122,11 +130,11 @@ export function SlideViewer({ slides, downloadHref, label }: SlideViewerProps) {
           <LuChevronRight aria-hidden="true" />
         </button>
       </div>
-      <p className="slide-counter" aria-live="polite">
+      <p className={styles.slideCounter} data-slide-counter="true" aria-live="polite">
         <span>Slide</span>
         <strong>{activeIndex + 1} / {slides.length}</strong>
       </p>
-      <div className="slide-viewer-meta">
+      <div className={styles.slideViewerMeta}>
         <span>Use the controls, arrow keys or swipe to move through the case study.</span>
         <a href={downloadHref} download>
           Download presentation ↓
@@ -149,7 +157,7 @@ export function PdfViewer({ src, coverSrc, pages, label }: PdfViewerProps) {
   return (
     <>
       <button
-        className="pdf-preview"
+        className={styles.pdfPreview}
         type="button"
         onClick={() => dialogRef.current?.showModal()}
         aria-label={`Open ${label}`}
@@ -171,10 +179,10 @@ export function PdfViewer({ src, coverSrc, pages, label }: PdfViewerProps) {
 
       <dialog
         ref={dialogRef}
-        className="pdf-dialog"
+        className={styles.pdfDialog}
         aria-label={label}
       >
-        <div className="pdf-dialog-panel">
+        <div className={styles.pdfDialogPanel}>
           <header>
             <div>
               <span>Document viewer</span>
@@ -184,7 +192,7 @@ export function PdfViewer({ src, coverSrc, pages, label }: PdfViewerProps) {
               Close ×
             </button>
           </header>
-          <div className="pdf-page-list" aria-label={`${label}, ${pages.length} pages`}>
+          <div className={styles.pdfPageList} aria-label={`${label}, ${pages.length} pages`}>
             {pages.map((page, index) => (
               <figure key={page}>
                 <Image
@@ -213,8 +221,8 @@ export function PdfViewer({ src, coverSrc, pages, label }: PdfViewerProps) {
 
 export function PendingProjectMedia({ label, message }: { label: string; message: string }) {
   return (
-    <section className="case-media pending-case-study" aria-label={label}>
-      <div className="pending-grid" aria-hidden="true" />
+    <section className={`${styles.media} ${styles.pendingCaseStudy}`} aria-label={label}>
+      <div className={styles.pendingGrid} aria-hidden="true" />
       <div>
         <span>Preparing / 01</span>
         <h2>{label}</h2>
