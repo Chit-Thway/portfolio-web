@@ -28,20 +28,23 @@ test("server-renders the completed portfolio", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
+  const headEnd = html.indexOf("</head>");
+  assert.ok(headEnd > -1);
+  const head = html.slice(0, headEnd);
   assert.match(
     html,
     /<title>CHIT THWAY \| Application Support, QA &amp; Web Support<\/title>/,
   );
   assert.match(
-    html,
-    /<link rel="canonical" href="https:\/\/chitthway-portfolio\.pages\.dev">/,
+    head,
+    /<link rel="canonical" href="https:\/\/chitthway-portfolio\.pages\.dev"\/?>/,
   );
   assert.match(
-    html,
-    /<meta property="og:url" content="https:\/\/chitthway-portfolio\.pages\.dev">/,
+    head,
+    /<meta property="og:url" content="https:\/\/chitthway-portfolio\.pages\.dev"\/?>/,
   );
-  assert.match(html, /<meta property="og:image:width" content="1200">/);
-  assert.match(html, /<meta property="og:image:height" content="627">/);
+  assert.match(head, /<meta property="og:image:width" content="1200"\/?>/);
+  assert.match(head, /<meta property="og:image:height" content="627"\/?>/);
   assert.match(html, /Application support,/);
   assert.match(html, /troubleshooting/);
   assert.match(html, /software quality/);
