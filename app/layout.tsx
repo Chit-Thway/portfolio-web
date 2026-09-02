@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import { VisitorBeacon } from "./components/VisitorBeacon";
 import "./globals.css";
+
+const siteUrl = new URL("https://chitthway-portfolio.pages.dev");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,16 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("host") ?? "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.includes("localhost") ? "http" : "https");
-  const metadataBase = new URL(`${protocol}://${host}`);
-
+export function generateMetadata(): Metadata {
   return {
-    metadataBase,
+    metadataBase: siteUrl,
     title: "CHIT THWAY | Application Support, QA & Web Support",
     description:
       "Portfolio of CHIT THWAY, a Perth-based Computer Science graduate focused on application support, technical support, QA and web support.",
@@ -38,8 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     authors: [{ name: "CHIT THWAY" }],
     creator: "CHIT THWAY",
+    alternates: { canonical: "/" },
     openGraph: {
       type: "website",
+      url: "/",
       title: "CHIT THWAY | Support-minded. Curious by default.",
       description:
         "Application support, technical support, QA and web support portfolio based in Perth, Western Australia.",
@@ -47,8 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [
         {
           url: "/og.png",
-          width: 1568,
-          height: 1003,
+          width: 1200,
+          height: 627,
           alt: "CHIT THWAY — support-minded, curious by default",
         },
       ],

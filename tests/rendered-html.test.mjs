@@ -32,6 +32,16 @@ test("server-renders the completed portfolio", async () => {
     html,
     /<title>CHIT THWAY \| Application Support, QA &amp; Web Support<\/title>/,
   );
+  assert.match(
+    html,
+    /<link rel="canonical" href="https:\/\/chitthway-portfolio\.pages\.dev">/,
+  );
+  assert.match(
+    html,
+    /<meta property="og:url" content="https:\/\/chitthway-portfolio\.pages\.dev">/,
+  );
+  assert.match(html, /<meta property="og:image:width" content="1200">/);
+  assert.match(html, /<meta property="og:image:height" content="627">/);
   assert.match(html, /Application support,/);
   assert.match(html, /troubleshooting/);
   assert.match(html, /software quality/);
