@@ -41,9 +41,10 @@ export const metadata: Metadata = {
     siteName: "CHIT THWAY — Portfolio",
     images: [
       {
-        url: "/og.png",
+        url: "/portfolio-social-card.jpg",
         width: 1200,
         height: 627,
+        type: "image/jpeg",
         alt: "CHIT THWAY — support-minded, curious by default",
       },
     ],
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     title: "CHIT THWAY | Support-minded. Curious by default.",
     description:
       "Application support, technical support, QA and web support portfolio based in Perth, Western Australia.",
-    images: ["/og.png"],
+    images: ["/portfolio-social-card.jpg"],
   },
   robots: { index: true, follow: true },
   icons: {

@@ -43,6 +43,11 @@ test("server-renders the completed portfolio", async () => {
     head,
     /<meta property="og:url" content="https:\/\/chitthway-portfolio\.pages\.dev"\/?>/,
   );
+  assert.match(
+    head,
+    /<meta property="og:image" content="https:\/\/chitthway-portfolio\.pages\.dev\/portfolio-social-card\.jpg"\/?>/,
+  );
+  assert.match(head, /<meta property="og:image:type" content="image\/jpeg"\/?>/);
   assert.match(head, /<meta property="og:image:width" content="1200"\/?>/);
   assert.match(head, /<meta property="og:image:height" content="627"\/?>/);
   assert.match(html, /Application support,/);
