@@ -179,7 +179,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
     actions: [
       {
         label: "View the live site",
-        href: "https://chitthway-portfolio.pages.dev",
+        href: "https://chitthwayportfolio.com",
       },
     ],
     journey: {
@@ -200,7 +200,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
             "I built my own portfolio so each project could bring its explanation, technology, video demonstration, repository, reports and supporting files together without LinkedIn’s layout and media limits.",
           link: {
             label: "Open the portfolio homepage",
-            href: "https://chitthway-portfolio.pages.dev/",
+            href: "https://chitthwayportfolio.com/",
           },
         },
         {
@@ -229,7 +229,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
           badge: "Unexpected idea",
           link: {
             label: "Open the Diary",
-            href: "https://chitthway-portfolio.pages.dev/diary/",
+            href: "https://chitthwayportfolio.com/diary/",
           },
         },
         {
@@ -239,7 +239,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
             "They can scan the homepage, open a project, watch a demonstration or read the complete case study.",
           link: {
             label: "Open the live portfolio website",
-            href: "https://chitthway-portfolio.pages.dev/",
+            href: "https://chitthwayportfolio.com/",
           },
         },
         {

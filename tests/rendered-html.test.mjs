@@ -37,16 +37,17 @@ test("server-renders the completed portfolio", async () => {
   );
   assert.match(
     head,
-    /<link rel="canonical" href="https:\/\/chitthway-portfolio\.pages\.dev"\/?>/,
+    /<link rel="canonical" href="https:\/\/chitthwayportfolio\.com"\/?>/,
   );
   assert.match(
     head,
-    /<meta property="og:url" content="https:\/\/chitthway-portfolio\.pages\.dev"\/?>/,
+    /<meta property="og:url" content="https:\/\/chitthwayportfolio\.com"\/?>/,
   );
   assert.match(
     head,
-    /<meta property="og:image" content="https:\/\/chitthway-portfolio\.pages\.dev\/portfolio-social-card\.jpg"\/?>/,
+    /<meta property="og:image" content="https:\/\/chitthwayportfolio\.com\/portfolio-social-card\.jpg"\/?>/,
   );
+  assert.match(head, /<link rel="icon" href="\/favicon\.png" type="image\/png"\/?>/);
   assert.match(head, /<meta property="og:image:type" content="image\/jpeg"\/?>/);
   assert.match(head, /<meta property="og:image:width" content="1200"\/?>/);
   assert.match(head, /<meta property="og:image:height" content="627"\/?>/);

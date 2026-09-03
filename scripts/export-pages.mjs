@@ -12,7 +12,7 @@ await rm(generatedWranglerConfigUrl, { force: true });
 await rm(generatedDeployRedirectUrl, { force: true });
 console.log("Removed generated Worker-only deployment metadata before Pages deployment.");
 
-const origin = process.env.PAGES_ORIGIN ?? "https://chitthway-portfolio.pages.dev";
+const origin = process.env.PAGES_ORIGIN ?? "https://chitthwayportfolio.com";
 const projectSlugs = [
   "portfolio-v2",
   "windows-support-toolkit",

@@ -171,7 +171,7 @@ Every homepage project links to its own case-study route. Portfolio V2 includes 
 The portfolio is publicly deployed with Cloudflare Pages:
 
 ```text
-https://chitthway-portfolio.pages.dev
+https://chitthwayportfolio.com
 ```
 
 Create and deploy the static Pages output with:

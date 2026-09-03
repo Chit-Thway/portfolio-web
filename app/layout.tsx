@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { VisitorBeacon } from "./components/VisitorBeacon";
 import "./globals.css";
 
-const siteUrl = new URL("https://chitthway-portfolio.pages.dev");
+const siteUrl = new URL("https://chitthwayportfolio.com");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: { url: "/favicon.png", type: "image/png" },
+    shortcut: "/favicon.png",
   },
 };
 
