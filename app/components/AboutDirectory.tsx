@@ -153,9 +153,9 @@ export function AboutDirectory() {
                 </dl>
               </div>
               <div className={`${styles.profileVisual} ${styles.bioVisual}`}>
-                {person.profileImage ? (
+                {person.bioImage ? (
                   <Image
-                    src={person.profileImage}
+                    src={person.bioImage}
                     alt={`Portrait of ${person.name}`}
                     fill
                     unoptimized

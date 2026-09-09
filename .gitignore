@@ -55,3 +55,8 @@ yarn-error.log*
 /artifacts/
 /prototypes/
 /video/
+
+# local LinkedIn presentation exports
+/Portfolio-Diary-Case-Study-LinkedIn-Fixed.pptx
+/Portfolio-Main-LinkedIn-Fixed.pptx
+/docs/manual-change-and-release-workflow.md

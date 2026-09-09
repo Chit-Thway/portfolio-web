@@ -62,6 +62,7 @@ export const portfolio = {
     intro:
       "I investigate how systems work, turn unclear problems into practical next steps, and care about making technology easier for people to use.",
     profileImage: "/chit-thway-portrait.jpg?v=14019d07" as string | null,
+    bioImage: "/about/chit-thway-bio.png?v=20260909" as string | null,
   },
   contact: {
     email: "chitthway67@gmail.com" as string | null,

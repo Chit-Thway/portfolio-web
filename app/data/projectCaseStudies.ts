@@ -935,7 +935,7 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
           badge: "Inspired idea",
           title: "Create an admin-only area",
           detail:
-            "I created an administrator area for managing users, account tiers, verification, access locks and deletion, inspired by an admin page I worked on with my supervisor Chris for Accessory Archive.",
+            "I created an administrator area for managing users, account tiers, verification, access locks and deletion, inspired by an admin page I worked on with my supervisor Chris Carey for Accessory Archive.",
           link: {
             label: "Open Accessory Archive",
             href: "https://accessory-archive.dev4.concise.digital/",
