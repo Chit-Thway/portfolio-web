@@ -62,6 +62,7 @@ export type ProjectJourneyData = {
 
 export type ProjectCaseStudy = {
   slug: string;
+  displayTitle?: string;
   eyebrow: string;
   introduction: string;
   media: ProjectMedia;
@@ -100,7 +101,7 @@ const qaReportPages = Array.from(
 
 const portfolioSlides = Array.from(
   { length: 6 },
-  (_, index) => `/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-${index + 1}.png`,
+  (_, index) => `/projects/portfolio-v2/Portfolio-Case-Study/slide-${index + 1}.png`,
 );
 
 const portfolioDiarySlides = Array.from(
@@ -111,14 +112,15 @@ const portfolioDiarySlides = Array.from(
 export const projectCaseStudies: ProjectCaseStudy[] = [
   {
     slug: "portfolio-v2",
+    displayTitle: "Portfolio Web",
     eyebrow: "A case study about this very website",
     introduction:
       "yes, you are looking at it... this is the project and the place where the project is being explained. I rebuilt the portfolio so the useful stuff is easy to find, the deeper proof is there when someone wants it, and the whole thing still feels like me.",
     media: {
       kind: "slides",
       slides: portfolioSlides,
-      downloadHref: "/projects/portfolio-v2/Portfolio-V2-Case-Study.pptx",
-      label: "Portfolio V2 website case study",
+      downloadHref: "/projects/portfolio-v2/Portfolio-Case-Study.pptx",
+      label: "Portfolio website case study",
     },
     stack: {
       subtitle: "A React portfolio with a Cloudflare-backed personal archive",

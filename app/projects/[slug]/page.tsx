@@ -125,7 +125,7 @@ function StandardHero({
       <div className="case-hero-grid">
         <div className="case-hero-copy">
           <p className="eyebrow">{caseStudy.eyebrow}</p>
-          <h1>{project.title}</h1>
+          <h1>{caseStudy.displayTitle ?? project.title}</h1>
           <p className="case-introduction">{caseStudy.introduction}</p>
         </div>
         <div className="case-hero-aside">
@@ -329,7 +329,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {caseStudy.companion ? <CompanionCaseStudy companion={caseStudy.companion} /> : null}
 
         {caseStudy.stack ? (
-          <ProjectStack projectTitle={project.title} stack={caseStudy.stack} />
+          <ProjectStack projectTitle={caseStudy.displayTitle ?? project.title} stack={caseStudy.stack} />
         ) : null}
 
         <CaseStudyDetails caseStudy={caseStudy} project={project} />

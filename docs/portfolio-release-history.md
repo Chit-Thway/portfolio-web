@@ -1,6 +1,6 @@
-# Portfolio Version 2 release history
+# Portfolio release history
 
-Version 2 was delivered as a staged redesign of CHIT THWAY's public portfolio. Its purpose was to make the strongest evidence easier for employers to scan while replacing the darker developer-themed presentation with a clean, restrained interface. The completed redesign, Diary and subsequent project-page improvements now run from `main` in production.
+The current portfolio was delivered as a staged redesign of CHIT THWAY's public site. Its purpose was to make the strongest evidence easier for employers to scan while replacing the darker developer-themed presentation with a clean, restrained interface. The completed redesign, Diary and subsequent project-page improvements now run from `main` in production.
 
 ## Design principles
 
@@ -15,12 +15,12 @@ Version 2 was delivered as a staged redesign of CHIT THWAY's public portfolio. I
 
 | Branch | Purpose |
 | --- | --- |
-| `main` | Current deployed Version 2 portfolio |
+| `main` | Current deployed portfolio |
 | `version-1` | Preserved Version 1 source |
-| `version-2` | Historical reviewed Version 2 baseline |
+| `version-2` | Historical reviewed redesign baseline |
 | `version-2-milestone-*` | Historical isolated milestone branches |
 
-Each milestone was reviewed locally before it was combined into Version 2 and released through `main`.
+Each milestone was reviewed locally before it was combined into the current portfolio and released through `main`.
 
 ## Milestones
 
@@ -29,7 +29,7 @@ Each milestone was reviewed locally before it was combined into Version 2 and re
 Status: complete
 
 - Preserve Version 1.
-- Establish the Version 2 branch and scoped light-theme design tokens.
+- Establish the redesign branch and scoped light-theme design tokens.
 - Keep live deployment unchanged.
 
 ### Milestone 1 — First-screen positioning and featured evidence
@@ -99,7 +99,7 @@ No new personal facts or images were introduced. Profile content is sourced from
 
 The homepage now presents four selected case studies. The first three remain the strongest evidence; the Jira Service Management work appears as a full-width secondary card and is explicitly described as a simulation. Quick-Fire Questions retains its honest direct case-study route but is excluded from the homepage and previous/next project navigation until verified media is ready.
 
-Detailed case studies use a scoped Version 2 stylesheet so the redesign does not alter the preserved Version 1 branch. Existing video, slide, PDF and caption behaviour remains intact. Project pages also provide a working email action and use project-specific social images when an existing slide or document cover is available.
+Detailed case studies use a scoped portfolio stylesheet so the redesign does not alter the preserved Version 1 branch. Existing video, slide, PDF and caption behaviour remains intact. Project pages also provide a working email action and use project-specific social images when an existing slide or document cover is available.
 
 ## Milestone 4 implementation notes
 

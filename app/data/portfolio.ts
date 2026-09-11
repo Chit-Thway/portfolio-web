@@ -105,7 +105,7 @@ export const portfolio = {
     {
       id: "portfolio-v2",
       number: "00",
-      title: "Portfolio V2",
+      title: "Portfolio",
       category: "Personal product and portfolio",
       status: "Live · You are already here",
       summary:
@@ -136,6 +136,7 @@ export const portfolio = {
       ],
       home: {
         order: 0,
+        cardTitle: "Portfolio Web",
         label: "The site you are on · Live",
         description:
           "A portfolio I rebuilt because a list of skills was never going to tell the whole story. It gets to the useful bits quickly, then lets the work speak for itself.",
@@ -145,8 +146,8 @@ export const portfolio = {
         size: "large",
         media: {
           kind: "image",
-          src: "/projects/portfolio-v2/Portfolio-V2-Case-Study/slide-1.png",
-          alt: "Opening slide of the Portfolio V2 website case study",
+          src: "/projects/portfolio-v2/Portfolio-Case-Study/slide-1.png",
+          alt: "Opening slide of the Portfolio website case study",
         },
         tools: ["react", "typescript", "cloudflare"],
       },

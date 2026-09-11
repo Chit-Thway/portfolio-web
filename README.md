@@ -1,4 +1,4 @@
-# CHIT THWAY — Portfolio V2
+# CHIT THWAY — Portfolio
 
 A production portfolio built to show the work behind the résumé: live projects, practical case studies, technical decisions and support-minded problem solving.
 
@@ -83,7 +83,7 @@ Portfolio content is maintained in `app/data/portfolio.ts`; detailed case studie
 
 ## Documentation
 
-- [Version 2 release history](docs/version-2-roadmap.md)
+- [Portfolio release history](docs/portfolio-release-history.md)
 - [Diary setup and operations](docs/diary-operations.md)
 
 ## Deployment

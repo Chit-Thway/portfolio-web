@@ -55,7 +55,7 @@ test("server-renders the completed portfolio", async () => {
   assert.match(html, /troubleshooting/);
   assert.match(html, /software quality/);
   assert.match(html, /Job Application Tracker/);
-  assert.match(html, /Portfolio V2/);
+  assert.match(html, /Portfolio/);
   assert.match(html, /Live, evolving and very much mine/);
   assert.match(html, /Windows Support Diagnostic Toolkit/);
   assert.match(html, /Storage Insights &amp; Guided Cleanup/);
@@ -76,7 +76,7 @@ test("server-renders the completed portfolio", async () => {
   assert.doesNotMatch(html, /dark-comedy game prototype/i);
 });
 
-test("renders the bounded Version 2 navigation", async () => {
+test("renders the bounded portfolio navigation", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -193,14 +193,14 @@ test("links the six selected projects to their case studies", async () => {
   assert.ok(html.indexOf("Windows Support Diagnostic Toolkit") < html.indexOf("Storage Insights &amp; Guided Cleanup"));
 });
 
-test("renders the Portfolio V2 and Diary companion case studies in order", async () => {
+test("renders the Portfolio and Diary companion case studies in order", async () => {
   const response = await render("/projects/portfolio-v2");
   assert.equal(response.status, 200);
   const html = await response.text();
 
   assert.match(html, /yes, you are looking at it\.\.\./);
-  assert.match(html, /Portfolio V2 website case study, slide 1 of 6/);
-  assert.match(html, /Portfolio-V2-Case-Study\.pptx/);
+  assert.match(html, /Portfolio website case study, slide 1 of 6/);
+  assert.match(html, /Portfolio-Case-Study\.pptx/);
   assert.match(html, /The Diary deserves its own little detour\./);
   assert.match(html, /Portfolio Diary case study, slide 1 of 6/);
   assert.match(html, /Portfolio-Diary-Case-Study\.pptx/);
@@ -223,7 +223,7 @@ test("renders the Portfolio V2 and Diary companion case studies in order", async
   assert.doesNotMatch(html, /data-journey-kind="decision"/);
   assert.ok(html.indexOf('class="case-hero"') < html.indexOf('data-project-journey="true"'));
   assert.ok(html.indexOf("The Diary deserves its own little detour.") < html.indexOf("Technology architecture"));
-  assert.ok(html.indexOf("Portfolio V2 website case study") < html.indexOf("Portfolio Diary case study"));
+  assert.ok(html.indexOf("Portfolio website case study") < html.indexOf("Portfolio Diary case study"));
 });
 
 test("renders the Windows toolkit video and simple setup", async () => {
