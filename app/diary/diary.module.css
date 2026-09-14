@@ -355,6 +355,31 @@
   object-fit: contain;
 }
 
+.carouselLoading {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+.carouselSpinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.2rem solid rgba(255, 255, 255, 0.42);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: diaryCarouselSpin 700ms linear infinite;
+}
+
+@keyframes diaryCarouselSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .carouselCount {
   position: absolute;
   z-index: 2;
@@ -395,6 +420,11 @@
 
 .carouselArrowNext {
   right: 0.75rem;
+}
+
+.carouselArrow:disabled,
+.carouselDots button:disabled {
+  cursor: wait;
 }
 
 .carouselDots {
@@ -1326,6 +1356,12 @@
     height: 0.336rem;
   }
 
+  .carouselSpinner {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-width: 0.16rem;
+  }
+
   .audioToggle {
     right: 0.6rem;
     bottom: 0.6rem;
@@ -1483,6 +1519,10 @@
   }
 
   .vinylRecord {
+    animation: none;
+  }
+
+  .carouselSpinner {
     animation: none;
   }
 }

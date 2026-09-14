@@ -80,7 +80,13 @@ function fadeVolume(
   return () => cancelAnimationFrame(frame);
 }
 
-function DiaryMedia({ item }: { item: DiaryMediaItem }) {
+function DiaryMedia({
+  item,
+  onImageReady,
+}: {
+  item: DiaryMediaItem;
+  onImageReady?: (url: string) => void;
+}) {
   if (item.mediaType.startsWith("video/")) {
     return (
       <video
@@ -101,6 +107,8 @@ function DiaryMedia({ item }: { item: DiaryMediaItem }) {
       src={item.mediaUrl}
       alt={item.altText}
       loading="lazy"
+      decoding="async"
+      onLoad={() => onImageReady?.(item.mediaUrl)}
     />
   );
 }
@@ -156,16 +164,124 @@ function DiaryCarousel({
         },
       ];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [pendingIndex, setPendingIndex] = useState<number | null>(null);
+  const [canPreload, setCanPreload] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
+  const loadedImages = useRef(new Set<string>());
+  const imageLoads = useRef(new Map<string, Promise<void>>());
+  const navigationSequence = useRef(0);
+  const navigationInProgress = useRef(false);
 
-  function move(direction: -1 | 1) {
-    setActiveIndex((current) =>
-      Math.min(items.length - 1, Math.max(0, current + direction)),
+  const markImageReady = useCallback((url: string) => {
+    loadedImages.current.add(url);
+  }, []);
+
+  const loadImage = useCallback((item: DiaryMediaItem) => {
+    if (!item.mediaType.startsWith("image/") || loadedImages.current.has(item.mediaUrl)) {
+      return Promise.resolve();
+    }
+
+    const existingLoad = imageLoads.current.get(item.mediaUrl);
+    if (existingLoad) return existingLoad;
+
+    const load = new Promise<void>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        const finish = () => {
+          loadedImages.current.add(item.mediaUrl);
+          imageLoads.current.delete(item.mediaUrl);
+          resolve();
+        };
+
+        if (typeof image.decode === "function") {
+          void image.decode().then(finish, finish);
+        } else {
+          finish();
+        }
+      };
+      image.onerror = () => {
+        imageLoads.current.delete(item.mediaUrl);
+        reject(new Error("Diary image could not be loaded."));
+      };
+      image.src = item.mediaUrl;
+    });
+
+    imageLoads.current.set(item.mediaUrl, load);
+    return load;
+  }, []);
+
+  const showIndex = useCallback(async (targetIndex: number) => {
+    if (
+      targetIndex < 0 ||
+      targetIndex >= items.length ||
+      targetIndex === activeIndex ||
+      navigationInProgress.current
+    ) {
+      return;
+    }
+
+    const sequence = ++navigationSequence.current;
+    const target = items[targetIndex];
+    const needsImage = target.mediaType.startsWith("image/")
+      && !loadedImages.current.has(target.mediaUrl);
+
+    navigationInProgress.current = true;
+    if (needsImage) setPendingIndex(targetIndex);
+
+    try {
+      await loadImage(target);
+      if (sequence === navigationSequence.current) setActiveIndex(targetIndex);
+    } catch {
+      // Keep the current image and counter together when the target cannot load.
+    } finally {
+      if (sequence === navigationSequence.current) {
+        setPendingIndex(null);
+        navigationInProgress.current = false;
+      }
+    }
+  }, [activeIndex, items, loadImage]);
+
+  const move = useCallback((direction: -1 | 1) => {
+    void showIndex(activeIndex + direction);
+  }, [activeIndex, showIndex]);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel || typeof IntersectionObserver === "undefined") {
+      setCanPreload(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setCanPreload(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
     );
-  }
+    observer.observe(carousel);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!canPreload) return;
+
+    for (const index of [activeIndex - 1, activeIndex + 1]) {
+      const item = items[index];
+      if (item) void loadImage(item).catch(() => undefined);
+    }
+  }, [activeIndex, canPreload, items, loadImage]);
+
+  useEffect(() => () => {
+    navigationSequence.current += 1;
+  }, []);
 
   return (
     <div
+      ref={carouselRef}
       className={styles.carousel}
       onTouchStart={(event) => {
         touchStartX.current = event.touches[0]?.clientX ?? null;
@@ -179,8 +295,13 @@ function DiaryCarousel({
         move(distance < 0 ? 1 : -1);
       }}
     >
-      <div className={styles.carouselFrame}>
-        <DiaryMedia item={items[activeIndex]} />
+      <div className={styles.carouselFrame} aria-busy={pendingIndex !== null}>
+        <DiaryMedia item={items[activeIndex]} onImageReady={markImageReady} />
+        {pendingIndex !== null ? (
+          <span className={styles.carouselLoading} role="status" aria-label="Loading media">
+            <span className={styles.carouselSpinner} aria-hidden="true" />
+          </span>
+        ) : null}
       </div>
 
       {items.length > 1 ? (
@@ -193,6 +314,7 @@ function DiaryCarousel({
               className={`${styles.carouselArrow} ${styles.carouselArrowPrevious}`}
               type="button"
               onClick={() => move(-1)}
+              disabled={pendingIndex !== null}
               aria-label="Show previous media"
             >
               ‹
@@ -203,6 +325,7 @@ function DiaryCarousel({
               className={`${styles.carouselArrow} ${styles.carouselArrowNext}`}
               type="button"
               onClick={() => move(1)}
+              disabled={pendingIndex !== null}
               aria-label="Show next media"
             >
               ›
@@ -214,7 +337,8 @@ function DiaryCarousel({
                 key={item.position}
                 type="button"
                 className={index === activeIndex ? styles.carouselDotActive : undefined}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => void showIndex(index)}
+                disabled={pendingIndex !== null}
                 aria-label={`Show media ${index + 1} of ${items.length}`}
                 aria-current={index === activeIndex ? "true" : undefined}
               />
