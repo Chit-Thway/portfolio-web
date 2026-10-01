@@ -29,6 +29,7 @@ export const jobApplicationTrackerDefinition = {
     ],
     links: [],
     home: {
+      section: "projects",
       order: 1,
       label: "Flagship product · Live",
       description:

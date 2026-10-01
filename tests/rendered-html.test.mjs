@@ -172,7 +172,7 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /Download PDF/);
 });
 
-test("links the six selected projects to their case studies", async () => {
+test("groups the five selected projects and sanitised QA work into separate sections", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -191,6 +191,36 @@ test("links the six selected projects to their case studies", async () => {
   assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
   assert.ok(html.indexOf("Windows Support Diagnostic Toolkit") < html.indexOf("Storage Insights &amp; Guided Cleanup"));
+
+  assert.match(html, /Five selected projects showing how I build, investigate and support software\./);
+  assert.match(html, /id=["']qa["']/);
+  assert.match(html, /id=["']qa-title["']/);
+  assert.match(html, /QA work\./);
+
+  const projectsSectionStart = html.indexOf('id="projects"');
+  const qaSectionStart = html.indexOf('id="qa"');
+  const experienceSectionStart = html.indexOf('id="experience"');
+
+  assert.ok(projectsSectionStart > -1);
+  assert.ok(qaSectionStart > projectsSectionStart);
+  assert.ok(experienceSectionStart > qaSectionStart);
+
+  const projectsSectionHtml = html.slice(projectsSectionStart, qaSectionStart);
+  const qaSectionHtml = html.slice(qaSectionStart, experienceSectionStart);
+
+  assert.match(qaSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
+  assert.doesNotMatch(projectsSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
+
+  for (const slug of [
+    "portfolio-v2",
+    "job-application-tracker",
+    "windows-support-toolkit",
+    "windows-storage-extension",
+    "jira-service-management",
+  ]) {
+    assert.match(projectsSectionHtml, new RegExp(`href=["']/projects/${slug}/["']`));
+    assert.doesNotMatch(qaSectionHtml, new RegExp(`href=["']/projects/${slug}/["']`));
+  }
 });
 
 test("renders the Portfolio and Diary companion case studies in order", async () => {

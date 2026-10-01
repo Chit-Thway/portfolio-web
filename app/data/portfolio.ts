@@ -3,6 +3,8 @@ import { projects } from "./projects";
 // Project definitions live in app/data/projects; this module remains the entry point
 // for portfolio-wide profile, experience, skills, and education content.
 export type {
+  HomeProjectSection,
+  HomeProjectSectionId,
   HomeProjectPresentation,
   HomeProjectTool,
   PortfolioLink,

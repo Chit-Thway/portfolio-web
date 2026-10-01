@@ -33,6 +33,7 @@ export const windowsSupportToolkitDefinition = {
       },
     ],
     home: {
+      section: "projects",
       order: 2,
       label: "Support engineering · Public",
       description:

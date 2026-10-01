@@ -22,7 +22,17 @@ export type HomeProjectTool =
   | "workflows"
   | "slas";
 
+export type HomeProjectSectionId = "projects" | "qa";
+
+export type HomeProjectSection = {
+  id: HomeProjectSectionId;
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
 export type HomeProjectPresentation = {
+  section: HomeProjectSectionId;
   order: number;
   label: string;
   cardTitle?: string;

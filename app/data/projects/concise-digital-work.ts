@@ -26,7 +26,8 @@ export const conciseDigitalWorkDefinition = {
     ],
     links: [],
     home: {
-      order: 4,
+      section: "qa",
+      order: 0,
       label: "Commercial experience · Internship",
       cardTitle: "Web Development & QA Work",
       description:

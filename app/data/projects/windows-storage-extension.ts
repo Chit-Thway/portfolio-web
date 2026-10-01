@@ -34,6 +34,7 @@ export const windowsStorageExtensionDefinition = {
       },
     ],
     home: {
+      section: "projects",
       order: 3,
       label: "Windows support extension · Public",
       description:

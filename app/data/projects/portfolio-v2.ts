@@ -44,6 +44,7 @@ export const portfolioV2Definition = {
       },
     ],
     home: {
+      section: "projects",
       order: 0,
       cardTitle: "Portfolio Web",
       label: "The site you are on · Live",

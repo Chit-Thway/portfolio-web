@@ -31,7 +31,8 @@ export const jiraServiceManagementDefinition = {
       },
     ],
     home: {
-      order: 5,
+      section: "projects",
+      order: 4,
       label: "Service-management simulation · Public",
       description:
         "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",
