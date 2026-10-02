@@ -32,7 +32,7 @@ export const jiraServiceManagementDefinition = {
     ],
     home: {
       section: "projects",
-      order: 4,
+      order: 3,
       label: "Service-management simulation · Public",
       description:
         "A fictional service desk that demonstrates structured intake, approvals, SLA monitoring and support communication.",

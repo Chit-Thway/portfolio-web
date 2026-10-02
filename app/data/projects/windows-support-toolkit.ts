@@ -34,7 +34,7 @@ export const windowsSupportToolkitDefinition = {
     ],
     home: {
       section: "projects",
-      order: 2,
+      order: 4,
       label: "Support engineering · Public",
       description:
         "A read-only diagnostic workflow that collects Windows evidence and turns it into clear, testable support findings.",

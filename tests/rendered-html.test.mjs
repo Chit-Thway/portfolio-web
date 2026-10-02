@@ -191,12 +191,16 @@ test("groups the five selected projects and both QA case studies into separate s
 
   assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
-  assert.ok(html.indexOf("Windows Support Diagnostic Toolkit") < html.indexOf("Storage Insights &amp; Guided Cleanup"));
+  assert.ok(html.indexOf("Storage Insights &amp; Guided Cleanup") < html.indexOf("Jira Service Management Simulation"));
+  assert.ok(html.indexOf("Jira Service Management Simulation") < html.indexOf("View more"));
+  assert.ok(html.indexOf("View more") < html.indexOf("Windows Support Diagnostic Toolkit"));
+  assert.match(html, /<details[^>]*class=["'][^"']*projectExpansion[^"']*["'][^>]*>/);
 
   assert.match(html, /Five selected projects showing how I build, investigate and support software\./);
   assert.match(html, /id=["']qa["']/);
   assert.match(html, /id=["']qa-title["']/);
-  assert.match(html, /QA work\./);
+  assert.match(html, /QA work/);
+  assert.match(html, /Quality Assurance\s+Portfolios/);
 
   const projectsSectionStart = html.indexOf('id="projects"');
   const qaSectionStart = html.indexOf('id="qa"');

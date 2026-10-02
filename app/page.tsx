@@ -150,6 +150,8 @@ function HomepageProjectSection({ section }: { section: HomeProjectSection }) {
   if (!sectionProjects.length) return null;
 
   const titleId = `${section.id}-title`;
+  const visibleProjects = section.id === "projects" ? sectionProjects.slice(0, 4) : sectionProjects;
+  const additionalProjects = section.id === "projects" ? sectionProjects.slice(4) : [];
 
   return (
     <section className={styles.projects} id={section.id} aria-labelledby={titleId}>
@@ -162,9 +164,23 @@ function HomepageProjectSection({ section }: { section: HomeProjectSection }) {
       </div>
 
       <div className={styles.projectGrid}>
-        {sectionProjects.map((project) => (
+        {visibleProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
+        {additionalProjects.length ? (
+          <details className={styles.projectExpansion}>
+            <summary className={styles.viewMoreProjects}>
+              <span className={styles.viewMoreLabel}>View more</span>
+              <span className={styles.viewLessLabel}>View less</span>
+              <span className={styles.viewMoreArrow} aria-hidden="true">↓</span>
+            </summary>
+            <div className={styles.projectExpansionGrid}>
+              {additionalProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </details>
+        ) : null}
       </div>
     </section>
   );
