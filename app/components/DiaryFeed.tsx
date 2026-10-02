@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element, jsx-a11y/media-has-caption -- runtime media can include written descriptions; timed caption files are not part of this milestone */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { SiGithub } from "react-icons/si";
@@ -153,16 +153,20 @@ function DiaryCarousel({
   muted: boolean;
   onToggleMuted: () => void;
 }) {
-  const items = post.media?.length
-    ? post.media
-    : [
-        {
-          position: 0,
-          mediaType: post.mediaType,
-          mediaUrl: post.mediaUrl,
-          altText: post.altText,
-        },
-      ];
+  const items = useMemo(
+    () =>
+      post.media?.length
+        ? post.media
+        : [
+            {
+              position: 0,
+              mediaType: post.mediaType,
+              mediaUrl: post.mediaUrl,
+              altText: post.altText,
+            },
+          ],
+    [post.altText, post.media, post.mediaType, post.mediaUrl],
+  );
   const [activeIndex, setActiveIndex] = useState(0);
   const [pendingIndex, setPendingIndex] = useState<number | null>(null);
   const [canPreload, setCanPreload] = useState(false);

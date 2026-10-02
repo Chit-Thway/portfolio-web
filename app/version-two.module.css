@@ -863,6 +863,7 @@
   font-weight: 520;
   letter-spacing: -0.06em;
   line-height: 0.98;
+  white-space: pre-line;
 }
 
 .sectionIntroduction > p {
@@ -876,6 +877,63 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.8cm;
+}
+
+.projectExpansion {
+  grid-column: 1 / -1;
+}
+
+.viewMoreProjects {
+  display: flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: auto;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--v2-line-dark);
+  border-radius: 999px;
+  background: var(--v2-surface);
+  color: var(--v2-text);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 620;
+  list-style: none;
+}
+
+.viewMoreProjects::-webkit-details-marker {
+  display: none;
+}
+
+.viewMoreProjects:hover {
+  border-color: var(--v2-text);
+}
+
+.viewLessLabel {
+  display: none;
+}
+
+.viewMoreArrow {
+  transition: transform 180ms ease;
+}
+
+.projectExpansion[open] .viewMoreLabel {
+  display: none;
+}
+
+.projectExpansion[open] .viewLessLabel {
+  display: inline;
+}
+
+.projectExpansion[open] .viewMoreArrow {
+  transform: rotate(180deg);
+}
+
+.projectExpansionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8cm;
+  margin-top: 0.8cm;
 }
 
 .projectCard {
@@ -1142,6 +1200,10 @@
   }
 
   .projectGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .projectExpansionGrid {
     grid-template-columns: 1fr;
   }
 

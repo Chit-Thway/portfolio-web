@@ -28,8 +28,10 @@ import { GitHubActivity } from "./components/GitHubActivity";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { OutsideIdeStack } from "./components/OutsideIdeStack";
+import { homepageProjectSections } from "./data/homepageProjectSections";
 import {
   portfolio,
+  type HomeProjectSection,
   type HomeProjectPresentation,
   type HomeProjectTool,
   type Project,
@@ -137,6 +139,50 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
         </div>
       </div>
     </a>
+  );
+}
+
+function HomepageProjectSection({ section }: { section: HomeProjectSection }) {
+  const sectionProjects = featuredProjects.filter(
+    (project) => project.home.section === section.id,
+  );
+
+  if (!sectionProjects.length) return null;
+
+  const titleId = `${section.id}-title`;
+  const visibleProjects = section.id === "projects" ? sectionProjects.slice(0, 4) : sectionProjects;
+  const additionalProjects = section.id === "projects" ? sectionProjects.slice(4) : [];
+
+  return (
+    <section className={styles.projects} id={section.id} aria-labelledby={titleId}>
+      <div className={styles.sectionIntroduction}>
+        <div>
+          <p>{section.eyebrow}</p>
+          <h2 id={titleId}>{section.title}</h2>
+        </div>
+        <p>{section.description}</p>
+      </div>
+
+      <div className={styles.projectGrid}>
+        {visibleProjects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+        {additionalProjects.length ? (
+          <details className={styles.projectExpansion}>
+            <summary className={styles.viewMoreProjects}>
+              <span className={styles.viewMoreLabel}>View more</span>
+              <span className={styles.viewLessLabel}>View less</span>
+              <span className={styles.viewMoreArrow} aria-hidden="true">↓</span>
+            </summary>
+            <div className={styles.projectExpansionGrid}>
+              {additionalProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </details>
+        ) : null}
+      </div>
+    </section>
   );
 }
 
@@ -277,23 +323,9 @@ export default function Home() {
           <AboutDirectory />
         </section>
 
-        <section className={styles.projects} id="projects" aria-labelledby="projects-title">
-          <div className={styles.sectionIntroduction}>
-            <div>
-              <p>Selected work</p>
-              <h2 id="projects-title">Evidence, not just claims.</h2>
-            </div>
-            <p>
-              Six selected projects showing how I build, investigate, test and support software.
-            </p>
-          </div>
-
-          <div className={styles.projectGrid}>
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
-            ))}
-          </div>
-        </section>
+        {homepageProjectSections.map((section) => (
+          <HomepageProjectSection key={section.id} section={section} />
+        ))}
 
         <section className={styles.experience} id="experience" aria-labelledby="experience-title">
           <div className={styles.sectionIntroduction}>

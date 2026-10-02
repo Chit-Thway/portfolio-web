@@ -72,6 +72,7 @@ npm run check
 
 ```text
 app/                  Portfolio pages, components and content
+app/data/projects/    One definition per portfolio project and the project registry
 functions/api/        Cloudflare Pages API endpoints
 server/               Authentication, Diary and media helpers
 migrations/           D1 database migrations
@@ -79,7 +80,7 @@ public/               Images, videos, documents and presentations
 tests/                Rendered-page, API, auth and storage checks
 ```
 
-Portfolio content is maintained in `app/data/portfolio.ts`; detailed case studies are in `app/data/projectCaseStudies.ts`.
+Profile and experience content is maintained in `app/data/portfolio.ts`. Each project's homepage and case-study content lives together in `app/data/projects/` and is exposed through the central project registry.
 
 ## Documentation
 
