@@ -21,6 +21,7 @@ const projectSlugs = [
   "quick-fire-questions",
   "job-application-tracker",
   "concise-digital-work",
+  "jobtracker-qa-portfolio",
 ];
 const routes = [
   "/",

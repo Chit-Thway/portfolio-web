@@ -12,6 +12,6 @@ export const homepageProjectSections = [
     eyebrow: "Quality assurance",
     title: "QA work.",
     description:
-      "Sanitised evidence showing how I reproduce, investigate and document software issues without exposing private client systems.",
+      "Sanitised evidence showing how I reproduce, investigate and document software issues while protecting private systems, user data and source code.",
   },
 ] satisfies readonly HomeProjectSection[];

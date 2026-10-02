@@ -5,6 +5,7 @@ import { jiraServiceManagementDefinition } from "./jira-service-management";
 import { quickFireQuestionsDefinition } from "./quick-fire-questions";
 import { jobApplicationTrackerDefinition } from "./job-application-tracker";
 import { conciseDigitalWorkDefinition } from "./concise-digital-work";
+import { jobTrackerQaPortfolioDefinition } from "./jobtracker-qa-portfolio";
 import type { Project, ProjectCaseStudy, ProjectDefinition } from "./types";
 
 export const projectDefinitions = [
@@ -15,6 +16,7 @@ export const projectDefinitions = [
   quickFireQuestionsDefinition,
   jobApplicationTrackerDefinition,
   conciseDigitalWorkDefinition,
+  jobTrackerQaPortfolioDefinition,
 ] satisfies readonly ProjectDefinition[];
 
 export const projects: Project[] = projectDefinitions.map(({ project }) => project);

@@ -172,7 +172,7 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /Download PDF/);
 });
 
-test("groups the five selected projects and sanitised QA work into separate sections", async () => {
+test("groups the five selected projects and both QA case studies into separate sections", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -182,6 +182,7 @@ test("groups the five selected projects and sanitised QA work into separate sect
     "windows-support-toolkit",
     "windows-storage-extension",
     "concise-digital-work",
+    "jobtracker-qa-portfolio",
     "jira-service-management",
   ]) {
     assert.match(html, new RegExp(`href=["']/projects/${slug}/["']`));
@@ -209,7 +210,9 @@ test("groups the five selected projects and sanitised QA work into separate sect
   const qaSectionHtml = html.slice(qaSectionStart, experienceSectionStart);
 
   assert.match(qaSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
+  assert.match(qaSectionHtml, /href=["']\/projects\/jobtracker-qa-portfolio\/["']/);
   assert.doesNotMatch(projectsSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
+  assert.doesNotMatch(projectsSectionHtml, /href=["']\/projects\/jobtracker-qa-portfolio\/["']/);
 
   for (const slug of [
     "portfolio-v2",
@@ -380,6 +383,22 @@ test("renders the QA report beside an in-page PDF viewer", async () => {
   assert.match(html, /\/projects\/concise-digital-work\/QA_Bug_Report\.pdf/);
   assert.match(html, /<dialog/);
   assert.match(html, /report-page-6\.png/);
+});
+
+test("renders the JobTracker QA slide portfolio and living repository links", async () => {
+  const response = await render("/projects/jobtracker-qa-portfolio");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /JobTracker - QA Portfolio/);
+  assert.match(html, /JobTracker QA Portfolio, slide 1 of 5/);
+  assert.match(html, /\/projects\/jobtracker-qa-portfolio\/slide-5\.png/);
+  assert.match(html, /\/projects\/jobtracker-qa-portfolio\/JobTracker-QA-Portfolio\.pptx/);
+  assert.match(html, /Bugs 02, 04 and 08/);
+  assert.match(html, /Fixed and regression tested/);
+  assert.match(html, /Browse all bug reports/);
+  assert.match(html, /Read the QA strategy/);
+  assert.match(html, /github\.com\/Chit-Thway\/job-application-tracker-qa/);
 });
 
 test("renders the unlisted visitor department with no-index metadata", async () => {
