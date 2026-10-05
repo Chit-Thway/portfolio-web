@@ -193,7 +193,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: person.name,
-    jobTitle: "Application Support and Software Quality",
+    jobTitle: "Software Engineer, Quality Assurance & Troubleshooting",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Perth",
@@ -280,9 +280,9 @@ export default function Home() {
 
           <p className={styles.heroEyebrow}>Computer Science graduate · Perth, Western Australia</p>
           <h1 id="hero-title">
-            Application support,
+            Software Engineer,
             <br />
-            troubleshooting <span>& software quality.</span>
+            Quality Assurance <span>& Troubleshooting</span>
           </h1>
           <p className={styles.heroIntroduction}>
             I build and support web applications, investigate technical problems and turn what I
