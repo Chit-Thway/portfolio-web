@@ -22,6 +22,11 @@ async function render(path = "/") {
   );
 }
 
+function assertReadableText(html, label) {
+  const text = html.replace(/<[^>]*>/g, " ").replace(/&(?:\w+|#\d+|#x[\da-f]+);/gi, " ");
+  assert.match(text.trim(), /\p{L}/u, `${label} must contain readable text`);
+}
+
 test("server-renders the completed portfolio", async () => {
   const response = await render();
   assert.equal(response.status, 200);
@@ -51,9 +56,10 @@ test("server-renders the completed portfolio", async () => {
   assert.match(head, /<meta property="og:image:type" content="image\/jpeg"\/?>/);
   assert.match(head, /<meta property="og:image:width" content="1200"\/?>/);
   assert.match(head, /<meta property="og:image:height" content="627"\/?>/);
-  assert.match(html, /Application support,/);
-  assert.match(html, /troubleshooting/);
-  assert.match(html, /software quality/);
+  const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
+  assert.equal(headings.length, 1, "Homepage must have one primary heading");
+  assert.match(headings[0][0], /\bid=["']hero-title["']/);
+  assertReadableText(headings[0][1], "Hero heading");
   assert.match(html, /Job Application Tracker/);
   assert.match(html, /Portfolio/);
   assert.match(html, /Live, evolving and very much mine/);
@@ -92,7 +98,7 @@ test("renders the bounded portfolio navigation", async () => {
   assert.doesNotMatch(html, /href=["']#(?:skills|education|contact)["']/);
 });
 
-test("renders the Milestone 2 profile directory", async () => {
+test("renders an accessible profile directory with readable bio content", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -102,8 +108,27 @@ test("renders the Milestone 2 profile directory", async () => {
   assert.match(html, /bio\.md/);
   assert.match(html, /education\.md/);
   assert.match(html, /location\.md/);
-  assert.match(html, /Support-minded by design\./);
-  assert.match(html, /Investigate, validate, communicate/);
+  assert.match(html, /id=["']profile-tab-bio["']/);
+  assert.match(html, /aria-controls=["']profile-panel-bio["']/);
+  const bioPanel = html.match(
+    /<div\b[^>]*\bid=["']profile-panel-bio["'][^>]*>([\s\S]*?)<\/dl>/,
+  );
+  assert.ok(bioPanel, "Initial bio panel and its facts must be server-rendered");
+  assert.match(bioPanel[0], /role=["']tabpanel["']/);
+  assert.match(bioPanel[0], /aria-labelledby=["']profile-tab-bio["']/);
+  const bioCopy = bioPanel[1].match(
+    /<h3\b[^>]*>([\s\S]*?)<\/h3>\s*<p\b[^>]*>([\s\S]*?)<\/p>/,
+  );
+  assert.ok(bioCopy, "Bio must include a heading and summary");
+  assertReadableText(bioCopy[1], "Bio heading");
+  assertReadableText(bioCopy[2], "Bio summary");
+  for (const label of ["Focus", "Method", "Status"]) {
+    const fact = bioPanel[1].match(
+      new RegExp(`<dt>${label}</dt>\\s*<dd\\b[^>]*>([\\s\\S]*?)</dd>`),
+    );
+    assert.ok(fact, `Bio must include the ${label} fact`);
+    assertReadableText(fact[1], `Bio ${label}`);
+  }
   assert.match(html, /role="tabpanel"/);
   assert.doesNotMatch(html, /C:\\portfolio|Hello, World/i);
 });
