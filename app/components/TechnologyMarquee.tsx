@@ -4,16 +4,24 @@ import { useState } from "react";
 import type { IconType } from "react-icons";
 import { FaBug, FaPause, FaPlay } from "react-icons/fa6";
 import {
+  SiCloudflare,
   SiDotnet,
+  SiDrizzle,
   SiGithub,
   SiGithubactions,
   SiGooglechrome,
   SiJavascript,
   SiJira,
   SiJson,
+  SiNodedotjs,
   SiPostgresql,
   SiPython,
+  SiReact,
+  SiSqlite,
   SiSupabase,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
   SiWordpress,
 } from "react-icons/si";
 import {
@@ -43,6 +51,12 @@ const technologyRows: TechnologyRow[] = [
     label: "Application development",
     direction: "right",
     items: [
+      { name: "React", icon: SiReact, color: "#087ea4" },
+      { name: "Node.js", icon: SiNodedotjs, color: "#43853d" },
+      { name: "TypeScript", icon: SiTypescript, color: "#3178c6" },
+      { name: "Tailwind CSS", icon: SiTailwindcss, color: "#0891b2" },
+      { name: "Vite / Vinext", icon: SiVite, color: "#646cff" },
+      { name: "Drizzle ORM", icon: SiDrizzle, color: "#578b25" },
       { name: "C#", icon: TbBrandCSharp, color: "#512bd4" },
       { name: ".NET 10", icon: SiDotnet, color: "#512bd4" },
       { name: "ASP.NET Core", icon: SiDotnet, color: "#512bd4" },
@@ -68,6 +82,9 @@ const technologyRows: TechnologyRow[] = [
     label: "Platforms and delivery",
     direction: "right",
     items: [
+      { name: "Cloudflare Pages", icon: SiCloudflare, color: "#f38020" },
+      { name: "Cloudflare D1", icon: SiSqlite, color: "#0074a2" },
+      { name: "Cloudflare R2", icon: SiCloudflare, color: "#f38020" },
       { name: "PostgreSQL", icon: SiPostgresql, color: "#4169e1" },
       { name: "Supabase", icon: SiSupabase, color: "#2cae78" },
       { name: "Azure", icon: TbBrandAzure, color: "#0078d4" },

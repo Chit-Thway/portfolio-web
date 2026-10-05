@@ -132,19 +132,20 @@ export function AboutDirectory() {
             <>
               <div className={styles.profileCopy}>
                 <p className={styles.activeFile}>Active file · bio.md</p>
-                <h3>Support-minded by design.</h3>
+                <h3>Full-stack engineering.</h3>
                 <p className={styles.profileSummary}>
-                  I work where software, systems and people meet—investigating problems, testing
-                  behaviour and making the next step easier to understand.
+                  I build web applications end to end—from React interfaces and APIs to databases
+                  and cloud deployment. I test and troubleshoot each layer to deliver reliable
+                  software.
                 </p>
                 <dl className={styles.profileFacts}>
                   <div>
                     <dt>Focus</dt>
-                    <dd>Application support, QA and technical support</dd>
+                    <dd>Full-stack development, QA and troubleshooting</dd>
                   </div>
                   <div>
                     <dt>Method</dt>
-                    <dd>Investigate, validate, communicate</dd>
+                    <dd>Design, build, test, deploy</dd>
                   </div>
                   <div>
                     <dt>Status</dt>
