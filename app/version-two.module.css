@@ -650,6 +650,73 @@
   background: #e7e7e4;
 }
 
+.resumeDialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.resumeDialog .pdfDialogHeader {
+  flex-shrink: 0;
+}
+
+.resumeDialog .pdfDialogHeader strong {
+  color: var(--v2-text);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.resumeDialog.resumeDialogExpanded {
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.resumeToolbar {
+  flex-wrap: wrap;
+}
+
+.resumeToolbar a,
+.resumeToolbar button {
+  display: inline-flex;
+  width: auto;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  font-size: 0.7rem;
+}
+
+.resumeToolbar button:last-child {
+  width: 2.35rem;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
+.resumeToolbar svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.resumeDialog .resumeDocument {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(0.5rem, 2vw, 1.5rem);
+  background: #e7e7e4;
+}
+
+.resumeDocument img {
+  display: block;
+  width: 100%;
+  max-width: 62.5rem;
+  height: auto;
+  margin-inline: auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+}
+
 .profileVisual {
   position: relative;
   overflow: hidden;
@@ -984,10 +1051,6 @@
   background: #e8e8e4;
 }
 
-.projectMediaDivider {
-  border-bottom: 0.2625rem solid var(--v2-line-dark);
-}
-
 .projectVideo,
 .projectImage {
   width: 100%;
@@ -1023,9 +1086,21 @@
 }
 
 .projectBody {
+  --project-body-padding: clamp(1.35rem, 3vw, 2rem);
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: clamp(1.35rem, 3vw, 2rem);
+  padding: var(--project-body-padding);
+}
+
+.projectBody::before {
+  position: absolute;
+  top: 0.45rem;
+  inset-inline: var(--project-body-padding);
+  height: 0.1875rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--v2-line) 55%, transparent);
+  content: "";
 }
 
 .projectLabel {
@@ -1212,7 +1287,7 @@
   }
 
   .projectBody {
-    padding: 1.25rem;
+    --project-body-padding: 1.25rem;
   }
 
   .footer {

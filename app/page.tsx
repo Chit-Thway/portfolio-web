@@ -7,7 +7,6 @@ import {
   FaDiagramProject,
   FaEnvelope,
   FaGithub,
-  FaFileArrowDown,
   FaLinkedinIn,
 } from "react-icons/fa6";
 import {
@@ -28,6 +27,7 @@ import { GitHubActivity } from "./components/GitHubActivity";
 import { TechnologyMarquee } from "./components/TechnologyMarquee";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { OutsideIdeStack } from "./components/OutsideIdeStack";
+import { ResumeViewer } from "./components/ResumeViewer";
 import { homepageProjectSections } from "./data/homepageProjectSections";
 import {
   portfolio,
@@ -111,7 +111,7 @@ function ProjectCard({ project }: { project: FeaturedProject }) {
       href={`/projects/${project.id}/`}
       aria-label={`View ${cardTitle} case study`}
     >
-      <div className={`${styles.projectMedia} ${styles.projectMediaDivider}`}>
+      <div className={styles.projectMedia}>
         <ProjectMedia project={project} />
         <span className={styles.projectOpen} aria-hidden="true">
           ↗
@@ -294,9 +294,7 @@ export default function Home() {
               View featured work <span aria-hidden="true">↓</span>
             </a>
             {contact.resume ? (
-              <a className={styles.secondaryAction} href={contact.resume} download>
-                Download résumé <span aria-hidden="true">↓</span>
-              </a>
+              <ResumeViewer src={contact.resume} />
             ) : null}
             {contact.email ? (
               <a className={styles.secondaryAction} href={`mailto:${contact.email}`}>
@@ -465,16 +463,7 @@ export default function Home() {
               </a>
             ) : null}
             {contact.resume ? (
-              <a href={contact.resume} download>
-                <span className={`${styles.contactActionIcon} ${styles.contactResumeIcon}`}>
-                  <FaFileArrowDown aria-hidden="true" />
-                </span>
-                <span>
-                  <small>Résumé</small>
-                  <strong>Download PDF</strong>
-                </span>
-                <span aria-hidden="true">↓</span>
-              </a>
+              <ResumeViewer src={contact.resume} variant="contact" />
             ) : null}
           </div>
         </section>

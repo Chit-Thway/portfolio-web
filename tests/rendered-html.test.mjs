@@ -191,10 +191,17 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /href=["']mailto:chitthway67@gmail\.com["']/);
   assert.match(html, /linkedin\.com\/in\/chit-thway-197241332/);
   assert.match(html, /Review public repositories/);
-  assert.match(html, /href=["']\/chit-thway-resume\.pdf["']/);
-  assert.match(html, /download(?:=["']["'])?/);
-  assert.match(html, /Download résumé/);
-  assert.match(html, /Download PDF/);
+  const resumeLinks = [...html.matchAll(/<a\b[^>]*href=["']\/chit-thway-resume\.pdf["'][^>]*>[\s\S]*?<\/a>/g)];
+  const resumeTriggers = resumeLinks.filter(([link]) => /aria-haspopup=["']dialog["']/.test(link));
+  assert.equal(resumeTriggers.length, 2);
+  for (const [link] of resumeTriggers) assert.doesNotMatch(link, /\bdownload(?:\s|=|>)/);
+  assert.match(html, /<dialog\b[^>]*aria-labelledby=/);
+  assert.match(html, /<strong\b[^>]*>Resume<\/strong>/);
+  assert.match(html, /Full screen/);
+  assert.match(html, /aria-label=["']Close résumé["']/);
+  assert.ok(resumeLinks.some(([link]) => /\bdownload(?:\s|=|>)/.test(link)));
+  assert.match(html, /View résumé/);
+  assert.match(html, /View PDF/);
 });
 
 test("groups the five selected projects and both QA case studies into separate sections", async () => {
