@@ -220,6 +220,7 @@ export default function Home() {
           </a>
           <nav className={styles.navigation} aria-label="Primary navigation">
             <a href="#projects">Projects</a>
+            <a href="#achievements">Achievements</a>
             <a href="#experience">Experience</a>
             <a href="/diary/">Diary</a>
             <ThemeToggle />

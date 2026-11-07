@@ -11,14 +11,15 @@ type ProjectVideoProps = {
   src: string;
   label: string;
   duration: string;
+  poster?: string;
 };
 
-export function ProjectVideo({ src, label, duration }: ProjectVideoProps) {
+export function ProjectVideo({ src, label, duration, poster }: ProjectVideoProps) {
   const captionsSrc = src.replace(/\.mp4(?=$|\?)/i, ".vtt");
 
   return (
     <figure className={`${styles.media} ${styles.videoFrame}`}>
-      <video controls playsInline preload="metadata" aria-label={label}>
+      <video controls playsInline preload="metadata" poster={poster} aria-label={label}>
         <source src={src} type="video/mp4" />
         <track
           kind="captions"

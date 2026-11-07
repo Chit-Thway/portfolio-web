@@ -50,7 +50,11 @@
   height: 13rem;
 }
 
-.trigger:hover {
+.trigger:disabled {
+  cursor: default;
+}
+
+.trigger:not(:disabled):hover {
   box-shadow: 0 24px 58px rgba(93, 70, 208, 0.3);
   transform: translateY(-3px);
 }

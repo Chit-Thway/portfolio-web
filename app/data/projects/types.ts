@@ -22,7 +22,7 @@ export type HomeProjectTool =
   | "workflows"
   | "slas";
 
-export type HomeProjectSectionId = "projects" | "qa";
+export type HomeProjectSectionId = "projects" | "qa" | "achievements";
 
 export type HomeProjectSection = {
   id: HomeProjectSectionId;
@@ -62,7 +62,7 @@ export type Project = {
 };
 
 export type ProjectMedia =
-  | { kind: "video"; src: string; label: string; duration: string }
+  | { kind: "video"; src: string; label: string; duration: string; poster?: string }
   | { kind: "slides"; slides: string[]; downloadHref: string; label: string }
   | { kind: "pdf"; src: string; coverSrc: string; pages: string[]; label: string }
   | { kind: "pending"; label: string; message: string };
@@ -131,6 +131,7 @@ export type ProjectCaseStudy = {
   media: ProjectMedia;
   stack?: ProjectStack;
   companion?: {
+    placement?: "after-media";
     eyebrow: string;
     title: string;
     introduction: string;
@@ -140,7 +141,7 @@ export type ProjectCaseStudy = {
     label: string;
     href?: string;
   }>;
-  journey?: ProjectJourneyData;
+  journey?: ProjectJourneyData | "placeholder";
   facts: Array<{ label: string; value: string }>;
   overview: string[];
   setup?: {

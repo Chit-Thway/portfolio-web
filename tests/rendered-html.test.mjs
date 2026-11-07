@@ -204,7 +204,7 @@ test("renders the Milestone 6 public GitHub activity and contact actions", async
   assert.match(html, /View PDF/);
 });
 
-test("groups the five selected projects and both QA case studies into separate sections", async () => {
+test("groups selected projects, QA case studies and achievements into separate sections", async () => {
   const response = await render();
   const html = await response.text();
 
@@ -235,20 +235,28 @@ test("groups the five selected projects and both QA case studies into separate s
   assert.match(html, /Quality Assurance\s+Portfolios/);
 
   const projectsSectionStart = html.indexOf('id="projects"');
+  const achievementsSectionStart = html.indexOf('id="achievements"');
   const qaSectionStart = html.indexOf('id="qa"');
   const experienceSectionStart = html.indexOf('id="experience"');
 
   assert.ok(projectsSectionStart > -1);
-  assert.ok(qaSectionStart > projectsSectionStart);
+  assert.ok(achievementsSectionStart > projectsSectionStart);
+  assert.ok(qaSectionStart > achievementsSectionStart);
   assert.ok(experienceSectionStart > qaSectionStart);
 
-  const projectsSectionHtml = html.slice(projectsSectionStart, qaSectionStart);
+  const projectsSectionHtml = html.slice(projectsSectionStart, achievementsSectionStart);
+  const achievementsSectionHtml = html.slice(achievementsSectionStart, qaSectionStart);
   const qaSectionHtml = html.slice(qaSectionStart, experienceSectionStart);
 
   assert.match(qaSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
   assert.match(qaSectionHtml, /href=["']\/projects\/jobtracker-qa-portfolio\/["']/);
   assert.doesNotMatch(projectsSectionHtml, /href=["']\/projects\/concise-digital-work\/["']/);
   assert.doesNotMatch(projectsSectionHtml, /href=["']\/projects\/jobtracker-qa-portfolio\/["']/);
+  assert.match(html, /href="#achievements">Achievements<\/a>/);
+  assert.match(achievementsSectionHtml, /href="\/projects\/ervei\/"/);
+  assert.match(achievementsSectionHtml, /two-week hackathon with a \$40,000\+ event prize pool/);
+  assert.doesNotMatch(projectsSectionHtml, /href="\/projects\/ervei\/"/);
+  assert.doesNotMatch(qaSectionHtml, /href="\/projects\/ervei\/"/);
 
   for (const slug of [
     "portfolio-v2",
@@ -260,6 +268,29 @@ test("groups the five selected projects and both QA case studies into separate s
     assert.match(projectsSectionHtml, new RegExp(`href=["']/projects/${slug}/["']`));
     assert.doesNotMatch(qaSectionHtml, new RegExp(`href=["']/projects/${slug}/["']`));
   }
+});
+
+test("renders the ERVEI video, pitch and standard case study in order", async () => {
+  const response = await render("/projects/ervei");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const orderedContent = [
+    'src="/projects/ervei/demonstration.mp4"',
+    'aria-label="ERVEI hackathon pitch slide viewer"',
+    'class="case-hero"',
+    'data-project-journey="true"',
+    "What the project demonstrates",
+  ];
+  let previousIndex = -1;
+  for (const content of orderedContent) {
+    const index = html.indexOf(content);
+    assert.ok(index > previousIndex, `Expected ${content} after the preceding content`);
+    previousIndex = index;
+  }
+  assert.match(html, /href="\/projects\/ervei\/ervei-pitch\.pdf" download/);
+  assert.match(html, /ERVEI hackathon pitch, slide 1 of 10/);
+  assert.match(html, /data-project-journey="true"[^>]*>\s*<button[^>]*\sdisabled(?:=|\s|>)/);
+  assert.doesNotMatch(html, /data-journey-kind|\$10,000/);
 });
 
 test("renders the Portfolio and Diary companion case studies in order", async () => {

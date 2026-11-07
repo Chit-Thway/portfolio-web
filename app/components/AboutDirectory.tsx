@@ -157,7 +157,7 @@ export function AboutDirectory() {
                 {person.bioImage ? (
                   <Image
                     src={person.bioImage}
-                    alt={`Portrait of ${person.name}`}
+                    alt={`${person.name} holding the GreenSpark Challenge 3 winner's cheque`}
                     fill
                     unoptimized
                     sizes="(max-width: 820px) 84vw, 280px"

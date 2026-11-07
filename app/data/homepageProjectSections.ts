@@ -8,6 +8,12 @@ export const homepageProjectSections = [
     description: "Five selected projects showing how I build, investigate and support software.",
   },
   {
+    id: "achievements",
+    eyebrow: "Awards & recognition",
+    title: "Achievements",
+    description: "Recognition for work built with teams to solve real-world problems.",
+  },
+  {
     id: "qa",
     eyebrow: "QA work",
     title: "Quality Assurance\nPortfolios",

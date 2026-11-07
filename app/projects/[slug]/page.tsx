@@ -15,7 +15,7 @@ import {
   projectCaseStudies,
   type ProjectCaseStudy,
 } from "@/app/data/projectCaseStudies";
-import { portfolio } from "@/app/data/portfolio";
+import { portfolio, type PortfolioLink } from "@/app/data/portfolio";
 import styles from "./project-version-two.module.css";
 
 type ProjectPageProps = {
@@ -61,14 +61,14 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   };
 }
 
-function ProjectHeader() {
+function ProjectHeader({ section }: { section: PortfolioLink }) {
   return (
     <header className="project-page-header section-shell">
       <a href="/" className="project-page-wordmark" aria-label="CHIT THWAY portfolio home">
         CHIT THWAY
       </a>
       <nav aria-label="Project page navigation">
-        <a href="/#projects">Projects</a>
+        <a href={section.href}>{section.label}</a>
         {portfolio.contact.email ? <a href={`mailto:${portfolio.contact.email}`}>Contact</a> : null}
       </nav>
     </header>
@@ -113,14 +113,16 @@ function ProjectActions({ caseStudy }: { caseStudy: ProjectCaseStudy }) {
 function StandardHero({
   caseStudy,
   project,
+  section,
 }: {
   caseStudy: ProjectCaseStudy;
   project: (typeof portfolio.projects)[number];
+  section: PortfolioLink;
 }) {
   return (
     <section className="case-hero">
-      <a href="/#projects" className="back-link">
-        <span aria-hidden="true">←</span> Projects
+      <a href={section.href} className="back-link">
+        <span aria-hidden="true">←</span> {section.label}
       </a>
       <div className="case-hero-grid">
         <div className="case-hero-copy">
@@ -285,10 +287,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!caseStudy || !project) notFound();
 
   const pdfMedia = caseStudy.media.kind === "pdf" ? caseStudy.media : null;
+  const section = project.home?.section === "achievements"
+    ? { href: "/#achievements", label: "Achievements" }
+    : { href: "/#projects", label: "Projects" };
+  const companion = caseStudy.companion;
+  const showCompanionAfterMedia = !pdfMedia && companion?.placement === "after-media";
 
   return (
     <div className={styles.caseSite} data-portfolio-version="2">
-      <ProjectHeader />
+      <ProjectHeader section={section} />
       <main className="project-page section-shell">
         <ProjectPagination slug={slug} />
         {pdfMedia ? (
@@ -318,15 +325,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             ) : caseStudy.media.kind === "pending" ? (
               <PendingProjectMedia label={caseStudy.media.label} message={caseStudy.media.message} />
             ) : null}
-            <StandardHero caseStudy={caseStudy} project={project} />
+            {showCompanionAfterMedia ? <CompanionCaseStudy companion={companion} /> : null}
+            <StandardHero caseStudy={caseStudy} project={project} section={section} />
           </>
         )}
 
         {caseStudy.journey ? (
-          <ProjectJourney projectTitle={project.title} journey={caseStudy.journey} />
+          <ProjectJourney
+            projectTitle={project.title}
+            journey={caseStudy.journey === "placeholder" ? undefined : caseStudy.journey}
+          />
         ) : null}
 
-        {caseStudy.companion ? <CompanionCaseStudy companion={caseStudy.companion} /> : null}
+        {companion && !showCompanionAfterMedia ? <CompanionCaseStudy companion={companion} /> : null}
 
         {caseStudy.stack ? (
           <ProjectStack projectTitle={caseStudy.displayTitle ?? project.title} stack={caseStudy.stack} />

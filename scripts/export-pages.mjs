@@ -22,6 +22,7 @@ const projectSlugs = [
   "job-application-tracker",
   "concise-digital-work",
   "jobtracker-qa-portfolio",
+  "ervei",
 ];
 const routes = [
   "/",
