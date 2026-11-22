@@ -5,6 +5,7 @@ const projectVideoPaths = new Set([
   "/projects/windows-storage-extension/demonstration.mp4",
   "/projects/windows-support-toolkit/demonstration.mp4",
   "/projects/ervei/demonstration.mp4",
+  "/projects/have-you-tried-restarting/demonstration.mp4",
 ]);
 
 export async function onRequest(context) {

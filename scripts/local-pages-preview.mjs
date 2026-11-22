@@ -20,6 +20,7 @@ import * as diaryMedia from "../functions/api/diary/media/[id].js";
 import * as diaryPost from "../functions/api/diary/posts/[id].js";
 import * as diaryPosts from "../functions/api/diary/posts.js";
 import * as diarySession from "../functions/api/diary/session.js";
+import * as projectVideos from "../functions/projects/[[path]].js";
 import * as visit from "../functions/api/visit.js";
 import * as visitorStats from "../functions/api/visitor-stats.js";
 
@@ -262,6 +263,7 @@ function staticPath(url) {
 }
 
 const routes = [
+  { pattern: /^\/projects\/.+\.mp4$/u, module: projectVideos },
   { pattern: /^\/api\/visit\/?$/u, module: visit },
   { pattern: /^\/api\/visitor-stats\/?$/u, module: visitorStats },
   { pattern: /^\/api\/diary\/login\/?$/u, module: diaryLogin },
@@ -384,7 +386,22 @@ const server = createServer(async (incoming, outgoing) => {
       body,
     });
 
-    const functionResponse = await runFunction(request, env);
+    const assets = {
+      async fetch(assetRequest) {
+        const assetPath = staticPath(new URL(assetRequest.url));
+        if (!assetPath || !existsSync(assetPath) || !statSync(assetPath).isFile()) {
+          return new Response("Not found", { status: 404 });
+        }
+        const file = readFileSync(assetPath);
+        return new Response(file, {
+          headers: {
+            "Content-Length": String(file.byteLength),
+            "Content-Type": contentType(assetPath),
+          },
+        });
+      },
+    };
+    const functionResponse = await runFunction(request, { ...env, ASSETS: assets });
     if (functionResponse) {
       sendResponse(outgoing, functionResponse);
       return;
