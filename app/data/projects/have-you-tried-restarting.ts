@@ -29,7 +29,7 @@ export const haveYouTriedRestartingDefinition = {
       "Realistic help desk tickets built around common IT issues",
       "Fixes are judged by the real state of the PC, not by which option was picked",
     ],
-    links: [{ label: "Play the game", href: "https://quokkait.pages.dev" }],
+    links: [],
     home: {
       section: "projects",
       order: 0,
