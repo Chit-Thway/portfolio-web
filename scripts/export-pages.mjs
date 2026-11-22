@@ -23,6 +23,7 @@ const projectSlugs = [
   "concise-digital-work",
   "jobtracker-qa-portfolio",
   "ervei",
+  "have-you-tried-restarting",
 ];
 const routes = [
   "/",
