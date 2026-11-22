@@ -209,6 +209,7 @@ test("groups selected projects, QA case studies and achievements into separate s
   const html = await response.text();
 
   for (const slug of [
+    "have-you-tried-restarting",
     "portfolio-v2",
     "job-application-tracker",
     "windows-support-toolkit",
@@ -223,12 +224,14 @@ test("groups selected projects, QA case studies and achievements into separate s
 
   assert.doesNotMatch(html, /href=["']\/projects\/quick-fire-questions\/["']/);
   assert.doesNotMatch(html, /Explore case study|View repository/i);
-  assert.ok(html.indexOf("Storage Insights &amp; Guided Cleanup") < html.indexOf("Jira Service Management Simulation"));
+  assert.ok(html.indexOf("Have You Tried Restarting?") < html.indexOf("Job Application Tracker"));
+  assert.ok(html.indexOf("Portfolio Web") < html.indexOf("Jira Service Management Simulation"));
   assert.ok(html.indexOf("Jira Service Management Simulation") < html.indexOf("View more"));
   assert.ok(html.indexOf("View more") < html.indexOf("Windows Support Diagnostic Toolkit"));
+  assert.ok(html.indexOf("Windows Support Diagnostic Toolkit") < html.indexOf("Storage Insights &amp; Guided Cleanup"));
   assert.match(html, /<details[^>]*class=["'][^"']*projectExpansion[^"']*["'][^>]*>/);
 
-  assert.match(html, /Five selected projects showing how I build, investigate and support software\./);
+  assert.match(html, /Six selected projects showing how I build, investigate and support software\./);
   assert.match(html, /id=["']qa["']/);
   assert.match(html, /id=["']qa-title["']/);
   assert.match(html, /QA work/);
@@ -259,6 +262,7 @@ test("groups selected projects, QA case studies and achievements into separate s
   assert.doesNotMatch(qaSectionHtml, /href="\/projects\/ervei\/"/);
 
   for (const slug of [
+    "have-you-tried-restarting",
     "portfolio-v2",
     "job-application-tracker",
     "windows-support-toolkit",

@@ -23,7 +23,9 @@ import {
   SiRobloxstudio,
   SiSupabase,
   SiReact,
+  SiThreedotjs,
   SiTypescript,
+  SiVite,
 } from "react-icons/si";
 import {
   TbBrandAzure,
@@ -39,6 +41,8 @@ import styles from "./ProjectStack.module.css";
 const stackIcons: Record<ProjectStackIcon, IconType> = {
   react: SiReact,
   typescript: SiTypescript,
+  vite: SiVite,
+  threejs: SiThreedotjs,
   cloudflare: SiCloudflare,
   powershell: TbBrandPowershell,
   windows: TbBrandWindows,
@@ -70,6 +74,8 @@ const stackIcons: Record<ProjectStackIcon, IconType> = {
 const stackIconColors: Record<ProjectStackIcon, string> = {
   react: "#61dafb",
   typescript: "#3178c6",
+  vite: "#a78bfa",
+  threejs: "#d6d6d6",
   cloudflare: "#f38020",
   powershell: "#5391fe",
   windows: "#00a4ef",

@@ -45,7 +45,7 @@ export const portfolioV2Definition = {
     ],
     home: {
       section: "projects",
-      order: 0,
+      order: 2,
       cardTitle: "Portfolio Web",
       label: "The site you are on · Live",
       description:
@@ -53,7 +53,7 @@ export const portfolioV2Definition = {
       contribution:
         "Designed, wrote, built, tested and shipped the whole thing—including the slightly over-engineered Diary I wanted anyway.",
       outcome: "Live, evolving and very much mine",
-      size: "large",
+      size: "standard",
       media: {
         kind: "image",
         src: "/projects/portfolio-v2/Portfolio-Case-Study/slide-1.png",

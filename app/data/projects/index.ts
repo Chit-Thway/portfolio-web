@@ -7,6 +7,7 @@ import { jobApplicationTrackerDefinition } from "./job-application-tracker";
 import { conciseDigitalWorkDefinition } from "./concise-digital-work";
 import { jobTrackerQaPortfolioDefinition } from "./jobtracker-qa-portfolio";
 import { erveiDefinition } from "./ervei";
+import { haveYouTriedRestartingDefinition } from "./have-you-tried-restarting";
 import type { Project, ProjectCaseStudy, ProjectDefinition } from "./types";
 
 export const projectDefinitions = [
@@ -19,6 +20,7 @@ export const projectDefinitions = [
   conciseDigitalWorkDefinition,
   jobTrackerQaPortfolioDefinition,
   erveiDefinition,
+  haveYouTriedRestartingDefinition,
 ] satisfies readonly ProjectDefinition[];
 
 export const projects: Project[] = projectDefinitions.map(({ project }) => project);

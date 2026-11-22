@@ -56,6 +56,9 @@ yarn-error.log*
 /prototypes/
 /video/
 
+# graphify knowledge graph output
+/graphify-out/
+
 # local LinkedIn presentation exports
 /Portfolio-Diary-Case-Study-LinkedIn-Fixed.pptx
 /Portfolio-Main-LinkedIn-Fixed.pptx

@@ -5,7 +5,7 @@ export const homepageProjectSections = [
     id: "projects",
     eyebrow: "Selected work",
     title: "Evidence, not just claims.",
-    description: "Five selected projects showing how I build, investigate and support software.",
+    description: "Six selected projects showing how I build, investigate and support software.",
   },
   {
     id: "achievements",

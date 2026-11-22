@@ -6,6 +6,8 @@ export type PortfolioLink = {
 export type HomeProjectTool =
   | "react"
   | "typescript"
+  | "threejs"
+  | "supabase"
   | "cloudflare"
   | "csharp"
   | "dotnet"
@@ -70,6 +72,8 @@ export type ProjectMedia =
 export type ProjectStackIcon =
   | "react"
   | "typescript"
+  | "vite"
+  | "threejs"
   | "cloudflare"
   | "powershell"
   | "windows"

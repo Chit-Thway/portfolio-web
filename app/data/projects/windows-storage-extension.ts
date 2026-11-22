@@ -35,7 +35,7 @@ export const windowsStorageExtensionDefinition = {
     ],
     home: {
       section: "projects",
-      order: 2,
+      order: 5,
       label: "Windows support extension · Public",
       description:
         "A local extension that explains where drive space is used, narrows the review by file type or folder and keeps cleanup recoverable.",

@@ -19,6 +19,8 @@ import {
   SiJira,
   SiWordpress,
   SiReact,
+  SiSupabase,
+  SiThreedotjs,
   SiTypescript,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCSharp, TbBrandPowershell } from "react-icons/tb";
@@ -48,6 +50,8 @@ const homeToolDetails: Record<
 > = {
   react: { name: "React", icon: SiReact },
   typescript: { name: "TypeScript", icon: SiTypescript },
+  threejs: { name: "Three.js", icon: SiThreedotjs },
+  supabase: { name: "Supabase", icon: SiSupabase },
   cloudflare: { name: "Cloudflare", icon: SiCloudflare },
   csharp: { name: "C#", icon: TbBrandCSharp },
   dotnet: { name: ".NET 10", icon: SiDotnet },
